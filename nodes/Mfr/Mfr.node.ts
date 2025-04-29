@@ -4,25 +4,27 @@ import type {
 	INodeType,
 	INodeTypeDescription,
 } from 'n8n-workflow';
-import { NodeConnectionType, NodeOperationError } from 'n8n-workflow';
+import { NodeOperationError } from 'n8n-workflow';
 
-export class ExampleNode implements INodeType {
+export class Mfr implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Example Node',
-		name: 'exampleNode',
+		displayName: 'MFR - Field Service Management',
+		name: 'mfr',
 		group: ['transform'],
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
+		icon: 'file:mfrLogo.png',
 		version: 1,
-		description: 'Basic Example Node',
+		description: 'Field service management app for scheduling technicians.',
 		defaults: {
-			name: 'Example Node',
+			name: 'MFR - Field Service Management',
 		},
-		inputs: [NodeConnectionType.Main],
-		outputs: [NodeConnectionType.Main],
+		inputs: ['main'],
+		outputs: ['main'],
 		properties: [
 			// Node properties which the user gets displayed and
 			// can change on the node.
 			{
-				displayName: 'My String',
+				displayName: 'My String 11',
 				name: 'myString',
 				type: 'string',
 				default: '',
