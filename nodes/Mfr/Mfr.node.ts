@@ -1,10 +1,12 @@
 import type {
+	IDataObject,
 	IExecuteFunctions,
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
+	IRequestOptions,
 } from 'n8n-workflow';
-import { NodeOperationError } from 'n8n-workflow';
+import { companyFields, companyOperations } from './descriptions/CompanyDescription';
 
 export class Mfr implements INodeType {
 	description: INodeTypeDescription = {
@@ -14,65 +16,93 @@ export class Mfr implements INodeType {
 		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
 		icon: 'file:mfrLogo.png',
 		version: 1,
+		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description: 'Field service management app for scheduling technicians.',
 		defaults: {
 			name: 'MFR - Field Service Management',
 		},
+		credentials: [
+			{
+				name: 'mfrApi',
+				required: true,
+			}],
 		inputs: ['main'],
 		outputs: ['main'],
+
 		properties: [
-			// Node properties which the user gets displayed and
-			// can change on the node.
 			{
-				displayName: 'My String 11',
-				name: 'myString',
-				type: 'string',
-				default: '',
-				placeholder: 'Placeholder value',
-				description: 'The description text',
-			},
+				displayName: 'Resource',
+				name: 'resource',
+				type: 'options',
+				default: 'company',
+				noDataExpression: true,
+				options: [
+					{
+						name: 'Company',
+						value: 'company',
+					}]},
+
+			// COMPANY
+			...companyOperations,
+			...companyFields,
 		],
 	};
 
-	// The function below is responsible for actually doing whatever this node
-	// is supposed to do. In this case, we're just appending the `myString` property
-	// with whatever the user has entered.
-	// You can make async calls and use `await`.
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
+		const resource = this.getNodeParameter('resource', 0);
+		const operation = this.getNodeParameter('operation', 0);
+		let responseData;
+		const returnData: INodeExecutionData[] = [];
+		const qs: IDataObject = {};
+		const body: IDataObject = {};
 
-		let item: INodeExecutionData;
-		let myString: string;
+		for (let i = 0; i < items.length; i++) {
+		try{
 
-		// Iterates over all input items and add the key "myString" with the
-		// value the parameter "myString" resolves to.
-		// (This could be a different value for each item in case it contains an expression)
-		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
-			try {
-				myString = this.getNodeParameter('myString', itemIndex, '') as string;
-				item = items[itemIndex];
+	// get company
+	if (resource === 'company') {
+		if (operation === 'get') {
+			const companyUI = this.getNodeParameter('companyId', i) as IDataObject;
+			console.log(companyUI)
+			let companyId = companyUI.value as string;
 
-				item.json.myString = myString;
-			} catch (error) {
-				// This node should never fail but we want to showcase how
-				// to handle errors.
-				if (this.continueOnFail()) {
-					items.push({ json: this.getInputData(itemIndex)[0].json, error, pairedItem: itemIndex });
-				} else {
-					// Adding `itemIndex` allows other workflows to handle this error
-					if (error.context) {
-						// If the error thrown already contains the context property,
-						// only append the itemIndex
-						error.context.itemIndex = itemIndex;
-						throw error;
-					}
-					throw new NodeOperationError(this.getNode(), error, {
-						itemIndex,
-					});
-				}
+			const endpoint = `https://portal.mobilefieldreport.com/odata/Companies(${companyId}L)`;
+			const options = {
+				method: 'GET',
+				qs,
+				headers: {},
+				uri: endpoint,
+				body,
+				json: true,
+				useQuerystring: true,
+			} satisfies IRequestOptions;
+
+			console.log(options);
+
+
+		responseData = await this.helpers.requestWithAuthentication.call(
+				this,
+				'mfrApi',
+				options,
+		);}
+	}
+
+	const executionData = this.helpers.constructExecutionMetaData(
+		this.helpers.returnJsonArray(responseData as IDataObject[]),
+		{ itemData: { item: i } },
+	);
+	returnData.push(...executionData);
+}
+		 catch (error) {
+			if (this.continueOnFail()) {
+				returnData.push({ error: error.message, json: {} });
+				continue;
 			}
+			throw error;
 		}
-
-		return [items];
+	}
+	// return [returnData as INodeExecutionData[]];
+	return [returnData];
 	}
 }
