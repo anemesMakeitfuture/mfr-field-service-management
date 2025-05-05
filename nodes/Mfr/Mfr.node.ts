@@ -108,13 +108,20 @@ export class Mfr implements INodeType {
 					'mfrApi',
 					options,
 				);
-				// Extracting the company data from the response
-				return {
-					results: searchResults.value.map((company: any) => ({
-							name: company.Name,    // Mapping the Name field from the response
-							value: company.Id,     // Mapping the Id field from the response
-					})),
-			};
+				// Extracting and filtering the company data from the response
+				const results: INodeListSearchItems[] = searchResults.value
+        .map((company: any) => ({
+            name: company.Name,  // Mapping the Name field from the response
+            value: company.Id,   // Mapping the Id field from the response
+        }))
+        .filter(
+            (company: { name: string; value: { toString: () => string; }; }) =>
+                !filter || // If no filter, return all
+                company.name.toLowerCase().includes(filter.toLowerCase()) || // Filter by name
+                company.value?.toString() === filter // Optionally filter by company Id
+        )
+
+    return { results };
 			},
 		}
 	};
