@@ -5,6 +5,8 @@ import type {
 	INodeType,
 	INodeTypeDescription,
 	IRequestOptions,
+	ILoadOptionsFunctions,
+	INodePropertyOptions,
 } from 'n8n-workflow';
 import { companyFields, companyOperations } from './descriptions/CompanyDescription';
 
@@ -48,6 +50,43 @@ export class Mfr implements INodeType {
 		],
 	};
 
+	methods = {
+		loadOptions: {
+			async getCompanies(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				const returnData: INodePropertyOptions[] = [];
+				const endpoint = `https://portal.mobilefieldreport.com/odata/Companies`;
+				const options = {
+						method: 'GET',
+						qs: {
+							"$top": 1
+						},
+						uri: endpoint,
+						json: true,
+						useQuerystring: true,
+				} satisfies IRequestOptions;
+
+				// Fetching the companies data
+				const response = await this.helpers.requestWithAuthentication.call(
+						this,
+						'mfrApi',
+						options,
+				);
+
+				console.log(response)
+
+				// Extracting the companies' names from the response
+				for (const company of response.value) {
+					returnData.push({
+							name: company.Name,  // Mapping the Name value
+							value: company.Id,   // Mapping the Id value
+					});
+			}
+
+				return returnData;
+		}
+		},
+	};
+
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
 		const resource = this.getNodeParameter('resource', 0);
@@ -64,7 +103,6 @@ export class Mfr implements INodeType {
 	if (resource === 'company') {
 		if (operation === 'get') {
 			const companyUI = this.getNodeParameter('companyId', i) as IDataObject;
-			console.log(companyUI)
 			let companyId = companyUI.value as string;
 
 			const endpoint = `https://portal.mobilefieldreport.com/odata/Companies(${companyId}L)`;
@@ -77,8 +115,6 @@ export class Mfr implements INodeType {
 				json: true,
 				useQuerystring: true,
 			} satisfies IRequestOptions;
-
-			console.log(options);
 
 
 		responseData = await this.helpers.requestWithAuthentication.call(
@@ -102,7 +138,7 @@ export class Mfr implements INodeType {
 			throw error;
 		}
 	}
-	// return [returnData as INodeExecutionData[]];
+
 	return [returnData];
 	}
 }

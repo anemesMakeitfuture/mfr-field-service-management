@@ -52,7 +52,7 @@ export const companyFields: INodeProperties[] = [
 				type: 'list',
 				placeholder: 'Select from the list',
 				typeOptions: {
-					searchListMethod: 'searchCompanies',
+					searchListMethod: 'getCompanies',
 				},
 			},
 			{
@@ -71,28 +71,5 @@ export const companyFields: INodeProperties[] = [
 				],
 			},
 		],
-	},
-	{
-		displayName: 'Options',
-		name: 'additionalFields',
-		type: 'collection',
-		placeholder: 'Add option',
-		default: {},
-		displayOptions: {
-			show: {
-				resource: ['company'],
-				operation: ['get'],
-			},
-		},
-		options: [
-			{
-				displayName: 'Include Merge Audits',
-				name: 'includeMergeAudits',
-				type: 'boolean',
-				default: false,
-				description:
-					'Whether to return any merge history if the company has been previously merged with another company record. Defaults to false.',
-			},
-		],
-	},
+	}
 ];
