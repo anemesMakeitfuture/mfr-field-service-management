@@ -52,7 +52,8 @@ export const companyFields: INodeProperties[] = [
 				type: 'list',
 				placeholder: 'Select from the list',
 				typeOptions: {
-					searchListMethod: 'getCompanies',
+					searchListMethod: 'searchCompanies',
+					searchable: true,
 				},
 			},
 			{

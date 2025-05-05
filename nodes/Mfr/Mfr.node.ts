@@ -5,6 +5,8 @@ import type {
 	INodeType,
 	INodeTypeDescription,
 	IRequestOptions,
+	INodeListSearchItems,
+	INodeListSearchResult,
 	ILoadOptionsFunctions,
 	INodePropertyOptions,
 } from 'n8n-workflow';
@@ -85,7 +87,38 @@ export class Mfr implements INodeType {
 				return returnData;
 		}
 		},
+		listSearch: {
+			async searchCompanies(this: ILoadOptionsFunctions, filter?: string,): Promise<INodeListSearchResult> {
+				const endpoint = 'https://portal.mobilefieldreport.com/odata/Companies';
+				const qs: IDataObject = {
+			//		"$filter": `Name eq ${filter}`,
+				};
+				const options = {
+					method: 'GET',
+					qs,
+					uri: endpoint,
+					json: true,
+					useQuerystring: true,
+			} satisfies IRequestOptions;
+
+			console.log(options)
+
+				const searchResults = await this.helpers.requestWithAuthentication.call(
+					this,
+					'mfrApi',
+					options,
+				);
+				// Extracting the company data from the response
+				return {
+					results: searchResults.value.map((company: any) => ({
+							name: company.Name,    // Mapping the Name field from the response
+							value: company.Id,     // Mapping the Id field from the response
+					})),
+			};
+			},
+		}
 	};
+
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
