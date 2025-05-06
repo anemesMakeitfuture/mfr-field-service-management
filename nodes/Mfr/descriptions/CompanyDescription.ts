@@ -23,6 +23,12 @@ export const companyOperations: INodeProperties[] = [
 				value: 'listCompanies',
 				description: 'List Companies',
 				action: 'List companies',
+			},
+			{
+				name: 'Create One',
+				value: 'createCompany',
+				description: 'Create a Company',
+				action: 'Create a company',
 			}
 		],
 		default: 'get',
@@ -74,9 +80,9 @@ export const companyFields: INodeProperties[] = [
 		],
 	},
 
-/* -------------------------------------------------------------------------- */
-	/*                                  company:listCompanies                               */
-	/* -------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------  */
+/*                                  company:listCompanies                      */
+	/* --------------------------------------------------------------------------*/
 	{
 		displayName: 'Limit',
 		name: 'limit',
@@ -106,7 +112,251 @@ export const companyFields: INodeProperties[] = [
 			},
 		},
 		default: false,
-	}
+	},
 
+	/* -------------------------------------------------------------------------- */
+	/*                                company:create                              */
+	/* -------------------------------------------------------------------------- */
+
+	{
+		displayName: 'Name',
+		name: 'name',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['createCompany'],
+			},
+		},
+		default: '',
+	},
+
+	// Location
+	{
+		displayName: 'Location',
+		name: 'Location',
+		type: 'collection',
+		placeholder: 'Add Location Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['createCompany'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Address String',
+				name: 'AddressString',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Postal',
+				name: 'Postal',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'City',
+				name: 'City',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'State',
+				name: 'State',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Country',
+				name: 'Country',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Is Valid Location',
+				name: 'IsValidLocation',
+				type: 'boolean',
+				default: false,
+			},
+		],
+	},
+
+	{
+		displayName: 'Support Telephone',
+		name: 'SupportTelephone',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['createCompany'],
+			},
+		},
+		default: '',
+	},
+
+	{
+		displayName: 'Support Fax',
+		name: 'SupportFax',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['createCompany'],
+			},
+		},
+		default: '',
+	},
+
+	{
+		displayName: 'Support Mail',
+		name: 'SupportMail',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['createCompany'],
+			},
+		},
+		default: '',
+	},
+
+	{
+		displayName: 'Note',
+		name: 'Note',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['createCompany'],
+			},
+		},
+		default: '',
+	},
+
+	{
+		displayName: 'External ID',
+		name: 'ExternalId',
+		description: 'External or ERP ID for the company. If is not given, one is automatically generated.',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['createCompany'],
+			},
+		},
+		default: '',
+	},
+
+	{
+		displayName: 'Is Physical Person',
+		name: 'IsPhysicalPerson',
+		description: 'Whether the customer is a company (true) or a single person. Default is false. If true, MainContact must be defined and the company will get the full name of this contact.',
+		type: 'boolean',
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['createCompany'],
+			},
+		},
+		default: false,
+	},
+
+	// Main Contact
+	{
+		displayName: 'Main Contact',
+		name: 'MainContact',
+		type: 'collection',
+		placeholder: 'Add Main Contact Field',
+		default: {},
+		description: 'Main Contact for the Company. It won\'t be an existing contact - will instead create a new one and only needs the LastName property to be defined.',
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['createCompany'],
+			},
+		},
+		options: [
+			{
+				displayName: 'First Name',
+				name: 'FirstName',
+				type: 'string',
+				description: 'Required',
+				default: '',
+			},
+			{
+				displayName: 'Last Name',
+				name: 'LastName',
+				type: 'string',
+				description: 'Required',
+				default: '',
+			},
+			{
+				displayName: 'Email',
+				name: 'Email',
+				type: 'string',
+				description: 'Required',
+				default: '',
+			},
+			{
+				displayName: 'Telephone',
+				name: 'Telephone',
+				type: 'string',
+				description: 'Required',
+				default: '',
+			},
+			{
+				displayName: 'Mobile Phone',
+				name: 'MobilePhone',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Is User',
+				name: 'IsUser',
+				type: 'boolean',
+				default: false
+			},
+			{
+				displayName: 'External ID',
+				name: 'ExternalId',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Gender',
+				name: 'Gender',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Fax',
+				name: 'Fax',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Note',
+				name: 'Note',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Company ID',
+				name: 'CompanyId',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Job Title',
+				name: 'JobTitle',
+				type: 'string',
+				default: '',
+			},
+		],
+	},
 
 ];

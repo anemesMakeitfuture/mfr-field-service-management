@@ -217,8 +217,52 @@ export class Mfr implements INodeType {
     }
 }
 
+// create company
+if (resource === 'company') {
+	if (operation === 'createCompany') {
+		{
+			const name = this.getNodeParameter('name', i) as string;
+			const Location = this.getNodeParameter('Location', i) as IDataObject;
+			const SupportTelephone = this.getNodeParameter('SupportTelephone', i) as string;
+			const SupportFax = this.getNodeParameter('SupportFax', i) as string;
+			const SupportMail = this.getNodeParameter('SupportMail', i) as string;
+			const Note = this.getNodeParameter('Note', i) as string;
+			const ExternalId = this.getNodeParameter('ExternalId', i) as string;
+			const IsPhysicalPerson = this.getNodeParameter('IsPhysicalPerson', i) as boolean;
+			const MainContact = this.getNodeParameter('MainContact', i) as IDataObject;
+
+			body.Name = name
+			body.Location = Location
+			body.SupportTelephone = SupportTelephone
+			body.SupportFax = SupportFax
+			body.SupportMail = SupportMail
+			body.Note = Note
+			body.ExternalId = ExternalId
+			body.IsPhysicalPerson = IsPhysicalPerson
+			body.MainContact = MainContact
+
+			const endpoint = `https://portal.mobilefieldreport.com/odata/Companies`;
+			const options = {
+				method: 'POST',
+				qs,
+				headers: {},
+				uri: endpoint,
+				body,
+				json: true,
+				useQuerystring: true,
+			} satisfies IRequestOptions;
+
+			console.log(options)
 
 
+		responseData = await this.helpers.requestWithAuthentication.call(
+				this,
+				'mfrApi',
+				options,
+		);}
+
+	}
+}
 
 
 
