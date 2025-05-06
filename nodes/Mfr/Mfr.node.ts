@@ -12,6 +12,7 @@ import type {
 } from 'n8n-workflow';
 import { companyFields, companyOperations } from './descriptions/CompanyDescription';
 import { appointmentFields, AppointmentOperations } from './descriptions/AppointmentDescription';
+import { itemTypeFields, ItemTypeOperations } from './descriptions/ItemTypeDescription';
 
 export class Mfr implements INodeType {
 	description: INodeTypeDescription = {
@@ -49,6 +50,10 @@ export class Mfr implements INodeType {
 					{
 						name: 'Appointment',
 						value: 'appointment',
+					},
+					{
+						name: 'Item Type',
+						value: 'itemType',
 					}
 
 				]},
@@ -57,47 +62,49 @@ export class Mfr implements INodeType {
 			...companyOperations,
 			...companyFields,
 
-			// Appointment
+			// APPOINTMENT
 			...AppointmentOperations,
 			...appointmentFields,
+
+			// ITEM TYPE
+			...ItemTypeOperations,
+			...itemTypeFields,
 		],
 	};
 
 	methods = {
 		loadOptions: {
-			async getCompanies(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				const returnData: INodePropertyOptions[] = [];
-				const endpoint = `https://portal.mobilefieldreport.com/odata/Companies`;
-				const options = {
-						method: 'GET',
-						qs: {
-							"$top": 1
-						},
-						uri: endpoint,
-						json: true,
-						useQuerystring: true,
-				} satisfies IRequestOptions;
+		async getItemUnits(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+			const returnData: INodePropertyOptions[] = [];
+			const endpoint = `https://portal.mobilefieldreport.com/odata/ItemUnits`;
+			const options = {
+					method: 'GET',
+					uri: endpoint,
+					json: true,
+					useQuerystring: true,
+			} satisfies IRequestOptions;
 
-				// Fetching the companies data
-				const response = await this.helpers.requestWithAuthentication.call(
-						this,
-						'mfrApi',
-						options,
-				);
+			// Fetching the companies data
+			const response = await this.helpers.requestWithAuthentication.call(
+					this,
+					'mfrApi',
+					options,
+			);
 
-				console.log(response)
-
-				// Extracting the companies' names from the response
-				for (const company of response.value) {
-					returnData.push({
-							name: company.Name,  // Mapping the Name value
-							value: company.Id,   // Mapping the Id value
-					});
-			}
-
-				return returnData;
+			// Extracting the companies' names from the response
+			for (const itemUnit of response.value) {
+				returnData.push({
+						name: itemUnit.Name,  // Mapping the Name value
+						value: itemUnit.Id,   // Mapping the Id value
+				});
 		}
-		},
+
+			return returnData;
+	}
+
+},
+
+
 		listSearch: {
 			async searchCompanies(this: ILoadOptionsFunctions, filter?: string,): Promise<INodeListSearchResult> {
 				const endpoint = 'https://portal.mobilefieldreport.com/odata/Companies';
@@ -327,6 +334,53 @@ if (resource === 'appointment') {
 		body.EndDateTime = EndDateTime
 
 		const endpoint = `https://portal.mobilefieldreport.com/odata/Appointments`;
+		const options = {
+			method: 'POST',
+			qs,
+			headers: {},
+			uri: endpoint,
+			body,
+			json: true,
+			useQuerystring: true,
+		} satisfies IRequestOptions;
+
+		console.log(options)
+
+	responseData = await this.helpers.requestWithAuthentication.call(
+			this,
+			'mfrApi',
+			options,
+	);}
+}
+
+// create item type
+if (resource === 'itemType') {
+	if (operation === 'createItemType') {
+
+		const UnitId = this.getNodeParameter('UnitId', i) as string;
+		const Type = this.getNodeParameter('Type', i) as string;
+		const NameOrNumber = this.getNodeParameter('NameOrNumber', i) as string;
+		const ExternalId = this.getNodeParameter('ExternalId', i) as string;
+		const Costs = this.getNodeParameter('Costs', i) as string;
+		const Price = this.getNodeParameter('Price', i) as string;
+		const Manufacture = this.getNodeParameter('Manufacture', i) as string;
+		const VAT = this.getNodeParameter('VAT', i) as string;
+		const Description = this.getNodeParameter('Description', i) as string;
+		const GlobalTradeItemNr = this.getNodeParameter('GlobalTradeItemNr', i) as string;
+
+   body.UnitId = UnitId
+	 body.Type = Type
+	 body.NameOrNumber = NameOrNumber
+	 body.ExternalId = ExternalId
+	 body.Costs = Costs
+	 body.Price = Price
+	 body.Manufacture = Manufacture
+	 body.VAT = VAT
+	 body.Description = Description
+	 body.GlobalTradeItemNr = GlobalTradeItemNr
+
+
+		const endpoint = `https://portal.mobilefieldreport.com/odata/ItemTypes`;
 		const options = {
 			method: 'POST',
 			qs,
