@@ -45,6 +45,7 @@ export const companyFields: INodeProperties[] = [
 		type: 'resourceLocator',
 		default: { mode: 'list', value: '' },
 		required: true,
+		description: 'Can search by name or ID',
 		displayOptions: {
 			show: {
 				resource: ['company'],

@@ -11,6 +11,7 @@ import type {
 	INodePropertyOptions,
 } from 'n8n-workflow';
 import { companyFields, companyOperations } from './descriptions/CompanyDescription';
+import { appointmentFields, AppointmentOperations } from './descriptions/AppointmentDescription';
 
 export class Mfr implements INodeType {
 	description: INodeTypeDescription = {
@@ -44,11 +45,21 @@ export class Mfr implements INodeType {
 					{
 						name: 'Company',
 						value: 'company',
-					}]},
+					},
+					{
+						name: 'Appointment',
+						value: 'appointment',
+					}
+
+				]},
 
 			// COMPANY
 			...companyOperations,
 			...companyFields,
+
+			// Appointment
+			...AppointmentOperations,
+			...appointmentFields,
 		],
 	};
 
@@ -119,6 +130,40 @@ export class Mfr implements INodeType {
                 !filter || // If no filter, return all
                 company.name.toLowerCase().includes(filter.toLowerCase()) || // Filter by name
                 company.value?.toString() === filter // Optionally filter by company Id
+        )
+
+    return { results };
+			},
+
+			async searchContacts(this: ILoadOptionsFunctions, filter?: string,): Promise<INodeListSearchResult> {
+				const endpoint = 'https://portal.mobilefieldreport.com/odata/Contacts';
+				const qs: IDataObject = {};
+				const options = {
+					method: 'GET',
+					qs,
+					uri: endpoint,
+					json: true,
+					useQuerystring: true,
+			} satisfies IRequestOptions;
+
+			console.log(options)
+
+				const searchResults = await this.helpers.requestWithAuthentication.call(
+					this,
+					'mfrApi',
+					options,
+				);
+				// Extracting and filtering the contact data from the response
+				const results: INodeListSearchItems[] = searchResults.value
+        .map((contact: any) => ({
+            name: contact.Email || contact.Id,  // Mapping the Name field from the response
+            value: contact.Id,   // Mapping the Id field from the response
+        }))
+        .filter(
+            (contact: { name: string; value: { toString: () => string; }; }) =>
+                !filter || // If no filter, return all
+						    contact.name.toLowerCase().includes(filter.toLowerCase()) || // Filter by name
+                contact.value?.toString() === filter // Optionally filter by contact Id
         )
 
     return { results };
@@ -265,9 +310,48 @@ if (resource === 'company') {
 }
 
 
+// create appointment
+if (resource === 'appointment') {
+	if (operation === 'createAppointment') {
+		const ContactIdUI = this.getNodeParameter('ContactId', i) as IDataObject;
+		let ContactId = ContactIdUI.value as string;
+		const Type = this.getNodeParameter('Type', i) as string;
+
+		const StartDateTime = this.getNodeParameter('StartDateTime', i) as string;
+		const EndDateTime = this.getNodeParameter('EndDateTime', i) as string;
+
+
+		body.Type = Type
+		body.ContactId = ContactId
+		body.StartDateTime = StartDateTime
+		body.EndDateTime = EndDateTime
+
+		const endpoint = `https://portal.mobilefieldreport.com/odata/Appointments`;
+		const options = {
+			method: 'POST',
+			qs,
+			headers: {},
+			uri: endpoint,
+			body,
+			json: true,
+			useQuerystring: true,
+		} satisfies IRequestOptions;
+
+		console.log(options)
+
+	responseData = await this.helpers.requestWithAuthentication.call(
+			this,
+			'mfrApi',
+			options,
+	);}
+}
 
 
 
+
+
+
+// end
 
 	const executionData = this.helpers.constructExecutionMetaData(
 		this.helpers.returnJsonArray(responseData as IDataObject[]),
