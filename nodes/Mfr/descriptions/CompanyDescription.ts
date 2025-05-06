@@ -121,7 +121,7 @@ export const companyFields: INodeProperties[] = [
 
 	{
 		displayName: 'Name',
-		name: 'name',
+		name: 'Name',
 		type: 'string',
 		required: true,
 		displayOptions: {
@@ -148,7 +148,7 @@ export const companyFields: INodeProperties[] = [
 		},
 		options: [
 			{
-				displayName: 'Address String',
+				displayName: 'Address',
 				name: 'AddressString',
 				type: 'string',
 				default: '',

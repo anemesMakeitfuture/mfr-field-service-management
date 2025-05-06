@@ -13,6 +13,7 @@ import type {
 import { companyFields, companyOperations } from './descriptions/CompanyDescription';
 import { appointmentFields, AppointmentOperations } from './descriptions/AppointmentDescription';
 import { itemTypeFields, ItemTypeOperations } from './descriptions/ItemTypeDescription';
+import { serviceObjectFields, ServiceObjectOperations } from './descriptions/ServiceObjectDescription';
 
 export class Mfr implements INodeType {
 	description: INodeTypeDescription = {
@@ -54,6 +55,10 @@ export class Mfr implements INodeType {
 					{
 						name: 'Item Type',
 						value: 'itemType',
+					},
+					{
+						name: 'Service Object',
+						value: 'serviceObject',
 					}
 
 				]},
@@ -69,6 +74,10 @@ export class Mfr implements INodeType {
 			// ITEM TYPE
 			...ItemTypeOperations,
 			...itemTypeFields,
+
+			// Service Object
+			...ServiceObjectOperations,
+			...serviceObjectFields,
 		],
 	};
 
@@ -400,6 +409,44 @@ if (resource === 'itemType') {
 	);}
 }
 
+// create service object
+if (resource === 'serviceObject') {
+	if (operation === 'createServiceObject') {
+
+		const Name = this.getNodeParameter('Name', i) as string;
+		const Location = this.getNodeParameter('Location', i) as IDataObject;
+
+		const companyUI = this.getNodeParameter('CompanyId', i) as IDataObject;
+			let CompanyId = companyUI.value as string;
+
+		const ExternalId = this.getNodeParameter('ExternalId', i) as string;
+
+		body.Name = Name
+		body.Location = Location
+		body.CompanyId = CompanyId
+		body.ExternalId = ExternalId
+
+
+
+		const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceObjects`;
+		const options = {
+			method: 'POST',
+			qs,
+			headers: {},
+			uri: endpoint,
+			body,
+			json: true,
+			useQuerystring: true,
+		} satisfies IRequestOptions;
+
+		console.log(options)
+
+	responseData = await this.helpers.requestWithAuthentication.call(
+			this,
+			'mfrApi',
+			options,
+	);}
+}
 
 
 
