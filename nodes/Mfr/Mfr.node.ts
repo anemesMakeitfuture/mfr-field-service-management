@@ -164,6 +164,67 @@ export class Mfr implements INodeType {
 		);}
 	}
 
+	// list companies with pagination
+	if (resource === 'company') {
+    if (operation === 'listCompanies') {
+        const limit = this.getNodeParameter('limit', i) as number; // Get the limit parameter
+				const fetchAllResults = this.getNodeParameter('fetchAllResults', i) as boolean
+        let startingEntity = 0;
+        let allCompanies: any[] = []; // Store all companies data
+        let numberOfEntities = 100; // Max number of companies per page
+
+        while (true) {
+            const endpoint = `https://portal.mobilefieldreport.com/odata/Companies`;
+            const options = {
+                method: 'GET',
+                qs: {
+                    "$top": numberOfEntities,         // Number of records per page
+                    "$skip": startingEntity,          // Skip based on starting entity
+                },
+                headers: {},
+                uri: endpoint,
+                body: {},
+                json: true,
+                useQuerystring: true,
+            } satisfies IRequestOptions;
+
+            // Fetch the page data
+            const responseData = await this.helpers.requestWithAuthentication.call(
+                this,
+                'mfrApi',
+                options,
+            );
+
+            allCompanies = allCompanies.concat(responseData.value); // Add the current page results to the array
+
+            // Check if we've reached or exceeded the limit
+            if (allCompanies.length >= limit && !fetchAllResults) {
+                allCompanies = allCompanies.slice(0, limit); // Trim to the limit and break out of the loop
+                break;
+            }
+
+            // If fewer than 100 results were returned, we are done
+            if (responseData.value.length < numberOfEntities) {
+                break; // Exit the loop if there are no more pages
+            }
+
+            // Otherwise, move to the next batch of companies
+            startingEntity += numberOfEntities;
+        }
+
+        // Return the accumulated companies data
+        responseData = allCompanies;
+    }
+}
+
+
+
+
+
+
+
+
+
 	const executionData = this.helpers.constructExecutionMetaData(
 		this.helpers.returnJsonArray(responseData as IDataObject[]),
 		{ itemData: { item: i } },

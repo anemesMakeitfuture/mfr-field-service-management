@@ -20,9 +20,9 @@ export const companyOperations: INodeProperties[] = [
 			},
 			{
 				name: 'Get Many',
-				value: 'getAll',
-				description: 'Get many companies',
-				action: 'Get many companies',
+				value: 'listCompanies',
+				description: 'List Companies',
+				action: 'List companies',
 			}
 		],
 		default: 'get',
@@ -72,5 +72,41 @@ export const companyFields: INodeProperties[] = [
 				],
 			},
 		],
+	},
+
+/* -------------------------------------------------------------------------- */
+	/*                                  company:listCompanies                               */
+	/* -------------------------------------------------------------------------- */
+	{
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['listCompanies']
+			},
+		},
+		typeOptions: {
+			minValue: 1,
+		},
+		default: 50,
+		description: 'Max number of results to return',
+	},
+	{
+		displayName: 'Fetch All Results',
+		name: 'fetchAllResults',
+		type: 'boolean',
+		required: true,
+		hint: 'Whether to fetch all refunds. If this parameter is set to true, number of entities is ignored and all refunds will be retrieved.',
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['listCompanies']
+			},
+		},
+		default: false,
 	}
+
+
 ];
