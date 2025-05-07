@@ -14,6 +14,7 @@ import { companyFields, companyOperations } from './descriptions/CompanyDescript
 import { appointmentFields, AppointmentOperations } from './descriptions/AppointmentDescription';
 import { itemTypeFields, ItemTypeOperations } from './descriptions/ItemTypeDescription';
 import { serviceObjectFields, ServiceObjectOperations } from './descriptions/ServiceObjectDescription';
+import { serviceRequestFields, ServiceRequestOperations } from './descriptions/ServiceRequestDescription';
 
 export class Mfr implements INodeType {
 	description: INodeTypeDescription = {
@@ -43,6 +44,7 @@ export class Mfr implements INodeType {
 				type: 'options',
 				default: 'company',
 				noDataExpression: true,
+				// eslint-disable-next-line n8n-nodes-base/node-param-options-type-unsorted-items
 				options: [
 					{
 						name: 'Company',
@@ -59,6 +61,10 @@ export class Mfr implements INodeType {
 					{
 						name: 'Service Object',
 						value: 'serviceObject',
+					},
+					{
+						name: 'Service Request',
+						value: 'serviceRequest',
 					}
 
 				]},
@@ -78,6 +84,10 @@ export class Mfr implements INodeType {
 			// Service Object
 			...ServiceObjectOperations,
 			...serviceObjectFields,
+
+			// Service Request
+			...ServiceRequestOperations,
+			...serviceRequestFields,
 		],
 	};
 
@@ -109,7 +119,94 @@ export class Mfr implements INodeType {
 		}
 
 			return returnData;
+	},
+	async getServiceRequestsTemplates(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+		const returnData: INodePropertyOptions[] = [];
+		const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceRequests`;
+		const qs = {
+			$filter: 'IsTemplate eq true'
+		}
+		const options = {
+				method: 'GET',
+				qs: qs,
+				uri: endpoint,
+				json: true,
+				useQuerystring: true,
+		} satisfies IRequestOptions;
+
+		// Fetching the companies data
+		const response = await this.helpers.requestWithAuthentication.call(
+				this,
+				'mfrApi',
+				options,
+		);
+
+		// Extracting the companies' names from the response
+		for (const template of response.value) {
+			returnData.push({
+					name: 'Name: ' + template.Name + '; External ID: ' + template.ExternalId,
+					value: template.Id,
+			});
 	}
+
+		return returnData;
+},
+
+async getCostCenter(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+	const returnData: INodePropertyOptions[] = [];
+	const endpoint = `https://portal.mobilefieldreport.com/odata/CostCenters`;
+	const options = {
+			method: 'GET',
+			uri: endpoint,
+			json: true,
+			useQuerystring: true,
+	} satisfies IRequestOptions;
+
+	// Fetching the companies data
+	const response = await this.helpers.requestWithAuthentication.call(
+			this,
+			'mfrApi',
+			options,
+	);
+
+	// Extracting the companies' names from the response
+	for (const item of response.value) {
+		returnData.push({
+				name: item.Name,
+				value: item.Id,
+		});
+}
+
+	return returnData;
+},
+
+async getQualifications(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+	const returnData: INodePropertyOptions[] = [];
+	const endpoint = `https://portal.mobilefieldreport.com/odata/Qualifications`;
+	const options = {
+			method: 'GET',
+			uri: endpoint,
+			json: true,
+			useQuerystring: true,
+	} satisfies IRequestOptions;
+
+	// Fetching the companies data
+	const response = await this.helpers.requestWithAuthentication.call(
+			this,
+			'mfrApi',
+			options,
+	);
+
+	// Extracting the companies' names from the response
+	for (const item of response.value) {
+		returnData.push({
+				name: item.Name,
+				value: item.Id,
+		});
+}
+
+	return returnData;
+}
 
 },
 
@@ -429,6 +526,68 @@ if (resource === 'serviceObject') {
 
 
 		const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceObjects`;
+		const options = {
+			method: 'POST',
+			qs,
+			headers: {},
+			uri: endpoint,
+			body,
+			json: true,
+			useQuerystring: true,
+		} satisfies IRequestOptions;
+
+		console.log(options)
+
+	responseData = await this.helpers.requestWithAuthentication.call(
+			this,
+			'mfrApi',
+			options,
+	);}
+}
+
+// create service object
+if (resource === 'serviceRequest') {
+	if (operation === 'createServiceRequest') {
+
+		const Name = this.getNodeParameter('Name', i) as string;
+		body.Name = Name
+    const ServiceObjects = this.getNodeParameter('ServiceObjects', i) as IDataObject;
+		ServiceObjects ? body.ServiceObjects = ServiceObjects : ''
+
+		const CreateFromServiceRequestTemplateId = this.getNodeParameter('CreateFromServiceRequestTemplateId', i) as string;
+		body.CreateFromServiceRequestTemplateId = CreateFromServiceRequestTemplateId
+
+		const State = this.getNodeParameter('State', i) as string;
+		body.State = State
+
+		const Description = this.getNodeParameter('Description', i) as string;
+		body.Description = Description
+
+		// const CustomerIdUI = this.getNodeParameter('CustomerId', i) as IDataObject;
+		// 	let CustomerId = CustomerIdUI.value as string;
+		// 	body.CustomerId = CustomerId
+
+		// const Appointments = this.getNodeParameter('Appointments', i) as IDataObject;
+		// Appointments ? body.Appointments = Appointments : ''
+
+		const ExternalId = this.getNodeParameter('ExternalId', i) as string;
+		body.ExternalId = ExternalId
+
+		// const TargetTimeInMinutes = this.getNodeParameter('TargetTimeInMinutes', i) as number;
+		// body.TargetTimeInMinutes = TargetTimeInMinutes
+
+		const DueDateRangeEnd = this.getNodeParameter('DueDateRangeEnd', i) as string;
+		body.DueDateRangeEnd = DueDateRangeEnd
+
+		// const CostCenterId = this.getNodeParameter('CostCenterId', i) as string;
+		// body.CostCenterId = CostCenterId
+
+
+		// const Qualifications = this.getNodeParameter('Qualifications', i) as string;
+		// body.Qualifications = Qualifications
+
+
+		const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceRequests`;
 		const options = {
 			method: 'POST',
 			qs,
