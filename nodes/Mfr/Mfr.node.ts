@@ -563,12 +563,12 @@ if (resource === 'serviceRequest') {
 		const Description = this.getNodeParameter('Description', i) as string;
 		body.Description = Description
 
-		// const CustomerIdUI = this.getNodeParameter('CustomerId', i) as IDataObject;
-		// 	let CustomerId = CustomerIdUI.value as string;
-		// 	body.CustomerId = CustomerId
+		const CustomerIdUI = this.getNodeParameter('CustomerId', i) as IDataObject;
+			let CustomerId = CustomerIdUI.value as string;
+			body.CustomerId = CustomerId
 
-		// const Appointments = this.getNodeParameter('Appointments', i) as IDataObject;
-		// Appointments ? body.Appointments = Appointments : ''
+		const Appointments = this.getNodeParameter('Appointments', i) as IDataObject;
+		Appointments ? body.Appointments = Appointments : ''
 
 		const ExternalId = this.getNodeParameter('ExternalId', i) as string;
 		body.ExternalId = ExternalId
@@ -579,12 +579,13 @@ if (resource === 'serviceRequest') {
 		const DueDateRangeEnd = this.getNodeParameter('DueDateRangeEnd', i) as string;
 		body.DueDateRangeEnd = DueDateRangeEnd
 
-		// const CostCenterId = this.getNodeParameter('CostCenterId', i) as string;
-		// body.CostCenterId = CostCenterId
+		const CostCenterId = this.getNodeParameter('CostCenterId', i) as string;
+		CostCenterId ? body.CostCenterId = CostCenterId : ''
 
 
-		// const Qualifications = this.getNodeParameter('Qualifications', i) as string;
-		// body.Qualifications = Qualifications
+		const Qualifications = this.getNodeParameter('Qualifications', i) as string;
+		Qualifications ? body.Qualifications = Qualifications : ''
+
 
 
 		const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceRequests`;
