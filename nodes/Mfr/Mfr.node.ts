@@ -15,6 +15,9 @@ import { appointmentFields, AppointmentOperations } from './descriptions/Appoint
 import { itemTypeFields, ItemTypeOperations } from './descriptions/ItemTypeDescription';
 import { serviceObjectFields, ServiceObjectOperations } from './descriptions/ServiceObjectDescription';
 import { serviceRequestFields, ServiceRequestOperations } from './descriptions/ServiceRequestDescription';
+import { DocumentFields, DocumentOperations } from './descriptions/DocumentDescription';
+
+import { Buffer } from 'buffer';
 
 export class Mfr implements INodeType {
 	description: INodeTypeDescription = {
@@ -65,6 +68,10 @@ export class Mfr implements INodeType {
 					{
 						name: 'Service Request',
 						value: 'serviceRequest',
+					},
+					{
+						name: 'Document',
+						value: 'document',
 					}
 
 				]},
@@ -88,6 +95,10 @@ export class Mfr implements INodeType {
 			// Service Request
 			...ServiceRequestOperations,
 			...serviceRequestFields,
+
+			// Document
+			...DocumentOperations,
+			...DocumentFields,
 		],
 	};
 
@@ -755,6 +766,56 @@ if (resource === 'serviceRequest') {
 			'mfrApi',
 			options,
 	);}
+}
+
+// upload document
+if (resource === 'document') {
+	if (operation === 'uploadDocument') {
+
+		let bodyUploadDocument: IDataObject | Buffer;
+
+
+		if (this.getNodeParameter('binaryData', i)) {
+			const binaryPropertyName = this.getNodeParameter('binaryPropertyName', i);
+			this.helpers.assertBinaryData(i, binaryPropertyName);
+			bodyUploadDocument = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
+		} else {
+			// Is text file
+			bodyUploadDocument = Buffer.from(this.getNodeParameter('fileContent', i) as string, 'utf8');
+		}
+
+
+
+		const endpoint = `https://portal.mobilefieldreport.com/mfr/Document/UploadAndCreate`;
+		const options = {
+			method: 'POST',
+			body: bodyUploadDocument,
+      headers: {
+				'Content-Type': 'multipart/form-data'
+			},
+			uri: endpoint,
+			json: false,
+
+		} satisfies IRequestOptions;
+
+		console.log(options)
+
+
+		const documentID = await this.helpers.requestWithAuthentication.call(
+			this,
+			'mfrApi',
+			options,
+	);
+
+	console.log(documentID)
+
+	// responseData = await this.helpers.requestWithAuthentication.call(
+	// 		this,
+	// 		'mfrApi',
+	// 		options,
+	// );
+
+}
 }
 
 
