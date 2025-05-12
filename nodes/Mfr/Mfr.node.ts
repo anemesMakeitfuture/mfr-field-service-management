@@ -732,6 +732,31 @@ if (resource === 'serviceRequest') {
 	);}
 }
 
+// delete service object
+if (resource === 'serviceRequest') {
+	if (operation === 'deleteServiceRequest') {
+
+		const ServiceRequestUI = this.getNodeParameter('ServiceRequest', i) as IDataObject;
+		let ServiceRequest = ServiceRequestUI.value as string;
+
+
+		const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceRequests(${ServiceRequest}L)`;
+		const options = {
+			method: 'DELETE',
+			uri: endpoint,
+			json: true,
+			useQuerystring: true,
+		} satisfies IRequestOptions;
+
+		console.log(options)
+
+	responseData = await this.helpers.requestWithAuthentication.call(
+			this,
+			'mfrApi',
+			options,
+	);}
+}
+
 
 
 

@@ -19,6 +19,12 @@ export const ServiceRequestOperations: INodeProperties[] = [
 				action: 'Create a service request',
 			},
 			{
+				name: 'Delete One',
+				value: 'deleteServiceRequest',
+				description: 'Delete a Service Request',
+				action: 'Delete a service request',
+			},
+			{
 				name: 'Add Tags to Service Request',
 				value: 'addTagsToServiceRequest',
 				description: 'Add a tag to a service request',
@@ -267,7 +273,7 @@ export const serviceRequestFields: INodeProperties[] = [
 },
 
 /* -------------------------------------------------------------------------- */
-	/*                                  serviceRequest:addTagsToServiceRequest, removeTagFromServiceRequest    */
+	/*                                  serviceRequest:addTagsToServiceRequest, removeTagFromServiceRequest, deleteServiceRequest    */
 	/* -------------------------------------------------------------------------- */
 
 	{
@@ -280,7 +286,7 @@ export const serviceRequestFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['serviceRequest'],
-				operation: ['addTagsToServiceRequest', 'removeTagFromServiceRequest'],
+				operation: ['addTagsToServiceRequest', 'removeTagFromServiceRequest', 'deleteServiceRequest'],
 			},
 		},
 		modes: [
