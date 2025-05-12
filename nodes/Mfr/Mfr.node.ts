@@ -732,7 +732,7 @@ if (resource === 'serviceRequest') {
 	);}
 }
 
-// delete service object
+// delete service request
 if (resource === 'serviceRequest') {
 	if (operation === 'deleteServiceRequest') {
 
