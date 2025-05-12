@@ -17,6 +17,18 @@ export const ServiceRequestOperations: INodeProperties[] = [
 				value: 'createServiceRequest',
 				description: 'Create a Service Request',
 				action: 'Create a service request',
+			},
+			{
+				name: 'Add Tags to Service Request',
+				value: 'addTagsToServiceRequest',
+				description: 'Add a tag to a service request',
+				action: 'Add a tag to a service request',
+			},
+			{
+				name: 'Remove Tag From Service Request',
+				value: 'removeTagFromServiceRequest',
+				description: 'Remove a tag from service request',
+				action: 'Remove a tag from service request',
 			}
 		],
 		default: 'createServiceRequest',
@@ -253,6 +265,60 @@ export const serviceRequestFields: INodeProperties[] = [
 	default: '',
 	description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 },
+
+/* -------------------------------------------------------------------------- */
+	/*                                  serviceRequest:addTagsToServiceRequest, removeTagFromServiceRequest    */
+	/* -------------------------------------------------------------------------- */
+
+	{
+		displayName: 'Search Service Request',
+		name: 'ServiceRequest',
+		required: true,
+		type: 'resourceLocator',
+		default: { mode: 'list', value: '' },
+		description: 'Can search by ID',
+		displayOptions: {
+			show: {
+				resource: ['serviceRequest'],
+				operation: ['addTagsToServiceRequest', 'removeTagFromServiceRequest'],
+			},
+		},
+		modes: [
+			{
+				displayName: 'From List',
+				name: 'list',
+				type: 'list',
+				placeholder: 'Select from the list',
+				typeOptions: {
+					searchListMethod: 'searchServiceRequest',
+					searchable: true,
+				},
+			},
+			{
+				displayName: 'By External ID',
+				name: 'id',
+				type: 'string'
+			},
+		],
+	},
+
+	{
+		displayName: 'Tag Name or ID',
+		name: 'Tag',
+		displayOptions: {
+			show: {
+				resource: ['serviceRequest'],
+				operation: ['addTagsToServiceRequest', 'removeTagFromServiceRequest'],
+			},
+		},
+		type: 'options',
+		typeOptions: {
+		loadOptionsMethod: 'getTag',
+	},
+		default: '',
+		required: true,
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
+	},
 
 
 ]

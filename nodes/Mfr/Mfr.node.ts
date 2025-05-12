@@ -206,6 +206,34 @@ async getQualifications(this: ILoadOptionsFunctions): Promise<INodePropertyOptio
 }
 
 	return returnData;
+},
+
+async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+	const returnData: INodePropertyOptions[] = [];
+	const endpoint = `https://portal.mobilefieldreport.com/odata/Tags`;
+	const options = {
+			method: 'GET',
+			uri: endpoint,
+			json: true,
+			useQuerystring: true,
+	} satisfies IRequestOptions;
+
+	// Fetching the companies data
+	const response = await this.helpers.requestWithAuthentication.call(
+			this,
+			'mfrApi',
+			options,
+	);
+
+	// Extracting the companies' names from the response
+	for (const item of response.value) {
+		returnData.push({
+				name: item.Name || item.Id,
+				value: item.Id,
+		});
+}
+
+	return returnData;
 }
 
 },
@@ -281,6 +309,40 @@ async getQualifications(this: ILoadOptionsFunctions): Promise<INodePropertyOptio
 
     return { results };
 			},
+
+
+			async searchServiceRequest(this: ILoadOptionsFunctions, filter?: string,): Promise<INodeListSearchResult> {
+				const endpoint = 'https://portal.mobilefieldreport.com/odata/ServiceRequests';
+				const options = {
+					method: 'GET',
+					uri: endpoint,
+					json: true,
+					useQuerystring: true,
+			} satisfies IRequestOptions;
+
+			console.log(options)
+
+				const searchResults = await this.helpers.requestWithAuthentication.call(
+					this,
+					'mfrApi',
+					options,
+				);
+
+				const results: INodeListSearchItems[] = searchResults.value
+        .map((el: any) => ({
+            name: el.ExternalId,
+            value: el.Id,
+        }))
+        .filter(
+            (el: { name: string; value: { toString: () => string; }; }) =>
+                !filter || // If no filter, return all
+						el.name.includes(filter) ||
+						el.value?.toString() === filter
+        )
+
+    return { results };
+			},
+
 		}
 	};
 
@@ -545,7 +607,7 @@ if (resource === 'serviceObject') {
 	);}
 }
 
-// create service object
+// create service request
 if (resource === 'serviceRequest') {
 	if (operation === 'createServiceRequest') {
 
@@ -593,6 +655,68 @@ if (resource === 'serviceRequest') {
 			method: 'POST',
 			qs,
 			headers: {},
+			uri: endpoint,
+			body,
+			json: true,
+			useQuerystring: true,
+		} satisfies IRequestOptions;
+
+		console.log(options)
+
+	responseData = await this.helpers.requestWithAuthentication.call(
+			this,
+			'mfrApi',
+			options,
+	);}
+}
+
+// add tags to service request
+if (resource === 'serviceRequest') {
+	if (operation === 'addTagsToServiceRequest') {
+
+
+		const ServiceRequestUI = this.getNodeParameter('ServiceRequest', i) as IDataObject;
+		let ServiceRequest = ServiceRequestUI.value as string;
+
+
+		const Tag = this.getNodeParameter('Tag', i) as string;
+
+		body.url = `https://portal.mobilefieldreport.com/odata/Tags(${Tag}L)`
+
+		const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceRequests(${ServiceRequest}L)/$links/Tags`;
+		const options = {
+			method: 'PUT',
+			uri: endpoint,
+			body,
+			json: true,
+			useQuerystring: true,
+		} satisfies IRequestOptions;
+
+		console.log(options)
+
+	responseData = await this.helpers.requestWithAuthentication.call(
+			this,
+			'mfrApi',
+			options,
+	);}
+}
+
+// Remove Tag From Service Request
+if (resource === 'serviceRequest') {
+	if (operation === 'removeTagFromServiceRequest') {
+
+
+		const ServiceRequestUI = this.getNodeParameter('ServiceRequest', i) as IDataObject;
+		let ServiceRequest = ServiceRequestUI.value as string;
+
+
+		const Tag = this.getNodeParameter('Tag', i) as string;
+
+		body.url = `https://portal.mobilefieldreport.com/odata/Tags(${Tag}L)`
+
+		const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceRequests(${ServiceRequest}L)/$links/Tags`;
+		const options = {
+			method: 'DELETE',
 			uri: endpoint,
 			body,
 			json: true,
