@@ -23,6 +23,12 @@ export const ItemTypeOperations: INodeProperties[] = [
 				value: 'getItemType',
 				description: 'Get an Item Type',
 				action: 'Get an item type',
+			},
+			{
+				name: 'Get Many',
+				value: 'listItemTypes',
+				description: 'List Item Types',
+				action: 'List item types',
 			}
 		],
 		default: 'createItemType',
@@ -244,4 +250,66 @@ export const itemTypeFields: INodeProperties[] = [
 		},
 		default: '',
 	},
+
+		/* -------------------------------------------------------------------------- */
+	/*                                  itemType:listItemTypes                     */
+	/* -------------------------------------------------------------------------*/
+	{
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['itemType'],
+				operation: ['listItemTypes'],
+			},
+		},
+		typeOptions: {
+			minValue: 1,
+		},
+		default: 50,
+		description: 'Max number of results to return',
+	},
+	{
+		displayName: 'Fetch All Results',
+		name: 'fetchAllResults',
+		type: 'boolean',
+		required: true,
+		hint: 'Whether to fetch all refunds. If this parameter is set to true, number of entities is ignored and all refunds will be retrieved.',
+		displayOptions: {
+			show: {
+				resource: ['itemType'],
+				operation: ['listItemTypes'],
+			},
+		},
+		default: false,
+	},
+	{
+		displayName: 'Filter',
+		name: '$filter',
+		hint: 'Allows to filter by a condition or a set of conditions given. <a href="https://www.odata.org/documentation/odata-version-3-0/url-conventions/">Filters documentation</a>',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['itemType'],
+				operation: ['listItemTypes'],
+			},
+		},
+		default: '',
+	},
+	{
+		displayName: 'Expand',
+		name: '$expand',
+		hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['itemType'],
+				operation: ['listItemTypes'],
+			},
+		},
+		default: '',
+	},
+
+
 ]

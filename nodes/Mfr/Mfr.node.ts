@@ -432,19 +432,31 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 	if (resource === 'company') {
     if (operation === 'listCompanies') {
         const limit = this.getNodeParameter('limit', i) as number; // Get the limit parameter
-				const fetchAllResults = this.getNodeParameter('fetchAllResults', i) as boolean
+        const fetchAllResults = this.getNodeParameter('fetchAllResults', i) as boolean;
+        const $filter = this.getNodeParameter('$filter', i) as string;
+        const $expand = this.getNodeParameter('$expand', i) as string;
+
         let startingEntity = 0;
         let allCompanies: any[] = []; // Store all companies data
-        let numberOfEntities = 100; // Max number of companies per page
+        const numberOfEntities = 100; // Max number of companies per page
 
         while (true) {
+            let qs: any = {
+                "$top": numberOfEntities,         // Number of records per page
+                "$skip": startingEntity,          // Skip based on starting entity
+            };
+
+            if ($filter) {
+                qs.$filter = $filter;
+            }
+            if ($expand) {
+                qs.$expand = $expand;
+            }
+
             const endpoint = `https://portal.mobilefieldreport.com/odata/Companies`;
             const options = {
                 method: 'GET',
-                qs: {
-                    "$top": numberOfEntities,         // Number of records per page
-                    "$skip": startingEntity,          // Skip based on starting entity
-                },
+                qs,
                 headers: {},
                 uri: endpoint,
                 body: {},
@@ -480,6 +492,7 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
         responseData = allCompanies;
     }
 }
+
 
 // create company
 if (resource === 'company') {
@@ -900,6 +913,63 @@ if (resource === 'itemType') {
 			'mfrApi',
 			options,
 	);}
+}
+
+// listItemTypes
+if (resource === 'itemType') {
+	if (operation === 'listItemTypes') {
+
+		const limit = this.getNodeParameter('limit', i) as number;
+		const fetchAllResults = this.getNodeParameter('fetchAllResults', i) as boolean;
+		const $filter = this.getNodeParameter('$filter', i) as string;
+		const $expand = this.getNodeParameter('$expand', i) as string;
+
+		let startingEntity = 0;
+		let allItems: any[] = [];
+		const numberOfEntities = 100;
+
+		while (true) {
+			let qs: any = {
+				"$top": numberOfEntities,
+				"$skip": startingEntity,
+			};
+			if ($filter) qs.$filter = $filter;
+			if ($expand) qs.$expand = $expand;
+
+			const endpoint = 'https://portal.mobilefieldreport.com/odata/ItemTypes';
+
+			const options = {
+				method: 'GET',
+				qs,
+				uri: endpoint,
+				json: true,
+				useQuerystring: true,
+			} satisfies IRequestOptions;
+
+			console.log(options)
+
+			const responseData = await this.helpers.requestWithAuthentication.call(
+				this,
+				'mfrApi',
+				options,
+			);
+
+			allItems = allItems.concat(responseData.value);
+
+			if (allItems.length >= limit && !fetchAllResults) {
+				allItems = allItems.slice(0, limit);
+				break;
+			}
+
+			if (responseData.value.length < numberOfEntities) {
+				break;
+			}
+
+			startingEntity += numberOfEntities;
+		}
+
+		responseData = allItems;
+	}
 }
 
 

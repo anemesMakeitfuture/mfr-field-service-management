@@ -114,6 +114,32 @@ export const companyFields: INodeProperties[] = [
 		},
 		default: false,
 	},
+	{
+		displayName: 'Filter',
+		name: '$filter',
+		hint: 'Allows to filter by a condition or a set of conditions given. <a href="https://www.odata.org/documentation/odata-version-3-0/url-conventions/">Filters documentation</a>',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['listCompanies']
+			},
+		},
+		default: '',
+	},
+	{
+		displayName: 'Expand',
+		name: '$expand',
+		hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['listCompanies']
+			},
+		},
+		default: '',
+	},
 
 	/* -------------------------------------------------------------------------- */
 	/*                                company:create                              */
