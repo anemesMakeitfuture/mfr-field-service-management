@@ -210,7 +210,7 @@ export const itemTypeFields: INodeProperties[] = [
 		displayName: 'Item Type',
 		name: 'id',
 		type: 'resourceLocator',
-		description: 'Can search by name or external ID',
+		description: 'Can search by name or external ID. Complete this or External ID field.',
 		default: { mode: 'list', value: '' },
 		displayOptions: {
 			show: {

@@ -17,6 +17,12 @@ export const ServiceObjectOperations: INodeProperties[] = [
 				value: 'createServiceObject',
 				description: 'Create a Service Object',
 				action: 'Create a service object',
+			},
+			{
+				name: 'Get a Service Object',
+				value: 'getServiceObject',
+				description: 'Get a Service Object by ID',
+				action: 'Get a service object by id',
 			}
 		],
 		default: 'createServiceObject',
@@ -144,6 +150,55 @@ export const serviceObjectFields: INodeProperties[] = [
 			show: {
 				resource: ['serviceObject'],
 				operation: ['createServiceObject'],
+			},
+		},
+		default: '',
+	},
+
+	/* -------------------------------------------------------------------------- */
+	/*                                  serviceObject:getServiceObject           */
+	/* ------------------------------------------------------------------------ */
+
+	{
+		displayName: 'Service Object',
+		name: 'id',
+		type: 'resourceLocator',
+		description: 'Can search by name or external ID. Complete this or External ID field.',
+		default: { mode: 'list', value: '' },
+		displayOptions: {
+			show: {
+				resource: ['serviceObject'],
+				operation: ['getServiceObject'],
+			},
+		},
+		modes: [
+			{
+				displayName: 'From List',
+				name: 'list',
+				type: 'list',
+				placeholder: 'Select from the list',
+				typeOptions: {
+					searchListMethod: 'getServiceObject',
+					searchable: true,
+				},
+			},
+			{
+				displayName: 'By External Id',
+				name: 'id',
+				type: 'string',
+				placeholder: '58539222'
+			},
+		],
+	},
+	{
+		displayName: 'External ID',
+		name: 'ExternalId',
+		hint: 'Enter either an External ID (to search by External ID) or an ID (to fetch by ID); if an External ID is provided, the lookup uses that.',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['serviceObject'],
+				operation: ['getServiceObject'],
 			},
 		},
 		default: '',

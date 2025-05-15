@@ -387,6 +387,38 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
     return { results };
 			},
 
+			async getServiceObject(this: ILoadOptionsFunctions, filter?: string,): Promise<INodeListSearchResult> {
+				const endpoint = 'https://portal.mobilefieldreport.com/odata/ServiceObjects';
+				const options = {
+					method: 'GET',
+					uri: endpoint,
+					json: true,
+					useQuerystring: true,
+			} satisfies IRequestOptions;
+
+			console.log(options)
+
+				const searchResults = await this.helpers.requestWithAuthentication.call(
+					this,
+					'mfrApi',
+					options,
+				);
+
+				const results: INodeListSearchItems[] = searchResults.value
+        .map((el: any) => ({
+            name: `${el.Name} ${el.ExternalId}`,
+            value: el.Id,
+        }))
+        .filter(
+            (el: { name: string; value: { toString: () => string; }; }) =>
+                !filter || // If no filter, return all
+						el.name.includes(filter) ||
+						el.value?.toString() === filter
+        )
+
+    return { results };
+			},
+
 		}
 	};
 
@@ -972,7 +1004,36 @@ if (resource === 'itemType') {
 	}
 }
 
+// getServiceObject
+if (resource === 'serviceObject') {
+	if (operation === 'getServiceObject') {
 
+		let endpoint = ''
+
+		 const idUI = this.getNodeParameter('id', i) as IDataObject;
+		 const id = idUI.value
+		 const ExternalId = this.getNodeParameter('ExternalId', i) as string;
+
+		 id && !ExternalId? endpoint = `https://portal.mobilefieldreport.com/odata/ServiceObjects(${id}L)` : endpoint = `https://portal.mobilefieldreport.com/odata/ServiceObjects`
+		 ExternalId ? qs.$filter = `ExternalId eq '${ExternalId}'` : '';
+
+
+		const options = {
+			method: 'GET',
+			qs,
+			uri: endpoint,
+			json: true,
+			useQuerystring: true,
+		} satisfies IRequestOptions;
+
+		console.log(options)
+
+	responseData = await this.helpers.requestWithAuthentication.call(
+			this,
+			'mfrApi',
+			options,
+	);}
+}
 
 
 
