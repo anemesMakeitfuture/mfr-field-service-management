@@ -16,6 +16,7 @@ import { itemTypeFields, ItemTypeOperations } from './descriptions/ItemTypeDescr
 import { serviceObjectFields, ServiceObjectOperations } from './descriptions/ServiceObjectDescription';
 import { serviceRequestFields, ServiceRequestOperations } from './descriptions/ServiceRequestDescription';
 import { DocumentFields, DocumentOperations } from './descriptions/DocumentDescription';
+import FormData = require('form-data');
 
 import { Buffer } from 'buffer';
 
@@ -772,27 +773,45 @@ if (resource === 'serviceRequest') {
 if (resource === 'document') {
 	if (operation === 'uploadDocument') {
 
-		let bodyUploadDocument: IDataObject | Buffer;
+		let bodyUploadDocument: Buffer;
 
 
-		if (this.getNodeParameter('binaryData', i)) {
-			const binaryPropertyName = this.getNodeParameter('binaryPropertyName', i);
-			this.helpers.assertBinaryData(i, binaryPropertyName);
-			bodyUploadDocument = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
-		} else {
-			// Is text file
-			bodyUploadDocument = Buffer.from(this.getNodeParameter('fileContent', i) as string, 'utf8');
-		}
+let filename = 'file';
+let mimeType = 'application/octet-stream';
 
+if (this.getNodeParameter('binaryData', i)) {
+	const binaryPropertyName = this.getNodeParameter('binaryPropertyName', i);
+	this.helpers.assertBinaryData(i, binaryPropertyName);
+
+	const fileData = items[i].binary?.[binaryPropertyName];
+
+	bodyUploadDocument = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
+
+	if (fileData?.fileName) {
+		filename = fileData.fileName;
+	}
+	if (fileData?.mimeType) {
+		mimeType = fileData.mimeType;
+	}
+} else {
+	bodyUploadDocument = Buffer.from(this.getNodeParameter('fileContent', i) as string, 'utf8');
+	filename = 'file.txt';
+	mimeType = 'text/plain';
+}
+
+const form = new FormData();
+form.append('file', bodyUploadDocument, {
+	filename,
+	contentType: mimeType,
+});
+form.append('options', JSON.stringify({ filename }));
 
 
 		const endpoint = `https://portal.mobilefieldreport.com/mfr/Document/UploadAndCreate`;
 		const options = {
 			method: 'POST',
-			body: bodyUploadDocument,
-      headers: {
-				'Content-Type': 'multipart/form-data'
-			},
+			body: form,
+      headers: form.getHeaders(),
 			uri: endpoint,
 			json: false,
 
@@ -801,13 +820,13 @@ if (resource === 'document') {
 		console.log(options)
 
 
-		const documentID = await this.helpers.requestWithAuthentication.call(
+		const firstRequestResponse = await this.helpers.requestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
 	);
 
-	console.log(documentID)
+	console.log(firstRequestResponse)
 
 	// responseData = await this.helpers.requestWithAuthentication.call(
 	// 		this,
