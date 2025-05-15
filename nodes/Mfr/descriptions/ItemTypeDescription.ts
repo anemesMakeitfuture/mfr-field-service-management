@@ -17,6 +17,12 @@ export const ItemTypeOperations: INodeProperties[] = [
 				value: 'createItemType',
 				description: 'Create an Item Type',
 				action: 'Create an item type',
+			},
+			{
+				name: 'Get One',
+				value: 'getItemType',
+				description: 'Get an Item Type',
+				action: 'Get an item type',
 			}
 		],
 		default: 'createItemType',
@@ -185,6 +191,55 @@ export const itemTypeFields: INodeProperties[] = [
 			show: {
 				resource: ['itemType'],
 				operation: ['createItemType'],
+			},
+		},
+		default: '',
+	},
+
+	/* -------------------------------------------------------------------------- */
+	/*                                  itemType:getItemType                     */
+	/* -------------------------------------------------------------------------*/
+
+	{
+		displayName: 'Item Type',
+		name: 'id',
+		type: 'resourceLocator',
+		description: 'Can search by name or external ID',
+		default: { mode: 'list', value: '' },
+		displayOptions: {
+			show: {
+				resource: ['itemType'],
+				operation: ['getItemType'],
+			},
+		},
+		modes: [
+			{
+				displayName: 'From List',
+				name: 'list',
+				type: 'list',
+				placeholder: 'Select from the list',
+				typeOptions: {
+					searchListMethod: 'getItemTypes',
+					searchable: true,
+				},
+			},
+			{
+				displayName: 'By External Id',
+				name: 'id',
+				type: 'string',
+				placeholder: '58539222'
+			},
+		],
+	},
+	{
+		displayName: 'External ID',
+		name: 'ExternalId',
+		hint: 'Enter either an External ID (to search by External ID) or an ID (to fetch by ID); if an External ID is provided, the lookup uses that.',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['itemType'],
+				operation: ['getItemType'],
 			},
 		},
 		default: '',
