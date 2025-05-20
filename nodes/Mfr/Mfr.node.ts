@@ -16,10 +16,10 @@ import { itemTypeFields, ItemTypeOperations } from './descriptions/ItemTypeDescr
 import { serviceObjectFields, ServiceObjectOperations } from './descriptions/ServiceObjectDescription';
 import { serviceRequestFields, ServiceRequestOperations } from './descriptions/ServiceRequestDescription';
 import { DocumentFields, DocumentOperations } from './descriptions/DocumentDescription';
-import FormData = require('form-data');
+import { UserFields, UserOperations} from './descriptions/UserDescription';
 
+import FormData = require('form-data');
 import { Buffer } from 'buffer';
-import { join } from 'path';
 
 export class Mfr implements INodeType {
 	description: INodeTypeDescription = {
@@ -74,6 +74,10 @@ export class Mfr implements INodeType {
 					{
 						name: 'Document',
 						value: 'document',
+					},
+					{
+						name: 'User',
+						value: 'user',
 					}
 
 				]},
@@ -101,6 +105,10 @@ export class Mfr implements INodeType {
 			// Document
 			...DocumentOperations,
 			...DocumentFields,
+
+			// User
+			...UserOperations,
+			...UserFields
 		],
 	};
 
@@ -1127,6 +1135,65 @@ if (resource === 'serviceRequest') {
 			if ($expandUI[0]) qs.$expand = $expandUI.join(",");
 
 			const endpoint = 'https://portal.mobilefieldreport.com/odata/ServiceRequests';
+
+			const options = {
+				method: 'GET',
+				qs,
+				uri: endpoint,
+				json: true,
+				useQuerystring: true,
+			} satisfies IRequestOptions;
+
+			console.log(options)
+
+			const responseData = await this.helpers.requestWithAuthentication.call(
+				this,
+				'mfrApi',
+				options,
+			);
+
+			allItems = allItems.concat(responseData.value);
+
+			if (allItems.length >= limit && !fetchAllResults) {
+				allItems = allItems.slice(0, limit);
+				break;
+			}
+
+			if (responseData.value.length < numberOfEntities) {
+				break;
+			}
+
+			startingEntity += numberOfEntities;
+		}
+
+		responseData = allItems;
+	}
+}
+
+// listUsers
+if (resource === 'user') {
+	if (operation === 'listUsers') {
+
+		const limit = this.getNodeParameter('limit', i) as number;
+		const fetchAllResults = this.getNodeParameter('fetchAllResults', i) as boolean;
+		const $filter = this.getNodeParameter('$filter', i) as string;
+
+		 const $expandUI = this.getNodeParameter('$expand', i) as IDataObject[];
+
+
+		let startingEntity = 0;
+		let allItems: any[] = [];
+		const numberOfEntities = 100;
+
+		while (true) {
+			let qs: any = {
+				"$top": numberOfEntities,
+				"$skip": startingEntity,
+			};
+			if ($filter) qs.$filter = $filter;
+			if ($expandUI[0]) qs.$expand = $expandUI.join(",");
+
+			const endpoint = 'https://portal.mobilefieldreport.com/odata/Users';
 
 			const options = {
 				method: 'GET',
