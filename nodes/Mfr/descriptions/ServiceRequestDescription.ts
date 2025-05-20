@@ -11,6 +11,7 @@ export const ServiceRequestOperations: INodeProperties[] = [
 				resource: ['serviceRequest'],
 			},
 		},
+		// eslint-disable-next-line n8n-nodes-base/node-param-options-type-unsorted-items
 		options: [
 			{
 				name: 'Create One',
@@ -35,6 +36,12 @@ export const ServiceRequestOperations: INodeProperties[] = [
 				value: 'removeTagFromServiceRequest',
 				description: 'Remove a tag from service request',
 				action: 'Remove a tag from service request',
+			},
+			{
+				name: 'Get Many Service Requests',
+				value: 'listServiceRequests',
+				description: 'Get a list of all service requests, with Service Objects and Products, Steps, Reports, Appointments and Items expanded',
+				action: 'Get a list of all service requests',
 			}
 		],
 		default: 'createServiceRequest',
@@ -325,6 +332,73 @@ export const serviceRequestFields: INodeProperties[] = [
 		required: true,
 		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 	},
+
+	/* -------------------------------------------------------------------------- */
+	/*                                  serviceRequest:listServiceRequests          */
+	/* ------------------------------------------------------------------------ */
+
+	{
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['serviceRequest'],
+				operation: ['listServiceRequests'],
+			},
+		},
+		typeOptions: {
+			minValue: 1,
+		},
+		default: 50,
+		description: 'Max number of results to return',
+	},
+	{
+		displayName: 'Fetch All Results',
+		name: 'fetchAllResults',
+		type: 'boolean',
+		required: true,
+		hint: 'Whether to fetch all refunds. If this parameter is set to true, number of entities is ignored and all refunds will be retrieved.',
+		displayOptions: {
+				show: {
+				resource: ['serviceRequest'],
+				operation: ['listServiceRequests'],
+			},
+		},
+		default: false,
+	},
+	{
+		displayName: 'Filter',
+		name: '$filter',
+		hint: 'Allows to filter by a condition or a set of conditions given. <a href="https://www.odata.org/documentation/odata-version-3-0/url-conventions/">Filters documentation</a>',
+		type: 'string',
+		displayOptions: {
+				show: {
+				resource: ['serviceRequest'],
+				operation: ['listServiceRequests'],
+			},
+		},
+		default: '',
+	},
+	{
+  displayName: 'Expand',
+  name: '$expand',
+  type: 'multiOptions',
+  options: [
+   {
+			name: 'Qualifications',
+			value: 'Qualifications',
+		}
+  ],
+  default: [],
+  hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
+  displayOptions: {
+    	show: {
+				resource: ['serviceRequest'],
+				operation: ['listServiceRequests'],
+			},
+  },
+},
 
 
 ]
