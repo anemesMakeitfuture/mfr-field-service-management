@@ -23,6 +23,12 @@ export const ServiceObjectOperations: INodeProperties[] = [
 				value: 'getServiceObject',
 				description: 'Get a Service Object by ID',
 				action: 'Get a service object by id',
+			},
+			{
+				name: 'Get Many Service Objects',
+				value: 'listServiceObjects',
+				description: 'Get all Service Objects',
+				action: 'Get all service objects',
 			}
 		],
 		default: 'createServiceObject',
@@ -233,6 +239,85 @@ export const serviceObjectFields: INodeProperties[] = [
 				operation: ['getServiceObject'],
 			},
 	},
-}
+},
+
+	/* -------------------------------------------------------------------------- */
+	/*                                  serviceObject:listServiceObjects          */
+	/* ------------------------------------------------------------------------ */
+
+	{
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['serviceObject'],
+				operation: ['listServiceObjects'],
+			},
+		},
+		typeOptions: {
+			minValue: 1,
+		},
+		default: 50,
+		description: 'Max number of results to return',
+	},
+	{
+		displayName: 'Fetch All Results',
+		name: 'fetchAllResults',
+		type: 'boolean',
+		required: true,
+		hint: 'Whether to fetch all refunds. If this parameter is set to true, number of entities is ignored and all refunds will be retrieved.',
+		displayOptions: {
+				show: {
+				resource: ['serviceObject'],
+				operation: ['listServiceObjects'],
+			},
+		},
+		default: false,
+	},
+	{
+		displayName: 'Filter',
+		name: '$filter',
+		hint: 'Allows to filter by a condition or a set of conditions given. <a href="https://www.odata.org/documentation/odata-version-3-0/url-conventions/">Filters documentation</a>',
+		type: 'string',
+		displayOptions: {
+				show: {
+				resource: ['serviceObject'],
+				operation: ['listServiceObjects'],
+			},
+		},
+		default: '',
+	},
+	{
+  displayName: 'Expand',
+  name: '$expand',
+  type: 'multiOptions',
+  options: [
+   {
+			name: 'Contacts',
+			value: 'Contacts',
+		},
+		{
+			name: 'Company',
+			value: 'Company',
+		},
+		{
+			name: 'Product',
+			value: 'Product',
+		},
+		{
+			name: 'Tags',
+			value: 'Tags',
+		},
+  ],
+  default: [],
+  hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
+  displayOptions: {
+    	show: {
+				resource: ['serviceObject'],
+				operation: ['listServiceObjects'],
+			},
+  },
+},
 
 ]
