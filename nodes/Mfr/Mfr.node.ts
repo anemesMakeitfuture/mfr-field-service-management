@@ -442,11 +442,13 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 			const companyUI = this.getNodeParameter('companyId', i) as IDataObject;
 			let companyId = companyUI.value as string;
 
+			const $expandUI = this.getNodeParameter('$expand', i) as IDataObject[];
+			$expandUI[0] ? qs.$expand = $expandUI.join(",") : "";
+
 			const endpoint = `https://portal.mobilefieldreport.com/odata/Companies(${companyId}L)`;
 			const options = {
 				method: 'GET',
 				qs,
-				headers: {},
 				uri: endpoint,
 				body,
 				json: true,
@@ -467,7 +469,8 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
         const limit = this.getNodeParameter('limit', i) as number; // Get the limit parameter
         const fetchAllResults = this.getNodeParameter('fetchAllResults', i) as boolean;
         const $filter = this.getNodeParameter('$filter', i) as string;
-        const $expand = this.getNodeParameter('$expand', i) as string;
+
+				const $expandUI = this.getNodeParameter('$expand', i) as IDataObject[];
 
         let startingEntity = 0;
         let allCompanies: any[] = []; // Store all companies data
@@ -482,8 +485,8 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
             if ($filter) {
                 qs.$filter = $filter;
             }
-            if ($expand) {
-                qs.$expand = $expand;
+            if ($expandUI[0]) {
+                qs.$expand = $expandUI.join(",");
             }
 
             const endpoint = `https://portal.mobilefieldreport.com/odata/Companies`;
