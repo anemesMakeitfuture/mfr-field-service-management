@@ -230,7 +230,7 @@ export const itemTypeFields: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'By External Id',
+				displayName: 'By ID',
 				name: 'id',
 				type: 'string',
 				placeholder: '58539222'

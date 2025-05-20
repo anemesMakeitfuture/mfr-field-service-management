@@ -1230,6 +1230,40 @@ if (resource === 'user') {
 }
 
 
+// getServiceRequest
+if (resource === 'serviceRequest') {
+	if (operation === 'getServiceRequest') {
+
+		let endpoint = ''
+
+		 const ServiceRequestUI = this.getNodeParameter('ServiceRequest', i) as IDataObject;
+		 const id = ServiceRequestUI.value
+		 const ExternalId = this.getNodeParameter('ExternalId', i) as string;
+
+		 id && !ExternalId? endpoint = `https://portal.mobilefieldreport.com/odata/ServiceRequests(${id}L)` : endpoint = `https://portal.mobilefieldreport.com/odata/ServiceRequests`
+		 ExternalId ? qs.$filter = `ExternalId eq '${ExternalId}'` : '';
+
+		 const $expandUI = this.getNodeParameter('$expand', i) as IDataObject[];
+		 $expandUI[0] ? qs.$expand = $expandUI.join(",") : "";
+
+
+		const options = {
+			method: 'GET',
+			qs,
+			uri: endpoint,
+			json: true,
+			useQuerystring: true,
+		} satisfies IRequestOptions;
+
+		console.log(options)
+
+	responseData = await this.helpers.requestWithAuthentication.call(
+			this,
+			'mfrApi',
+			options,
+	);}
+}
+
 
 
 // end

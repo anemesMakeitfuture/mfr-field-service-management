@@ -20,6 +20,12 @@ export const ServiceRequestOperations: INodeProperties[] = [
 				action: 'Create a service request',
 			},
 			{
+				name: 'Get One',
+				value: 'getServiceRequest',
+				description: 'Get a Service Request by ID',
+				action: 'Get a service request by id',
+			},
+			{
 				name: 'Delete One',
 				value: 'deleteServiceRequest',
 				description: 'Delete a Service Request',
@@ -308,7 +314,7 @@ export const serviceRequestFields: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'By External ID',
+				displayName: 'By ID',
 				name: 'id',
 				type: 'string'
 			},
@@ -396,6 +402,101 @@ export const serviceRequestFields: INodeProperties[] = [
     	show: {
 				resource: ['serviceRequest'],
 				operation: ['listServiceRequests'],
+			},
+  },
+},
+	/* ------------------------------------------------------------------------ */
+	/*                                  serviceRequest:getServiceRequest        */
+	/* ------------------------------------------------------------------------ */
+
+	{
+		displayName: 'Search Service Request',
+		name: 'ServiceRequest',
+		type: 'resourceLocator',
+		default: { mode: 'list', value: '' },
+		description: 'Can search by ID',
+		displayOptions: {
+			show: {
+				resource: ['serviceRequest'],
+				operation: ['getServiceRequest'],
+			},
+		},
+		modes: [
+			{
+				displayName: 'From List',
+				name: 'list',
+				type: 'list',
+				placeholder: 'Select from the list',
+				typeOptions: {
+					searchListMethod: 'searchServiceRequest',
+					searchable: true,
+				},
+			},
+			{
+				displayName: 'By ID',
+				name: 'id',
+				type: 'string'
+			},
+		],
+	},
+{
+	displayName: 'External ID',
+	name: 'ExternalId',
+	type: 'string',
+	hint: 'Enter either an External ID (to search by External ID) or an ID (to fetch by ID); if an External ID is provided, the lookup uses that.',
+	displayOptions: {
+		show: {
+		resource: ['serviceRequest'],
+				operation: ['getServiceRequest'],
+		},
+	},
+	default: '',
+},
+	{
+  displayName: 'Expand',
+  name: '$expand',
+  type: 'multiOptions',
+  // eslint-disable-next-line n8n-nodes-base/node-param-multi-options-type-unsorted-items
+  options: [
+   {
+			name: 'Service Objects',
+			value: 'ServiceObjects',
+		},
+		{
+			name: 'Customer',
+			value: 'Customer',
+		},
+			{
+			name: 'Reports',
+			value: 'Reports',
+		},
+			{
+			name: 'Items',
+			value: 'Items',
+		},
+			{
+			name: 'Appointments/Contacts',
+			value: 'Appointments/Contacts',
+		},
+			{
+			name: 'Steps',
+			value: 'Steps',
+		},
+			{
+			name: 'Comments',
+			value: 'Comments',
+		},
+			{
+			name: 'Stock Movements',
+			value: 'StockMovements',
+		}
+  ],
+  default: [],
+  hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
+  displayOptions: {
+    	show: {
+				resource: ['serviceRequest'],
+				operation: ['getServiceRequest'],
 			},
   },
 },

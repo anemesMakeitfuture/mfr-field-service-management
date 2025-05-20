@@ -19,7 +19,7 @@ export const ServiceObjectOperations: INodeProperties[] = [
 				action: 'Create a service object',
 			},
 			{
-				name: 'Get a Service Object',
+				name: 'Get One Service Object',
 				value: 'getServiceObject',
 				description: 'Get a Service Object by ID',
 				action: 'Get a service object by id',
@@ -189,7 +189,7 @@ export const serviceObjectFields: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'By External Id',
+				displayName: 'By ID',
 				name: 'id',
 				type: 'string',
 				placeholder: '58539222'
