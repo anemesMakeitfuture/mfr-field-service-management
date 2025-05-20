@@ -226,7 +226,7 @@ export const serviceObjectFields: INodeProperties[] = [
 		},
 	],
 	default: [],
-	description: 'Expand Response',
+	hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
 	displayOptions: {
 		show: {
 				resource: ['serviceObject'],

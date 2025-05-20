@@ -955,7 +955,9 @@ if (resource === 'itemType') {
 		const limit = this.getNodeParameter('limit', i) as number;
 		const fetchAllResults = this.getNodeParameter('fetchAllResults', i) as boolean;
 		const $filter = this.getNodeParameter('$filter', i) as string;
-		const $expand = this.getNodeParameter('$expand', i) as string;
+
+		 const $expandUI = this.getNodeParameter('$expand', i) as IDataObject[];
+
 
 		let startingEntity = 0;
 		let allItems: any[] = [];
@@ -967,7 +969,7 @@ if (resource === 'itemType') {
 				"$skip": startingEntity,
 			};
 			if ($filter) qs.$filter = $filter;
-			if ($expand) qs.$expand = $expand;
+			if ($expandUI[0]) qs.$expand = $expandUI.join(",");
 
 			const endpoint = 'https://portal.mobilefieldreport.com/odata/ItemTypes';
 
@@ -1019,7 +1021,7 @@ if (resource === 'serviceObject') {
 		 ExternalId ? qs.$filter = `ExternalId eq '${ExternalId}'` : '';
 
 		 const $expandUI = this.getNodeParameter('$expand', i) as IDataObject[];
-		 $expandUI ? qs.$expand = $expandUI.join(",") : "";
+		 $expandUI[0] ? qs.$expand = $expandUI.join(",") : "";
 
 
 		const options = {

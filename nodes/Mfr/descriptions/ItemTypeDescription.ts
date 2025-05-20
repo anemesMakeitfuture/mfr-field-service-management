@@ -297,19 +297,26 @@ export const itemTypeFields: INodeProperties[] = [
 		},
 		default: '',
 	},
-	{
-		displayName: 'Expand',
-		name: '$expand',
-		hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
-		type: 'string',
-		displayOptions: {
-			show: {
+		{
+	displayName: 'Expand',
+	name: '$expand',
+	hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
+	type: 'multiOptions',
+	options: [
+		{
+			name: 'Unit',
+			value: 'Unit',
+		}
+	],
+	default: [],
+	description: 'Expand Response',
+	displayOptions: {
+		show: {
 				resource: ['itemType'],
 				operation: ['listItemTypes'],
 			},
-		},
-		default: '',
 	},
+}
 
 
 ]
