@@ -19,6 +19,7 @@ import { DocumentFields, DocumentOperations } from './descriptions/DocumentDescr
 import FormData = require('form-data');
 
 import { Buffer } from 'buffer';
+import { join } from 'path';
 
 export class Mfr implements INodeType {
 	description: INodeTypeDescription = {
@@ -1016,6 +1017,9 @@ if (resource === 'serviceObject') {
 
 		 id && !ExternalId? endpoint = `https://portal.mobilefieldreport.com/odata/ServiceObjects(${id}L)` : endpoint = `https://portal.mobilefieldreport.com/odata/ServiceObjects`
 		 ExternalId ? qs.$filter = `ExternalId eq '${ExternalId}'` : '';
+
+		 const $expandUI = this.getNodeParameter('$expand', i) as IDataObject[];
+		 $expandUI ? qs.$expand = $expandUI.join(",") : "";
 
 
 		const options = {

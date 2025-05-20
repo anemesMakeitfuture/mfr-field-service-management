@@ -203,5 +203,36 @@ export const serviceObjectFields: INodeProperties[] = [
 		},
 		default: '',
 	},
+	{
+	displayName: 'Expand',
+	name: '$expand',
+	type: 'multiOptions',
+	options: [
+		{
+			name: 'Contacts',
+			value: 'Contacts',
+		},
+		{
+			name: 'Company',
+			value: 'Company',
+		},
+		{
+			name: 'Product',
+			value: 'Product',
+		},
+		{
+			name: 'Tags',
+			value: 'Tags',
+		},
+	],
+	default: [],
+	description: 'Expand Response',
+	displayOptions: {
+		show: {
+				resource: ['serviceObject'],
+				operation: ['getServiceObject'],
+			},
+	},
+}
 
 ]
