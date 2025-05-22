@@ -91,9 +91,11 @@ export class MfrTrigger implements INodeType {
 				const WebHookType = this.getNodeParameter('WebHookType') as string;
 				const ExternalId = this.getNodeParameter('ExternalId') as string;
 
-				const { data } = await mfrApiRequest.call(this, 'GET', '/odata/WebHooks', {});
+				const { value } = await mfrApiRequest.call(this, 'GET', '/WebHooks', {});
 
-				for (const webhook of data.value) {
+				console.log(value)
+
+				for (const webhook of value) {
         // Check if webhook matches by type, callback URL, and optional ExternalId if provided
         const externalIdMatches = ExternalId ? webhook.ExternalId === ExternalId : true;
 
@@ -103,10 +105,10 @@ export class MfrTrigger implements INodeType {
             externalIdMatches
         ) {
             webhookData.webhookId = webhook.Id;
+						console.log(webhook.Id)
             return true;
         }
     }
-
 				// If it did not error then the webhook exists
 				return false;
 			},
@@ -119,13 +121,13 @@ export class MfrTrigger implements INodeType {
 				const ExternalId = this.getNodeParameter('ExternalId') as string;
 
 				const body = {
-				  'odata.metadata': 'https://portal.mobilefieldreport.com/odata/$metadata#WebHooks/@Element',
+				  'odata.metadata': 'https://portal.mobilefieldreport.com/$metadata#WebHooks/@Element',
 					CallbackUrl: webhookUrl,
 					'WebHookType': WebHookType,
 			    'ExternalId':  ExternalId
 				};
 
-				const responseData = await mfrApiRequest.call(this, 'POST', '/odata/WebHooks', body);
+				const responseData = await mfrApiRequest.call(this, 'POST', '/WebHooks', body);
 
 				if (responseData.Id === undefined || responseData.CallbackUrl === undefined) {
 					// Required data is missing so was not successful
@@ -133,6 +135,7 @@ export class MfrTrigger implements INodeType {
 				}
 
 				webhookData.webhookId = responseData.Id as string;
+				console.log(responseData.Id)
 
 				return true;
 			},
@@ -143,7 +146,7 @@ export class MfrTrigger implements INodeType {
 					const body = {};
 
 					try {
-						await mfrApiRequest.call(this, 'DELETE', `/WebHooks/${webhookData.webhookId}`, body);
+						await mfrApiRequest.call(this, 'DELETE', `/WebHooks(${webhookData.webhookId}L)`, body);
 					} catch (error) {
 						return false;
 					}

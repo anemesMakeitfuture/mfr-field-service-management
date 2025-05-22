@@ -14,7 +14,7 @@ export async function mfrApiRequest(
 		method,
 		qs: query,
 		headers: {},
-		uri: uri || `https://portal.mobilefieldreport.com${endpoint}`,
+		uri: uri || `https://portal.mobilefieldreport.com/odata${endpoint}`,
 		body,
 		json: true,
 		useQuerystring: true,
@@ -23,7 +23,10 @@ export async function mfrApiRequest(
 	console.log(options)
 
 	try {
-			return await this.helpers.requestWithAuthentication.call(this, 'mfrApi', options);
+
+		return await this.helpers.requestWithAuthentication.call(this, 'mfrApi', options);
+
+
 	} catch (error) {
 		throw new NodeApiError(this.getNode(), error as JsonObject);
 	}

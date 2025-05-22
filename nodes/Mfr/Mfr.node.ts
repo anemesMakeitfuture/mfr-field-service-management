@@ -9,7 +9,6 @@ import type {
 	INodeListSearchResult,
 	ILoadOptionsFunctions,
 	INodePropertyOptions,
-	IBinaryKeyData,
 } from 'n8n-workflow';
 import { companyFields, companyOperations } from './descriptions/CompanyDescription';
 import { appointmentFields, AppointmentOperations } from './descriptions/AppointmentDescription';
@@ -22,7 +21,6 @@ import { ReportFields, ReportOperations} from './descriptions/ReportDescription'
 
 import FormData = require('form-data');
 import { Buffer } from 'buffer';
-import { Readable } from 'form-data';
 
 export class Mfr implements INodeType {
 	description: INodeTypeDescription = {
@@ -554,7 +552,7 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 if (resource === 'company') {
 	if (operation === 'createCompany') {
 		{
-			const name = this.getNodeParameter('name', i) as string;
+			const Name = this.getNodeParameter('Name', i) as string;
 			const Location = this.getNodeParameter('Location', i) as IDataObject;
 			const SupportTelephone = this.getNodeParameter('SupportTelephone', i) as string;
 			const SupportFax = this.getNodeParameter('SupportFax', i) as string;
@@ -564,7 +562,7 @@ if (resource === 'company') {
 			const IsPhysicalPerson = this.getNodeParameter('IsPhysicalPerson', i) as boolean;
 			const MainContact = this.getNodeParameter('MainContact', i) as IDataObject;
 
-			body.Name = name
+			body.Name = Name
 			body.Location = Location
 			body.SupportTelephone = SupportTelephone
 			body.SupportFax = SupportFax
