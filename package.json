@@ -39,7 +39,8 @@
       "dist/credentials/MfrApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/Mfr/Mfr.node.js"
+      "dist/nodes/Mfr/Mfr.node.js",
+      "dist/nodes/Mfr/MfrTrigger.node.js"
     ]
   },
   "devDependencies": {
