@@ -451,6 +451,7 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 		const qs: IDataObject = {};
 		const body: IDataObject = {};
 
+
 		for (let i = 0; i < items.length; i++) {
 		try{
 
@@ -1274,92 +1275,77 @@ if (resource === 'serviceRequest') {
 	);}
 }
 
-// generateReportFromReportDefinition
-if (resource === 'report') {
-	if (operation === 'generateReportFromReportDefinition') {
+if (resource === 'report' && operation === 'generateReportFromReportDefinition') {
+	const returnItems: INodeExecutionData[] = [];
 
-
-
-		let endpoint = `https://portal.mobilefieldreport.com/mfr/Report`
+	for (let i = 0; i < items.length; i++) {
+		let endpoint = `https://portal.mobilefieldreport.com/mfr/Report`;
 
 		const ServiceRequestUI = this.getNodeParameter('ServiceRequest', i) as IDataObject;
-		const ServiceRequestId = ServiceRequestUI.value
+		const ServiceRequestId = ServiceRequestUI.value;
 		const ReportDefinitionCode = this.getNodeParameter('ReportDefinitionCode', i) as string;
 
-		body.ServiceRequestId = ServiceRequestId
-		body.ReportDefinitionCode = ReportDefinitionCode
-		body.IsInvoice = false
+		const body = {
 
+			ServiceRequestId,
+			ReportDefinitionCode,
+			IsInvoice: false,
+		};
 
 		const optionsFirstRequest = {
 			method: 'POST',
-			body: body,
+			body,
 			qs,
 			uri: endpoint,
 			json: true,
 			useQuerystring: true,
 		} satisfies IRequestOptions;
 
-		console.log(optionsFirstRequest)
-
-	let responseDataFirstRequest = await this.helpers.requestWithAuthentication.call(
+		const responseDataFirstRequest = await this.helpers.requestWithAuthentication.call(
 			this,
 			'mfrApi',
 			optionsFirstRequest,
-	);
+		);
 
-	let ReportDtoUri = responseDataFirstRequest.ReportDto.URI
-	let DocumentName = responseDataFirstRequest.ReportDto.DocumentName
+		const ReportDtoUri = responseDataFirstRequest.ReportDto.URI;
+		const DocumentName = responseDataFirstRequest.ReportDto.DocumentName;
 
-	const optionsSecondRequest = {
+		const optionsSecondRequest = {
 			method: 'GET',
 			uri: ReportDtoUri,
 			json: false,
-			encoding: null
+			encoding: null,
 		} satisfies IRequestOptions;
 
-
 		const pdfBuffer = await this.helpers.requestWithAuthentication.call(
-		this,
-		'mfrApi',
-		optionsSecondRequest,
-	);
+			this,
+			'mfrApi',
+			optionsSecondRequest,
+		);
 
+		const binaryData = await this.helpers.prepareBinaryData.call(
+			this,
+			pdfBuffer,
+			DocumentName,
+		);
 
-			const newItem: INodeExecutionData = {
-						json: items[i].json,
-						binary: {},
-						pairedItem: { item: i },
-					};
+		const newItem: INodeExecutionData = {
+			json: items[i].json,
+			binary: {
+				file: binaryData,
+			},
+			pairedItem: { item: i },
+		};
 
-					if (items[i].binary !== undefined) {
-						// Create a shallow copy of the binary data so that the old
-						// data references which do not get changed still stay behind
-						// but the incoming data does not get changed.
-						Object.assign(newItem.binary!, items[i].binary);
-					}
+		returnItems.push(newItem);
+	}
 
-					items[i] = newItem;
-
-					items[i].binary!['file'] = await this.helpers.prepareBinaryData.call(
-       		 this,
-       		 pdfBuffer, // raw Buffer
-       		 DocumentName,  // original filename
-      	)
-
-
-}}
-
-
+	return [returnItems];
+}
 
 // end
 
-if(resource === 'report' && operation === 'generateReportFromReportDefinition'){
-		// For file downloads the files get attached to the existing items
-			return [items];
-}
-
-else{
+if(resource !== 'report' && operation !== 'generateReportFromReportDefinition'){
 	const executionData = this.helpers.constructExecutionMetaData(
 		this.helpers.returnJsonArray(responseData as IDataObject[]),
 		{ itemData: { item: i } },
