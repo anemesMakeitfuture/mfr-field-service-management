@@ -28,6 +28,38 @@ export const DocumentFields: INodeProperties[] = [
 // ----------------------------------
 //         uploadDocument
 // ----------------------------------
+
+	{
+		displayName: 'Search Service Request',
+		name: 'ServiceRequest',
+		type: 'resourceLocator',
+		default: { mode: 'list', value: '' },
+		description: 'Can search by ID',
+		displayOptions: {
+			show: {
+			operation: ['uploadDocument'],
+			resource: ['document'],
+		},
+		},
+		modes: [
+			{
+				displayName: 'From List',
+				name: 'list',
+				type: 'list',
+				placeholder: 'Select from the list',
+				typeOptions: {
+					searchListMethod: 'searchServiceRequest',
+					searchable: true,
+				},
+			},
+			{
+				displayName: 'By ID',
+				name: 'id',
+				type: 'string'
+			},
+		],
+	},
+
 {
 	displayName: 'Binary File',
 	name: 'binaryData',

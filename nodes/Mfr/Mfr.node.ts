@@ -18,6 +18,7 @@ import { serviceRequestFields, ServiceRequestOperations } from './descriptions/S
 import { DocumentFields, DocumentOperations } from './descriptions/DocumentDescription';
 import { UserFields, UserOperations} from './descriptions/UserDescription';
 import { ReportFields, ReportOperations} from './descriptions/ReportDescription';
+import { mfrApiRequest } from './GenericFunctions';
 
 import { Buffer } from 'buffer';
 
@@ -875,6 +876,9 @@ if (resource === 'document' && operation === 'uploadDocument') {
   let filename = 'file';
   let mimeType = 'application/octet-stream';
 
+	 const ServiceRequestUI = this.getNodeParameter('ServiceRequest', i) as IDataObject;
+	 const serviceRequestId = ServiceRequestUI.value
+
   // —— preserve your existing binary/text logic ——
   if (this.getNodeParameter('binaryData', i)) {
     const binaryPropertyName = this.getNodeParameter('binaryPropertyName', i);
@@ -910,15 +914,25 @@ if (resource === 'document' && operation === 'uploadDocument') {
     json: false,
   } satisfies IRequestOptions;
 
-  console.log('Uploading with options:', options);
 
-  const response = await this.helpers.requestWithAuthentication.call(
+  responseData = await this.helpers.requestWithAuthentication.call(
     this,
     'mfrApi',
     options,
   );
 
-  console.log('Upload response:', response);
+ responseData = JSON.parse(responseData);
+ console.log(responseData)
+ const documentId = responseData.DocumentDto.Id;
+
+	console.log(documentId)
+
+	const uri = `https://portal.mobilefieldreport.com/mfr/ServiceRequest/${serviceRequestId}/Document/${documentId}`
+
+
+	await mfrApiRequest.call(this, 'PUT', '', {}, {}, uri);
+
+
 }
 
 
