@@ -19,7 +19,6 @@ import { DocumentFields, DocumentOperations } from './descriptions/DocumentDescr
 import { UserFields, UserOperations} from './descriptions/UserDescription';
 import { ReportFields, ReportOperations} from './descriptions/ReportDescription';
 
-import FormData = require('form-data');
 import { Buffer } from 'buffer';
 
 export class Mfr implements INodeType {
@@ -870,72 +869,59 @@ if (resource === 'serviceRequest') {
 }
 
 // upload document
-if (resource === 'document') {
-	if (operation === 'uploadDocument') {
+if (resource === 'document' && operation === 'uploadDocument') {
 
-		let bodyUploadDocument: Buffer;
+  let bodyUploadDocument: Buffer;
+  let filename = 'file';
+  let mimeType = 'application/octet-stream';
 
+  // —— preserve your existing binary/text logic ——
+  if (this.getNodeParameter('binaryData', i)) {
+    const binaryPropertyName = this.getNodeParameter('binaryPropertyName', i);
+    this.helpers.assertBinaryData(i, binaryPropertyName);
+    const fileData = items[i].binary?.[binaryPropertyName];
+    bodyUploadDocument = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
+    if (fileData?.fileName) filename = fileData.fileName;
+    if (fileData?.mimeType) mimeType = fileData.mimeType;
+  } else {
+    bodyUploadDocument = Buffer.from(this.getNodeParameter('fileContent', i) as string, 'utf8');
+    filename = 'file.txt';
+    mimeType = 'text/plain';
+  }
+  // —— end preserved logic ——
 
-let filename = 'file';
-let mimeType = 'application/octet-stream';
+  const endpoint = `https://portal.mobilefieldreport.com/mfr/Document/UploadAndCreate`;
 
-if (this.getNodeParameter('binaryData', i)) {
-	const binaryPropertyName = this.getNodeParameter('binaryPropertyName', i);
-	this.helpers.assertBinaryData(i, binaryPropertyName);
+  const options = {
+    method: 'POST',
+    uri: endpoint,
+    formData: {
+      // this will be sent as a true file part
+      file: {
+        value: bodyUploadDocument,
+        options: {
+          filename,
+          contentType: mimeType,
+        },
+      },
+      // additional JSON part
+      options: JSON.stringify({ filename }),
+    },
+    json: false,
+  } satisfies IRequestOptions;
 
-	const fileData = items[i].binary?.[binaryPropertyName];
+  console.log('Uploading with options:', options);
 
-	bodyUploadDocument = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
+  const response = await this.helpers.requestWithAuthentication.call(
+    this,
+    'mfrApi',
+    options,
+  );
 
-	if (fileData?.fileName) {
-		filename = fileData.fileName;
-	}
-	if (fileData?.mimeType) {
-		mimeType = fileData.mimeType;
-	}
-} else {
-	bodyUploadDocument = Buffer.from(this.getNodeParameter('fileContent', i) as string, 'utf8');
-	filename = 'file.txt';
-	mimeType = 'text/plain';
+  console.log('Upload response:', response);
 }
 
-const form = new FormData();
-form.append('file', bodyUploadDocument, {
-	filename,
-	contentType: mimeType,
-});
-form.append('options', JSON.stringify({ filename }));
 
-
-		const endpoint = `https://portal.mobilefieldreport.com/mfr/Document/UploadAndCreate`;
-		const options = {
-			method: 'POST',
-			body: form,
-      headers: form.getHeaders(),
-			uri: endpoint,
-			json: false,
-
-		} satisfies IRequestOptions;
-
-		console.log(options)
-
-
-		const firstRequestResponse = await this.helpers.requestWithAuthentication.call(
-			this,
-			'mfrApi',
-			options,
-	);
-
-	console.log(firstRequestResponse)
-
-	// responseData = await this.helpers.requestWithAuthentication.call(
-	// 		this,
-	// 		'mfrApi',
-	// 		options,
-	// );
-
-}
-}
 
 // get item type
 if (resource === 'itemType') {
