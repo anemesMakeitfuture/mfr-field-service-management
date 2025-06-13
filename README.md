@@ -1,8 +1,8 @@
 # n8n-nodes-mfr
 
-This is an n8n community node. It lets you use MFR – Field Service Management in your n8n workflows.
+This is an n8n community node. It lets you use mfr – Field Service Management in your n8n workflows.
 
-MFR – Field Service Management is a cloud platform for creating, scheduling and tracking service requests, assets, appointments, technicians, reports and related documents.
+mfr – Field Service Management is a cloud platform for creating, scheduling and tracking service requests, assets, appointments, technicians, reports and related documents.
 
 
 [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
@@ -41,7 +41,7 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 - Get a Service Object
 - List Service Objects
 - List Users
-- Watch Events Trigger – subscribe to real‑time change events from MFR
+- Watch Events Trigger – subscribe to real‑time change events from mfr
 
 ## Credentials
 
@@ -53,7 +53,7 @@ The basic auth method is used for the requests.
 
 ## Usage
 
-Add the MFR Field Service node to your workflow and choose a Resource and Operation from the dropdown. Map the required fields using n8n data‑pinning or expressions.
+Add the mfr Field Service node to your workflow and choose a Resource and Operation from the dropdown. Map the required fields using n8n data‑pinning or expressions.
 
 Example ideas:
 
@@ -78,6 +78,6 @@ Loop: Generate Report → store in S3 / email to customer.
 ## Resources
 
 * [n8n community nodes documentation](https://docs.n8n.io/integrations/community-nodes/)
-* [n8n community nodes documentation](https://documenter.getpostman.com/view/3999268/TVYCAzpK#intro)
+* [mfr API Documentation and Auth](https://documenter.getpostman.com/view/3999268/TVYCAzpK#intro)
 
 
