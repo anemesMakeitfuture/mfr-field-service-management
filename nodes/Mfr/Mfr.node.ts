@@ -24,7 +24,7 @@ import { Buffer } from 'buffer';
 
 export class Mfr implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'MFR - Field Service Management',
+		displayName: 'mfr - Field Service Management',
 		name: 'mfr',
 		group: ['transform'],
 		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
@@ -33,7 +33,7 @@ export class Mfr implements INodeType {
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description: 'Field service management app for scheduling technicians.',
 		defaults: {
-			name: 'MFR - Field Service Management',
+			name: 'mfr - Field Service Management',
 		},
 		credentials: [
 			{
@@ -284,7 +284,7 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 					useQuerystring: true,
 			} satisfies IRequestOptions;
 
-			console.log(options)
+
 
 				const searchResults = await this.helpers.requestWithAuthentication.call(
 					this,
@@ -318,7 +318,7 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 					useQuerystring: true,
 			} satisfies IRequestOptions;
 
-			console.log(options)
+
 
 				const searchResults = await this.helpers.requestWithAuthentication.call(
 					this,
@@ -351,7 +351,7 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 					useQuerystring: true,
 			} satisfies IRequestOptions;
 
-			console.log(options)
+
 
 				const searchResults = await this.helpers.requestWithAuthentication.call(
 					this,
@@ -383,7 +383,7 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 					useQuerystring: true,
 			} satisfies IRequestOptions;
 
-			console.log(options)
+
 
 				const searchResults = await this.helpers.requestWithAuthentication.call(
 					this,
@@ -415,7 +415,7 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 					useQuerystring: true,
 			} satisfies IRequestOptions;
 
-			console.log(options)
+
 
 				const searchResults = await this.helpers.requestWithAuthentication.call(
 					this,
@@ -584,7 +584,7 @@ if (resource === 'company') {
 				useQuerystring: true,
 			} satisfies IRequestOptions;
 
-			console.log(options)
+
 
 
 		responseData = await this.helpers.requestWithAuthentication.call(
@@ -624,7 +624,7 @@ if (resource === 'appointment') {
 			useQuerystring: true,
 		} satisfies IRequestOptions;
 
-		console.log(options)
+
 
 	responseData = await this.helpers.requestWithAuthentication.call(
 			this,
@@ -671,7 +671,7 @@ if (resource === 'itemType') {
 			useQuerystring: true,
 		} satisfies IRequestOptions;
 
-		console.log(options)
+
 
 	responseData = await this.helpers.requestWithAuthentication.call(
 			this,
@@ -710,7 +710,7 @@ if (resource === 'serviceObject') {
 			useQuerystring: true,
 		} satisfies IRequestOptions;
 
-		console.log(options)
+
 
 	responseData = await this.helpers.requestWithAuthentication.call(
 			this,
@@ -773,7 +773,7 @@ if (resource === 'serviceRequest') {
 			useQuerystring: true,
 		} satisfies IRequestOptions;
 
-		console.log(options)
+
 
 	responseData = await this.helpers.requestWithAuthentication.call(
 			this,
@@ -804,7 +804,7 @@ if (resource === 'serviceRequest') {
 			useQuerystring: true,
 		} satisfies IRequestOptions;
 
-		console.log(options)
+
 
 	responseData = await this.helpers.requestWithAuthentication.call(
 			this,
@@ -835,7 +835,7 @@ if (resource === 'serviceRequest') {
 			useQuerystring: true,
 		} satisfies IRequestOptions;
 
-		console.log(options)
+
 
 	responseData = await this.helpers.requestWithAuthentication.call(
 			this,
@@ -860,7 +860,7 @@ if (resource === 'serviceRequest') {
 			useQuerystring: true,
 		} satisfies IRequestOptions;
 
-		console.log(options)
+
 
 	responseData = await this.helpers.requestWithAuthentication.call(
 			this,
@@ -922,10 +922,10 @@ if (resource === 'document' && operation === 'uploadDocument') {
   );
 
  responseData = JSON.parse(responseData);
- console.log(responseData)
+
  const documentId = responseData.DocumentDto.Id;
 
-	console.log(documentId)
+
 
 	const uri = `https://portal.mobilefieldreport.com/mfr/ServiceRequest/${serviceRequestId}/Document/${documentId}`
 
@@ -961,7 +961,7 @@ if (resource === 'itemType') {
 			useQuerystring: true,
 		} satisfies IRequestOptions;
 
-		console.log(options)
+
 
 	responseData = await this.helpers.requestWithAuthentication.call(
 			this,
@@ -1003,7 +1003,7 @@ if (resource === 'itemType') {
 				useQuerystring: true,
 			} satisfies IRequestOptions;
 
-			console.log(options)
+
 
 			const responseData = await this.helpers.requestWithAuthentication.call(
 				this,
@@ -1054,7 +1054,7 @@ if (resource === 'serviceObject') {
 			useQuerystring: true,
 		} satisfies IRequestOptions;
 
-		console.log(options)
+
 
 	responseData = await this.helpers.requestWithAuthentication.call(
 			this,
@@ -1096,7 +1096,7 @@ if (resource === 'serviceObject') {
 				useQuerystring: true,
 			} satisfies IRequestOptions;
 
-			console.log(options)
+
 
 			const responseData = await this.helpers.requestWithAuthentication.call(
 				this,
@@ -1155,7 +1155,7 @@ if (resource === 'serviceRequest') {
 				useQuerystring: true,
 			} satisfies IRequestOptions;
 
-			console.log(options)
+
 
 			const responseData = await this.helpers.requestWithAuthentication.call(
 				this,
@@ -1214,7 +1214,7 @@ if (resource === 'user') {
 				useQuerystring: true,
 			} satisfies IRequestOptions;
 
-			console.log(options)
+
 
 			const responseData = await this.helpers.requestWithAuthentication.call(
 				this,
@@ -1266,7 +1266,7 @@ if (resource === 'serviceRequest') {
 			useQuerystring: true,
 		} satisfies IRequestOptions;
 
-		console.log(options)
+
 
 	responseData = await this.helpers.requestWithAuthentication.call(
 			this,

@@ -20,7 +20,6 @@ export async function mfrApiRequest(
 		useQuerystring: true,
 	} satisfies IRequestOptions;
 
-	console.log(options)
 
 	try {
 

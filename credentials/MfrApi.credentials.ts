@@ -7,7 +7,8 @@ import {
 
 export class MfrApi implements ICredentialType {
 	name = 'mfrApi';
-	displayName = 'MFR API';
+	// eslint-disable-next-line n8n-nodes-base/cred-class-field-display-name-miscased
+	displayName = 'mfr API';
 	properties: INodeProperties[] = [
 		{
 			displayName: 'Username',

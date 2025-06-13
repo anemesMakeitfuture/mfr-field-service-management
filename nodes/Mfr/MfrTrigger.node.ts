@@ -9,7 +9,7 @@ import { mfrApiRequest } from './GenericFunctions'
 
 export class MfrTrigger implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'MFR Trigger',
+		displayName: 'mfr Trigger',
 		name: 'mfrTrigger',
 		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
 		icon: 'file:mfrLogo.png',
@@ -17,7 +17,7 @@ export class MfrTrigger implements INodeType {
 		version: 1,
 		description: 'Starts the workflow when MFR events occur',
 		defaults: {
-			name: 'MFR Trigger',
+			name: 'mfr Trigger',
 		},
 		inputs: [],
 		outputs: ['main'],
@@ -93,7 +93,7 @@ export class MfrTrigger implements INodeType {
 
 				const { value } = await mfrApiRequest.call(this, 'GET', '/WebHooks', {});
 
-				console.log(value)
+
 
 				for (const webhook of value) {
         // Check if webhook matches by type, callback URL, and optional ExternalId if provided
@@ -105,7 +105,7 @@ export class MfrTrigger implements INodeType {
             externalIdMatches
         ) {
             webhookData.webhookId = webhook.Id;
-						console.log(webhook.Id)
+
             return true;
         }
     }
@@ -121,7 +121,7 @@ export class MfrTrigger implements INodeType {
 				const ExternalId = this.getNodeParameter('ExternalId') as string;
 
 				const body = {
-				  'odata.metadata': 'https://portal.mobilefieldreport.com/$metadata#WebHooks/@Element',
+			//	  'odata.metadata': 'https://portal.mobilefieldreport.com/$metadata#WebHooks/@Element',
 					CallbackUrl: webhookUrl,
 					'WebHookType': WebHookType,
 			    'ExternalId':  ExternalId
@@ -134,8 +134,9 @@ export class MfrTrigger implements INodeType {
 					return false;
 				}
 
+
 				webhookData.webhookId = responseData.Id as string;
-				console.log(responseData.Id)
+
 
 				return true;
 			},
