@@ -253,19 +253,14 @@ export const serviceRequestFields: INodeProperties[] = [
 {
 	displayName: 'Cost Center Name or ID',
 	name: 'CostCenterId',
-
 	displayOptions: {
 		show: {
 			resource: ['serviceRequest'],
 			operation: ['createServiceRequest'],
 		},
 	},
-	type: 'options',
-	typeOptions: {
-	loadOptionsMethod: 'getCostCenter',
-},
-	default: '',
-	description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
+	type: 'string',
+	default: ''
 },
 
 {
@@ -277,12 +272,8 @@ export const serviceRequestFields: INodeProperties[] = [
 			operation: ['createServiceRequest'],
 		},
 	},
-	type: 'options',
-	typeOptions: {
-	loadOptionsMethod: 'getQualifications',
-},
-	default: '',
-	description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
+	type: 'string',
+	default: ''
 },
 
 /* -------------------------------------------------------------------------- */

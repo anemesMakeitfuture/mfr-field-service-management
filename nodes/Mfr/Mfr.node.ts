@@ -563,15 +563,16 @@ if (resource === 'company') {
 			const IsPhysicalPerson = this.getNodeParameter('IsPhysicalPerson', i) as boolean;
 			const MainContact = this.getNodeParameter('MainContact', i) as IDataObject;
 
-			body.Name = Name
-			body.Location = Location
-			body.SupportTelephone = SupportTelephone
-			body.SupportFax = SupportFax
-			body.SupportMail = SupportMail
-			body.Note = Note
-			body.ExternalId = ExternalId
-			body.IsPhysicalPerson = IsPhysicalPerson
-			body.MainContact = MainContact
+			Name ? body.Name = Name : '';
+			Location ? body.Location = Location : '';
+			SupportTelephone ? body.SupportTelephone = SupportTelephone : '';
+			SupportFax ? body.SupportFax = SupportFax : '';
+			SupportMail ? body.SupportMail = SupportMail : '';
+			Note ? body.Note = Note : '';
+			ExternalId ? body.ExternalId = ExternalId : '';
+			IsPhysicalPerson ? body.IsPhysicalPerson = IsPhysicalPerson : '';
+			MainContact ? body.MainContact = MainContact : '';
+
 
 			const endpoint = `https://portal.mobilefieldreport.com/odata/Companies`;
 			const options = {
@@ -607,11 +608,11 @@ if (resource === 'appointment') {
 		const StartDateTime = this.getNodeParameter('StartDateTime', i) as string;
 		const EndDateTime = this.getNodeParameter('EndDateTime', i) as string;
 
+		Type ? body.Type = Type : '';
+		ContactId ? body.ContactId = ContactId : '';
+		StartDateTime ? body.StartDateTime = StartDateTime : '';
+		EndDateTime ? body.EndDateTime = EndDateTime : '';
 
-		body.Type = Type
-		body.ContactId = ContactId
-		body.StartDateTime = StartDateTime
-		body.EndDateTime = EndDateTime
 
 		const endpoint = `https://portal.mobilefieldreport.com/odata/Appointments`;
 		const options = {
@@ -648,16 +649,16 @@ if (resource === 'itemType') {
 		const Description = this.getNodeParameter('Description', i) as string;
 		const GlobalTradeItemNr = this.getNodeParameter('GlobalTradeItemNr', i) as string;
 
-   body.UnitId = UnitId
-	 body.Type = Type
-	 body.NameOrNumber = NameOrNumber
-	 body.ExternalId = ExternalId
-	 body.Costs = Costs
-	 body.Price = Price
-	 body.Manufacture = Manufacture
-	 body.VAT = VAT
-	 body.Description = Description
-	 body.GlobalTradeItemNr = GlobalTradeItemNr
+		UnitId ? body.UnitId = UnitId : '';
+		Type ? body.Type = Type : '';
+		NameOrNumber ? body.NameOrNumber = NameOrNumber : '';
+		ExternalId ? body.ExternalId = ExternalId : '';
+		Costs ? body.Costs = Costs : '';
+		Price ? body.Price = Price : '';
+		Manufacture ? body.Manufacture = Manufacture : '';
+		VAT ? body.VAT = VAT : '';
+		Description ? body.Description = Description : '';
+		GlobalTradeItemNr ? body.GlobalTradeItemNr = GlobalTradeItemNr : '';
 
 
 		const endpoint = `https://portal.mobilefieldreport.com/odata/ItemTypes`;
@@ -670,7 +671,6 @@ if (resource === 'itemType') {
 			json: true,
 			useQuerystring: true,
 		} satisfies IRequestOptions;
-
 
 
 	responseData = await this.helpers.requestWithAuthentication.call(
@@ -692,11 +692,10 @@ if (resource === 'serviceObject') {
 
 		const ExternalId = this.getNodeParameter('ExternalId', i) as string;
 
-		body.Name = Name
-		body.Location = Location
-		body.CompanyId = CompanyId
-		body.ExternalId = ExternalId
-
+		Name ? body.Name = Name : '';
+		Location ? body.Location = Location : '';
+		CompanyId ? body.CompanyId = CompanyId : '';
+		ExternalId ? body.ExternalId = ExternalId : '';
 
 
 		const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceObjects`;
@@ -724,34 +723,40 @@ if (resource === 'serviceRequest') {
 	if (operation === 'createServiceRequest') {
 
 		const Name = this.getNodeParameter('Name', i) as string;
-		body.Name = Name
-    const ServiceObjects = this.getNodeParameter('ServiceObjects', i) as IDataObject;
-		ServiceObjects ? body.ServiceObjects = ServiceObjects : ''
+		Name ? body.Name = Name : '';
+
+    const ServiceObjects = this.getNodeParameter('ServiceObjects', i) as string;
+	
+		ServiceObjects ? body.ServiceObjects = JSON.parse(ServiceObjects) : ''
 
 		const CreateFromServiceRequestTemplateId = this.getNodeParameter('CreateFromServiceRequestTemplateId', i) as string;
-		body.CreateFromServiceRequestTemplateId = CreateFromServiceRequestTemplateId
+		CreateFromServiceRequestTemplateId ? body.CreateFromServiceRequestTemplateId = CreateFromServiceRequestTemplateId : '';
 
 		const State = this.getNodeParameter('State', i) as string;
-		body.State = State
+		State ? body.State = State : '';
+
 
 		const Description = this.getNodeParameter('Description', i) as string;
-		body.Description = Description
+		Description ? body.Description = Description : '';
 
 		const CustomerIdUI = this.getNodeParameter('CustomerId', i) as IDataObject;
 			let CustomerId = CustomerIdUI.value as string;
-			body.CustomerId = CustomerId
+			CustomerId ? body.CustomerId = CustomerId : '';
 
-		const Appointments = this.getNodeParameter('Appointments', i) as IDataObject;
-		Appointments ? body.Appointments = Appointments : ''
+
+		const Appointments = this.getNodeParameter('Appointments', i) as string;
+
+
+		 Appointments ? body.Appointments = JSON.parse(Appointments) : ''
 
 		const ExternalId = this.getNodeParameter('ExternalId', i) as string;
-		body.ExternalId = ExternalId
+		ExternalId ? body.ExternalId = ExternalId : '';
 
 		// const TargetTimeInMinutes = this.getNodeParameter('TargetTimeInMinutes', i) as number;
 		// body.TargetTimeInMinutes = TargetTimeInMinutes
 
 		const DueDateRangeEnd = this.getNodeParameter('DueDateRangeEnd', i) as string;
-		body.DueDateRangeEnd = DueDateRangeEnd
+		DueDateRangeEnd ? body.DueDateRangeEnd = DueDateRangeEnd : '';
 
 		const CostCenterId = this.getNodeParameter('CostCenterId', i) as string;
 		CostCenterId ? body.CostCenterId = CostCenterId : ''
@@ -759,7 +764,6 @@ if (resource === 'serviceRequest') {
 
 		const Qualifications = this.getNodeParameter('Qualifications', i) as string;
 		Qualifications ? body.Qualifications = Qualifications : ''
-
 
 
 		const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceRequests`;
@@ -772,7 +776,6 @@ if (resource === 'serviceRequest') {
 			json: true,
 			useQuerystring: true,
 		} satisfies IRequestOptions;
-
 
 
 	responseData = await this.helpers.requestWithAuthentication.call(
@@ -1275,6 +1278,7 @@ if (resource === 'serviceRequest') {
 	);}
 }
 
+// generateReportFromReportDefinition
 if (resource === 'report' && operation === 'generateReportFromReportDefinition') {
 	const returnItems: INodeExecutionData[] = [];
 
