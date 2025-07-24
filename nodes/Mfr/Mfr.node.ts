@@ -776,7 +776,7 @@ if (resource === 'serviceRequest') {
 			json: true,
 			useQuerystring: true,
 		} satisfies IRequestOptions;
-console.log(options)
+
 
 	responseData = await this.helpers.requestWithAuthentication.call(
 			this,
