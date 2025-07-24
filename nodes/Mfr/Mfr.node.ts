@@ -725,9 +725,9 @@ if (resource === 'serviceRequest') {
 		const Name = this.getNodeParameter('Name', i) as string;
 		Name ? body.Name = Name : '';
 
-    const ServiceObjects = this.getNodeParameter('ServiceObjects', i) as string;
-	
-		ServiceObjects ? body.ServiceObjects = JSON.parse(ServiceObjects) : ''
+    const ServiceObjects = this.getNodeParameter('ServiceObjects', i) as IDataObject;
+
+		ServiceObjects ? body.ServiceObjects = ServiceObjects : ''
 
 		const CreateFromServiceRequestTemplateId = this.getNodeParameter('CreateFromServiceRequestTemplateId', i) as string;
 		CreateFromServiceRequestTemplateId ? body.CreateFromServiceRequestTemplateId = CreateFromServiceRequestTemplateId : '';
@@ -744,10 +744,10 @@ if (resource === 'serviceRequest') {
 			CustomerId ? body.CustomerId = CustomerId : '';
 
 
-		const Appointments = this.getNodeParameter('Appointments', i) as string;
+		const Appointments = this.getNodeParameter('Appointments', i) as IDataObject;
 
 
-		 Appointments ? body.Appointments = JSON.parse(Appointments) : ''
+		 Appointments ? body.Appointments = Appointments : ''
 
 		const ExternalId = this.getNodeParameter('ExternalId', i) as string;
 		ExternalId ? body.ExternalId = ExternalId : '';
@@ -776,7 +776,7 @@ if (resource === 'serviceRequest') {
 			json: true,
 			useQuerystring: true,
 		} satisfies IRequestOptions;
-
+console.log(options)
 
 	responseData = await this.helpers.requestWithAuthentication.call(
 			this,
