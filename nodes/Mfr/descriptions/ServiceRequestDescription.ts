@@ -77,7 +77,6 @@ export const serviceRequestFields: INodeProperties[] = [
 	{
 		displayName: 'Service Objects',
 		name: 'ServiceObjects',
-		required: true,
 		type: 'json',
 		default: '',
 		"description": "Provide an array having this format: \n[ \n    { \n        \"Id\": \"231\" \n    }, \n    { \n        \"Id\": \"231\" \n    } \n]",
@@ -199,7 +198,6 @@ export const serviceRequestFields: INodeProperties[] = [
 	{
     displayName: 'Appointments',
     name: 'Appointments',
-    required: true,
     type: 'json',
     default: '',
     "description": "Provide an array having this format: \n[ \n    { \n        \"ContactIds\": [ \n            \"60357836802\", \n            \"60357836804\", \n            \"60409872395\" \n        ], \n        \"EndDateTime\": \"2025-05-21T14:50:00.000Z\", \n        \"StartDateTime\": \"2025-05-14T14:50:00.000Z\" \n    } \n]",
