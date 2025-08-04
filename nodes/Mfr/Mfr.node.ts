@@ -766,7 +766,7 @@ if (resource === 'serviceRequest') {
 		Qualifications ? body.Qualifications = Qualifications : ''
 
 
-		const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceRequests`;
+		const endpoint = `https://portal.mobilefieldreport.com/mfr/ServiceRequest/Deep`;
 		const options = {
 			method: 'POST',
 			qs,
@@ -776,6 +776,8 @@ if (resource === 'serviceRequest') {
 			json: true,
 			useQuerystring: true,
 		} satisfies IRequestOptions;
+
+		console.log('options', options);
 
 
 	responseData = await this.helpers.requestWithAuthentication.call(
