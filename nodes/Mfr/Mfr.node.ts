@@ -178,7 +178,13 @@ export class Mfr implements INodeType {
 					name: 'Name: ' + template.Name + '; External ID: ' + template.ExternalId,
 					value: template.Id,
 			});
+
 	}
+
+	returnData.push({
+			name: 'empty',
+			value: '',
+		});
 
 		return returnData;
 },
@@ -290,6 +296,44 @@ async getServiceObjectLoadOptions(this: ILoadOptionsFunctions): Promise<INodePro
 	for (const item of response.value) {
 		returnData.push({
 				name: item.Name || item.ExternalId,
+				value: item.Id,
+		});
+}
+
+	return returnData;
+},
+
+async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+	const returnData: INodePropertyOptions[] = [];
+	const endpoint = `https://portal.mobilefieldreport.com/odata/Contacts`;
+
+	let qs = {
+    "$top": 100,
+		"$skip": 0
+    }
+
+	const options = {
+			method: 'GET',
+			qs,
+			uri: endpoint,
+			json: true,
+			useQuerystring: true,
+	} satisfies IRequestOptions;
+
+	options.qs = qs;
+
+	// Fetching the companies data
+	const response = await this.helpers.requestWithAuthentication.call(
+			this,
+			'mfrApi',
+			options,
+	);
+
+
+	// Extracting the companies' names from the response
+	for (const item of response.value) {
+		returnData.push({
+				name: item.Email,
 				value: item.Id,
 		});
 }
@@ -756,18 +800,15 @@ if (resource === 'serviceRequest') {
 
 		if (useJsonServiceObjects) {
 			const ServiceObjects = this.getNodeParameter('ServiceObjects', i) as string;
-		   console.log('ServiceObjects', ServiceObjects);
+
 			 ServiceObjects ? body.ServiceObjects = JSON.parse(ServiceObjects) : ''
 		}else{
 			const ServiceObjectUI = this.getNodeParameter('ServiceObjectsUi', i) as IDataObject;
-			console.log('ServiceObjectUI', ServiceObjectUI);
+
 			const ServiceObjects = ServiceObjectUI.value as IDataObject;
-			console.log('ServiceObjects', ServiceObjects);
+
 			ServiceObjects ? body.ServiceObjects = ServiceObjects : ''
 		}
-
-
-
 
 		const CreateFromServiceRequestTemplateId = this.getNodeParameter('CreateFromServiceRequestTemplateId', i) as string;
 		CreateFromServiceRequestTemplateId ? body.CreateFromServiceRequestTemplateId = CreateFromServiceRequestTemplateId : '';
@@ -784,10 +825,19 @@ if (resource === 'serviceRequest') {
 			CustomerId ? body.CustomerId = CustomerId : '';
 
 
-		const Appointments = this.getNodeParameter('Appointments', i) as IDataObject;
+			// TODO
+			const useJsonAppointments = this.getNodeParameter('useJsonAppointments', i) as boolean;
 
-
-		 Appointments ? body.Appointments = Appointments : ''
+		if (useJsonAppointments) {
+			const Appointments = this.getNodeParameter('Appointments', i) as string;
+			console.log('Appointments', Appointments);
+			Appointments ? body.Appointments = JSON.parse(Appointments) : ''
+		}else{
+			const AppointmentsUI = this.getNodeParameter('AppointmentsUI', i) as IDataObject;
+			const Appointments = AppointmentsUI.value as IDataObject;
+			console.log('Appointments', Appointments);
+			Appointments ? body.Appointments = Appointments : ''
+		}
 
 		const ExternalId = this.getNodeParameter('ExternalId', i) as string;
 		ExternalId ? body.ExternalId = ExternalId : '';

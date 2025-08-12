@@ -74,40 +74,6 @@ export const serviceRequestFields: INodeProperties[] = [
 		default: '',
 	},
 
-
-// {
-// 		displayName: 'Service Objects',
-// 		name: 'ServiceObjects',
-// 		type: 'resourceLocator',
-// 		default: { mode: 'list', value: '' },
-// 		// eslint-disable-next-line n8n-nodes-base/node-param-description-miscased-id
-// 		description: 'Can search by name or ID. Optionally provide an array having this format: [ { "id": "231" }, { "id": "231" } ].',
-// 		displayOptions: {
-// 			show: {
-// 				resource: ['serviceRequest'],
-// 				operation: ['createServiceRequest'],
-// 			},
-// 		},
-// 		modes: [
-// 			{
-// 				displayName: 'From List',
-// 				name: 'list',
-// 				type: 'list',
-// 				placeholder: 'Select from the list',
-// 				typeOptions: {
-// 					searchListMethod: 'searchServiceRequest',
-// 					searchable: true,
-// 				},
-// 			},
-// 			{
-// 				displayName: 'Using JSON',
-// 				name: 'json',
-// 				type: 'string',
-// 				placeholder: 'Provide a JSON array',
-// 			},
-// 		],
-// 	},
-
 {
 		displayName: 'Use JSON for Service Objects',
 		name: 'useJsonServiceObjects',
@@ -280,6 +246,19 @@ export const serviceRequestFields: INodeProperties[] = [
 		],
 	},
 
+{
+		displayName: 'Use JSON for Appointments',
+		name: 'useJsonAppointments',
+		type: 'boolean',
+		displayOptions: {
+			show: {
+				resource: ['serviceRequest'],
+				operation: ['createServiceRequest'],
+			},
+		},
+		default: false,
+	},
+
 	{
     displayName: 'Appointments',
     name: 'Appointments',
@@ -290,8 +269,63 @@ export const serviceRequestFields: INodeProperties[] = [
         show: {
             resource: ['serviceRequest'],
             operation: ['createServiceRequest'],
+						useJsonAppointments: [true],
         },
     },
+},
+
+{
+    displayName: 'Appointments',
+    name: 'AppointmentsUI',
+    type: 'fixedCollection',
+    placeholder: 'Add appointment',
+    displayOptions: {
+        show: {
+            resource: ['serviceRequest'],
+            operation: ['createServiceRequest'],
+            useJsonAppointments: [false],
+
+        },
+    },
+    default: {},
+    typeOptions: {
+        multipleValues: true,
+    },
+    options:
+    [{
+        name: 'value',
+        displayName: 'Appointment',
+        values: [
+            {
+            displayName: 'Contact Name or ID',
+            name: 'ContactIds',
+            type: 'options',
+            default: '',
+            typeOptions: {
+                multipleValues: true,
+               loadOptionsMethod: 'getContactsLoadOptions'
+            },
+            description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
+        },
+        {
+            displayName: 'Start Date Time',
+            name: 'StartDateTime',
+            type: 'dateTime',
+            default: '',
+            placeholder: '2025-05-14T14:50:00.000Z',
+            description: 'Start date and time in ISO format',
+        },
+        {
+            displayName: 'End Date Time',
+            name: 'EndDateTime',
+            type: 'dateTime',
+            default: '',
+            placeholder: '2025-05-21T14:50:00.000Z',
+            description: 'End date and time in ISO format',
+        },
+    ],
+    }, ]
+
 },
 
 {
