@@ -341,18 +341,18 @@ export const serviceRequestFields: INodeProperties[] = [
 	default: '',
 },
 
-// {
-// 	displayName: 'Target Time In Minutes',
-// 	name: 'TargetTimeInMinutes',
-// 	type: 'number',
-// 	displayOptions: {
-// 		show: {
-// 			resource: ['serviceRequest'],
-// 			operation: ['createServiceRequest'],
-// 		},
-// 	},
-// 	default: '',
-// },
+{
+	displayName: 'Target Time In Minutes',
+	name: 'TargetTimeInMinutes',
+	type: 'number',
+	displayOptions: {
+		show: {
+			resource: ['serviceRequest'],
+			operation: ['createServiceRequest'],
+		},
+	},
+	default: '',
+},
 
 {
 	displayName: 'Due Date Range End',

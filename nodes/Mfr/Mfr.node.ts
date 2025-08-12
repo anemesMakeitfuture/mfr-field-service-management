@@ -21,6 +21,7 @@ import { ReportFields, ReportOperations} from './descriptions/ReportDescription'
 import { mfrApiRequest } from './GenericFunctions';
 
 import { Buffer } from 'buffer';
+import { contactFields, contactOperations } from './descriptions/ContactDescription';
 
 export class Mfr implements INodeType {
 	description: INodeTypeDescription = {
@@ -57,6 +58,10 @@ export class Mfr implements INodeType {
 						value: 'company',
 					},
 					{
+						name: 'Contact',
+						value: 'contact',
+					},
+					{
 						name: 'Appointment',
 						value: 'appointment',
 					},
@@ -90,6 +95,10 @@ export class Mfr implements INodeType {
 			// COMPANY
 			...companyOperations,
 			...companyFields,
+
+			// CONTACT
+			...contactOperations,
+			...contactFields,
 
 			// APPOINTMENT
 			...AppointmentOperations,
@@ -554,21 +563,22 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 	}
 
 	// list companies with pagination
-	if (resource === 'company') {
+// list companies with pagination
+if (resource === 'company') {
     if (operation === 'listCompanies') {
         const limit = this.getNodeParameter('limit', i) as number; // Get the limit parameter
         const fetchAllResults = this.getNodeParameter('fetchAllResults', i) as boolean;
         const $filter = this.getNodeParameter('$filter', i) as string;
 
-				const $expandUI = this.getNodeParameter('$expand', i) as IDataObject[];
+        const $expandUI = this.getNodeParameter('$expand', i) as IDataObject[];
 
         let startingEntity = 0;
         let allCompanies: any[] = []; // Store all companies data
-        const numberOfEntities = 100; // Max number of companies per page
+        const numberOfEntities = 20; // Max number of companies per page (API limit)
 
         while (true) {
             let qs: any = {
-                "$top": numberOfEntities,         // Number of records per page
+                "$top": numberOfEntities,         // Number of records per page (20 max)
                 "$skip": startingEntity,          // Skip based on starting entity
             };
 
@@ -590,6 +600,8 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
                 useQuerystring: true,
             } satisfies IRequestOptions;
 
+						console.log('options', options);
+
             // Fetch the page data
             const responseData = await this.helpers.requestWithAuthentication.call(
                 this,
@@ -605,7 +617,7 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
                 break;
             }
 
-            // If fewer than 100 results were returned, we are done
+            // If fewer than 20 results were returned, we are done
             if (responseData.value.length < numberOfEntities) {
                 break; // Exit the loop if there are no more pages
             }
@@ -616,6 +628,74 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 
         // Return the accumulated companies data
         responseData = allCompanies;
+    }
+}
+
+// list contacts with pagination
+if (resource === 'contact') {
+    if (operation === 'listContacts') {
+        const limit = this.getNodeParameter('limit', i) as number; // Get the limit parameter
+        const fetchAllResults = this.getNodeParameter('fetchAllResults', i) as boolean;
+        const $filter = this.getNodeParameter('$filter', i) as string;
+
+        const $expandUI = this.getNodeParameter('$expand', i) as IDataObject[];
+
+        let startingEntity = 0;
+        let allContacts: any[] = []; // Store all contacts data
+        const numberOfEntities = 20; // Max number of contacts per page (API limit)
+
+        while (true) {
+            let qs: any = {
+                "$top": numberOfEntities,         // Number of records per page (20 max)
+                "$skip": startingEntity,          // Skip based on starting entity
+            };
+
+            if ($filter) {
+                qs.$filter = $filter;
+            }
+            if ($expandUI[0]) {
+                qs.$expand = $expandUI.join(",");
+            }
+
+            const endpoint = `https://portal.mobilefieldreport.com/odata/Contacts`;
+            const options = {
+                method: 'GET',
+                qs,
+                headers: {},
+                uri: endpoint,
+                body: {},
+                json: true,
+                useQuerystring: true,
+            } satisfies IRequestOptions;
+
+						console.log(options);
+
+            // Fetch the page data
+            const responseData = await this.helpers.requestWithAuthentication.call(
+                this,
+                'mfrApi',
+                options,
+            );
+
+            allContacts = allContacts.concat(responseData.value); // Add the current page results to the array
+
+            // Check if we've reached or exceeded the limit
+            if (allContacts.length >= limit && !fetchAllResults) {
+                allContacts = allContacts.slice(0, limit); // Trim to the limit and break out of the loop
+                break;
+            }
+
+            // If fewer than 20 results were returned, we are done
+            if (responseData.value.length < numberOfEntities) {
+                break; // Exit the loop if there are no more pages
+            }
+
+            // Otherwise, move to the next batch of contacts
+            startingEntity += numberOfEntities;
+        }
+
+        // Return the accumulated contacts data
+        responseData = allContacts;
     }
 }
 
@@ -824,8 +904,6 @@ if (resource === 'serviceRequest') {
 			let CustomerId = CustomerIdUI.value as string;
 			CustomerId ? body.CustomerId = CustomerId : '';
 
-
-			// TODO
 			const useJsonAppointments = this.getNodeParameter('useJsonAppointments', i) as boolean;
 
 		if (useJsonAppointments) {
@@ -842,8 +920,8 @@ if (resource === 'serviceRequest') {
 		const ExternalId = this.getNodeParameter('ExternalId', i) as string;
 		ExternalId ? body.ExternalId = ExternalId : '';
 
-		// const TargetTimeInMinutes = this.getNodeParameter('TargetTimeInMinutes', i) as number;
-		// body.TargetTimeInMinutes = TargetTimeInMinutes
+		const TargetTimeInMinutes = this.getNodeParameter('TargetTimeInMinutes', i) as number;
+		TargetTimeInMinutes ? body.TargetTimeInMinutes = TargetTimeInMinutes : '';
 
 		const DueDateRangeEnd = this.getNodeParameter('DueDateRangeEnd', i) as string;
 		DueDateRangeEnd ? body.DueDateRangeEnd = DueDateRangeEnd : '';
