@@ -285,29 +285,51 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 async getServiceObjectLoadOptions(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 	const returnData: INodePropertyOptions[] = [];
 	const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceObjects`;
-	const options = {
+
+	let startingEntity = 0;
+	let allServiceObjects: any[] = []; // Store all service objects data
+	const numberOfEntities = 20; // Max number of service objects per page (API limit)
+
+	while (true) {
+		let qs = {
+			"$top": numberOfEntities,         // Number of records per page (20 max)
+			"$skip": startingEntity          // Skip based on starting entity
+		};
+
+		const options = {
 			method: 'GET',
+			qs,
 			uri: endpoint,
 			json: true,
 			useQuerystring: true,
-	} satisfies IRequestOptions;
+		} satisfies IRequestOptions;
 
-
-	// Fetching the companies data
-	const response = await this.helpers.requestWithAuthentication.call(
+		// Fetch the page data
+		const response = await this.helpers.requestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
-	);
+		);
 
 
-	// Extracting the companies' names from the response
-	for (const item of response.value) {
+		allServiceObjects = allServiceObjects.concat(response.value); // Add the current page results to the array
+
+		// If fewer than 20 results were returned, we are done
+		if (response.value.length < numberOfEntities) {
+			break; // Exit the loop if there are no more pages
+		}
+
+		// Otherwise, move to the next batch of service objects
+		startingEntity += numberOfEntities;
+	}
+
+	// Process all service objects and create options
+	for (const item of allServiceObjects) {
 		returnData.push({
-				name: item.Name || item.ExternalId,
-				value: item.Id,
+			name: item.Name || item.ExternalId,
+			value: item.Id,
 		});
-}
+	}
 
 	return returnData;
 },
@@ -316,39 +338,54 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 	const returnData: INodePropertyOptions[] = [];
 	const endpoint = `https://portal.mobilefieldreport.com/odata/Contacts`;
 
-	let qs = {
-    "$top": 100,
-		"$skip": 0
-    }
+	let startingEntity = 0;
+	let allContacts: any[] = []; // Store all contacts data
+	const numberOfEntities = 20; // Max number of contacts per page (API limit)
 
-	const options = {
+	while (true) {
+		let qs = {
+			"$top": numberOfEntities,         // Number of records per page (20 max)
+			"$skip": startingEntity          // Skip based on starting entity
+		};
+
+		const options = {
 			method: 'GET',
 			qs,
 			uri: endpoint,
 			json: true,
 			useQuerystring: true,
-	} satisfies IRequestOptions;
+		} satisfies IRequestOptions;
 
-	options.qs = qs;
-
-	// Fetching the companies data
-	const response = await this.helpers.requestWithAuthentication.call(
+		// Fetch the page data
+		const response = await this.helpers.requestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
-	);
+		);
 
 
-	// Extracting the companies' names from the response
-	for (const item of response.value) {
+		allContacts = allContacts.concat(response.value); // Add the current page results to the array
+
+
+		// If fewer than 20 results were returned, we are done
+		if (response.value.length < numberOfEntities) {
+			break; // Exit the loop if there are no more pages
+		}
+
+		// Otherwise, move to the next batch of contacts
+		startingEntity += numberOfEntities;
+	}
+
+	// Process all contacts and create options
+	for (const item of allContacts) {
 		returnData.push({
-				name: item.Email,
-				value: item.Id,
+			name: item.Email,
+			value: item.Id,
 		});
-}
+	}
 
 	return returnData;
-},
+}
 
 },
 
@@ -600,7 +637,7 @@ if (resource === 'company') {
                 useQuerystring: true,
             } satisfies IRequestOptions;
 
-						console.log('options', options);
+
 
             // Fetch the page data
             const responseData = await this.helpers.requestWithAuthentication.call(
@@ -668,7 +705,7 @@ if (resource === 'contact') {
                 useQuerystring: true,
             } satisfies IRequestOptions;
 
-						console.log(options);
+
 
             // Fetch the page data
             const responseData = await this.helpers.requestWithAuthentication.call(
@@ -908,12 +945,12 @@ if (resource === 'serviceRequest') {
 
 		if (useJsonAppointments) {
 			const Appointments = this.getNodeParameter('Appointments', i) as string;
-			console.log('Appointments', Appointments);
+
 			Appointments ? body.Appointments = JSON.parse(Appointments) : ''
 		}else{
 			const AppointmentsUI = this.getNodeParameter('AppointmentsUI', i) as IDataObject;
 			const Appointments = AppointmentsUI.value as IDataObject;
-			console.log('Appointments', Appointments);
+
 			Appointments ? body.Appointments = Appointments : ''
 		}
 
@@ -945,7 +982,7 @@ if (resource === 'serviceRequest') {
 			useQuerystring: true,
 		} satisfies IRequestOptions;
 
-		console.log('options', options);
+
 
 
 	responseData = await this.helpers.requestWithAuthentication.call(
