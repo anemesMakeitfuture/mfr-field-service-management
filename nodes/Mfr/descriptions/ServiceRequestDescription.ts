@@ -74,6 +74,53 @@ export const serviceRequestFields: INodeProperties[] = [
 		default: '',
 	},
 
+
+// {
+// 		displayName: 'Service Objects',
+// 		name: 'ServiceObjects',
+// 		type: 'resourceLocator',
+// 		default: { mode: 'list', value: '' },
+// 		// eslint-disable-next-line n8n-nodes-base/node-param-description-miscased-id
+// 		description: 'Can search by name or ID. Optionally provide an array having this format: [ { "id": "231" }, { "id": "231" } ].',
+// 		displayOptions: {
+// 			show: {
+// 				resource: ['serviceRequest'],
+// 				operation: ['createServiceRequest'],
+// 			},
+// 		},
+// 		modes: [
+// 			{
+// 				displayName: 'From List',
+// 				name: 'list',
+// 				type: 'list',
+// 				placeholder: 'Select from the list',
+// 				typeOptions: {
+// 					searchListMethod: 'searchServiceRequest',
+// 					searchable: true,
+// 				},
+// 			},
+// 			{
+// 				displayName: 'Using JSON',
+// 				name: 'json',
+// 				type: 'string',
+// 				placeholder: 'Provide a JSON array',
+// 			},
+// 		],
+// 	},
+
+{
+		displayName: 'Use JSON for Service Objects',
+		name: 'useJsonServiceObjects',
+		type: 'boolean',
+		displayOptions: {
+			show: {
+				resource: ['serviceRequest'],
+				operation: ['createServiceRequest'],
+			},
+		},
+		default: false,
+	},
+
 	{
 		displayName: 'Service Objects',
 		name: 'ServiceObjects',
@@ -84,9 +131,47 @@ export const serviceRequestFields: INodeProperties[] = [
 			show: {
 				resource: ['serviceRequest'],
 				operation: ['createServiceRequest'],
+				useJsonServiceObjects: [true],
 			},
 		},
 	},
+
+{
+	displayName: 'Service Objects',
+	name: 'ServiceObjectsUi',
+	placeholder: 'Add Service Objects',
+	type: 'fixedCollection',
+	default: {},
+	typeOptions: {
+		multipleValues: true,
+	},
+	options: [
+		{
+			name: 'value',
+			displayName: 'Service Object',
+			values: [
+				{
+					displayName: 'Name or ID',
+					name: 'id',
+					type: 'options',
+					default: '',
+			    description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
+
+					typeOptions: {
+					loadOptionsMethod: 'getServiceObjectLoadOptions'
+				},
+				},
+			],
+		},
+	],
+	displayOptions: {
+		show: {
+				resource: ['serviceRequest'],
+				operation: ['createServiceRequest'],
+				useJsonServiceObjects: [false],
+			},
+	},
+},
 
 	{
 		displayName: 'Service Request Template Name or ID',

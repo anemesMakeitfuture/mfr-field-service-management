@@ -1,14 +1,14 @@
-import type {
-	IDataObject,
-	IExecuteFunctions,
-	INodeExecutionData,
-	INodeType,
-	INodeTypeDescription,
-	IRequestOptions,
-	INodeListSearchItems,
-	INodeListSearchResult,
-	ILoadOptionsFunctions,
-	INodePropertyOptions,
+import {
+	type IDataObject,
+	type IExecuteFunctions,
+	type INodeExecutionData,
+	type INodeType,
+	type INodeTypeDescription,
+	type IRequestOptions,
+	type INodeListSearchItems,
+	type INodeListSearchResult,
+	type ILoadOptionsFunctions,
+	type INodePropertyOptions,
 } from 'n8n-workflow';
 import { companyFields, companyOperations } from './descriptions/CompanyDescription';
 import { appointmentFields, AppointmentOperations } from './descriptions/AppointmentDescription';
@@ -265,7 +265,37 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 }
 
 	return returnData;
+},
+
+async getServiceObjectLoadOptions(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+	const returnData: INodePropertyOptions[] = [];
+	const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceObjects`;
+	const options = {
+			method: 'GET',
+			uri: endpoint,
+			json: true,
+			useQuerystring: true,
+	} satisfies IRequestOptions;
+
+
+	// Fetching the companies data
+	const response = await this.helpers.requestWithAuthentication.call(
+			this,
+			'mfrApi',
+			options,
+	);
+
+
+	// Extracting the companies' names from the response
+	for (const item of response.value) {
+		returnData.push({
+				name: item.Name || item.ExternalId,
+				value: item.Id,
+		});
 }
+
+	return returnData;
+},
 
 },
 
@@ -352,7 +382,6 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 			} satisfies IRequestOptions;
 
 
-
 				const searchResults = await this.helpers.requestWithAuthentication.call(
 					this,
 					'mfrApi',
@@ -367,7 +396,7 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
         .filter(
             (el: { name: string; value: { toString: () => string; }; }) =>
                 !filter || // If no filter, return all
-						el.name.includes(filter) ||
+						el.name.toLowerCase().includes(filter.toLowerCase()) ||
 						el.value?.toString() === filter
         )
 
@@ -415,8 +444,6 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 					useQuerystring: true,
 			} satisfies IRequestOptions;
 
-
-
 				const searchResults = await this.helpers.requestWithAuthentication.call(
 					this,
 					'mfrApi',
@@ -431,7 +458,7 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
         .filter(
             (el: { name: string; value: { toString: () => string; }; }) =>
                 !filter || // If no filter, return all
-						el.name.includes(filter) ||
+						el.name.toLowerCase().includes(filter.toLowerCase()) ||
 						el.value?.toString() === filter
         )
 
@@ -725,9 +752,22 @@ if (resource === 'serviceRequest') {
 		const Name = this.getNodeParameter('Name', i) as string;
 		Name ? body.Name = Name : '';
 
-    const ServiceObjects = this.getNodeParameter('ServiceObjects', i) as IDataObject;
+		const useJsonServiceObjects = this.getNodeParameter('useJsonServiceObjects', i) as boolean;
 
-		ServiceObjects ? body.ServiceObjects = ServiceObjects : ''
+		if (useJsonServiceObjects) {
+			const ServiceObjects = this.getNodeParameter('ServiceObjects', i) as string;
+		   console.log('ServiceObjects', ServiceObjects);
+			 ServiceObjects ? body.ServiceObjects = JSON.parse(ServiceObjects) : ''
+		}else{
+			const ServiceObjectUI = this.getNodeParameter('ServiceObjectsUi', i) as IDataObject;
+			console.log('ServiceObjectUI', ServiceObjectUI);
+			const ServiceObjects = ServiceObjectUI.value as IDataObject;
+			console.log('ServiceObjects', ServiceObjects);
+			ServiceObjects ? body.ServiceObjects = ServiceObjects : ''
+		}
+
+
+
 
 		const CreateFromServiceRequestTemplateId = this.getNodeParameter('CreateFromServiceRequestTemplateId', i) as string;
 		CreateFromServiceRequestTemplateId ? body.CreateFromServiceRequestTemplateId = CreateFromServiceRequestTemplateId : '';
