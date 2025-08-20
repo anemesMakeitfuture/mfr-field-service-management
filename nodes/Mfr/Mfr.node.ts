@@ -318,7 +318,7 @@ async getServiceObjectLoadOptions(this: ILoadOptionsFunctions): Promise<INodePro
 		}
 
 		// Otherwise, move to the next batch of service objects
-		startingEntity += numberOfEntities;
+		startingEntity += response.value.length;
 	}
 
 	// Process all service objects and create options
@@ -371,7 +371,7 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 		}
 
 		// Otherwise, move to the next batch of contacts
-		startingEntity += numberOfEntities;
+		startingEntity += response.value.length
 	}
 
 	// Process all contacts and create options
@@ -658,7 +658,7 @@ if (resource === 'company') {
             }
 
             // Otherwise, move to the next batch of companies
-            startingEntity += numberOfEntities;
+           startingEntity += responseData.value.length;
         }
 
         // Return the accumulated companies data
@@ -726,7 +726,7 @@ if (resource === 'contact') {
             }
 
             // Otherwise, move to the next batch of contacts
-            startingEntity += numberOfEntities;
+           startingEntity += responseData.value.length;
         }
 
         // Return the accumulated contacts data
@@ -1230,7 +1230,7 @@ if (resource === 'itemType') {
 				break;
 			}
 
-			startingEntity += numberOfEntities;
+			startingEntity += responseData.value.length;
 		}
 
 		responseData = allItems;
@@ -1323,7 +1323,7 @@ if (resource === 'serviceObject') {
 				break;
 			}
 
-			startingEntity += numberOfEntities;
+			startingEntity += responseData.value.length;
 		}
 
 		responseData = allItems;
@@ -1343,7 +1343,7 @@ if (resource === 'serviceRequest') {
 
 		let startingEntity = 0;
 		let allItems: any[] = [];
-		const numberOfEntities = 100;
+		const numberOfEntities = 5;
 
 		while (true) {
 			let qs: any = {
@@ -1352,6 +1352,8 @@ if (resource === 'serviceRequest') {
 			};
 			if ($filter) qs.$filter = $filter;
 			if ($expandUI[0]) qs.$expand = $expandUI.join(",");
+
+
 
 			const endpoint = 'https://portal.mobilefieldreport.com/odata/ServiceRequests';
 
@@ -1371,7 +1373,9 @@ if (resource === 'serviceRequest') {
 				options,
 			);
 
+
 			allItems = allItems.concat(responseData.value);
+
 
 			if (allItems.length >= limit && !fetchAllResults) {
 				allItems = allItems.slice(0, limit);
@@ -1382,7 +1386,7 @@ if (resource === 'serviceRequest') {
 				break;
 			}
 
-			startingEntity += numberOfEntities;
+			startingEntity += responseData.value.length;
 		}
 
 		responseData = allItems;
@@ -1441,7 +1445,7 @@ if (resource === 'user') {
 				break;
 			}
 
-			startingEntity += numberOfEntities;
+			startingEntity += responseData.value.length
 		}
 
 		responseData = allItems;
