@@ -48,10 +48,5 @@
   },
   "peerDependencies": {
     "n8n-workflow": "*"
-  },
-  "dependencies": {
-    "form-data": "^4.0.2",
-    "request": "^2.88.2",
-    "sqlite3": "^5.1.7"
   }
 }
