@@ -19,8 +19,6 @@ import { DocumentFields, DocumentOperations } from './descriptions/DocumentDescr
 import { UserFields, UserOperations} from './descriptions/UserDescription';
 import { ReportFields, ReportOperations} from './descriptions/ReportDescription';
 import { mfrApiRequest } from './GenericFunctions';
-
-import { Buffer } from 'buffer';
 import { contactFields, contactOperations } from './descriptions/ContactDescription';
 
 export class Mfr implements INodeType {
