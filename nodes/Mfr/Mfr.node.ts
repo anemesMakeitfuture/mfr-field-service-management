@@ -4,7 +4,7 @@ import {
 	type INodeExecutionData,
 	type INodeType,
 	type INodeTypeDescription,
-	type IRequestOptions,
+	type IHttpRequestOptions,
 	type INodeListSearchItems,
 	type INodeListSearchResult,
 	type ILoadOptionsFunctions,
@@ -135,10 +135,9 @@ export class Mfr implements INodeType {
 			const endpoint = `https://portal.mobilefieldreport.com/odata/ItemUnits`;
 			const options = {
 					method: 'GET',
-					uri: endpoint,
+					url: endpoint,
 					json: true,
-					useQuerystring: true,
-			} satisfies IRequestOptions;
+			} satisfies IHttpRequestOptions;
 
 			// Fetching the companies data
 			const response = await this.helpers.requestWithAuthentication.call(
@@ -167,10 +166,9 @@ export class Mfr implements INodeType {
 		const options = {
 				method: 'GET',
 				qs: qs,
-				uri: endpoint,
+				url: endpoint,
 				json: true,
-				useQuerystring: true,
-		} satisfies IRequestOptions;
+		} satisfies IHttpRequestOptions;
 
 		// Fetching the companies data
 		const response = await this.helpers.requestWithAuthentication.call(
@@ -201,10 +199,10 @@ async getCostCenter(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]
 	const endpoint = `https://portal.mobilefieldreport.com/odata/CostCenters`;
 	const options = {
 			method: 'GET',
-			uri: endpoint,
+			url: endpoint,
 			json: true,
-			useQuerystring: true,
-	} satisfies IRequestOptions;
+
+	} satisfies IHttpRequestOptions;
 
 	// Fetching the companies data
 	const response = await this.helpers.requestWithAuthentication.call(
@@ -229,10 +227,10 @@ async getQualifications(this: ILoadOptionsFunctions): Promise<INodePropertyOptio
 	const endpoint = `https://portal.mobilefieldreport.com/odata/Qualifications`;
 	const options = {
 			method: 'GET',
-			uri: endpoint,
+			url: endpoint,
 			json: true,
-			useQuerystring: true,
-	} satisfies IRequestOptions;
+
+	} satisfies IHttpRequestOptions;
 
 	// Fetching the companies data
 	const response = await this.helpers.requestWithAuthentication.call(
@@ -257,10 +255,10 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 	const endpoint = `https://portal.mobilefieldreport.com/odata/Tags`;
 	const options = {
 			method: 'GET',
-			uri: endpoint,
+			url: endpoint,
 			json: true,
-			useQuerystring: true,
-	} satisfies IRequestOptions;
+
+	} satisfies IHttpRequestOptions;
 
 	// Fetching the companies data
 	const response = await this.helpers.requestWithAuthentication.call(
@@ -297,10 +295,10 @@ async getServiceObjectLoadOptions(this: ILoadOptionsFunctions): Promise<INodePro
 		const options = {
 			method: 'GET',
 			qs,
-			uri: endpoint,
+			url: endpoint,
 			json: true,
-			useQuerystring: true,
-		} satisfies IRequestOptions;
+
+		} satisfies IHttpRequestOptions;
 
 		// Fetch the page data
 		const response = await this.helpers.requestWithAuthentication.call(
@@ -349,10 +347,10 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 		const options = {
 			method: 'GET',
 			qs,
-			uri: endpoint,
+			url: endpoint,
 			json: true,
-			useQuerystring: true,
-		} satisfies IRequestOptions;
+
+		} satisfies IHttpRequestOptions;
 
 		// Fetch the page data
 		const response = await this.helpers.requestWithAuthentication.call(
@@ -397,10 +395,10 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 				const options = {
 					method: 'GET',
 					qs,
-					uri: endpoint,
+					url: endpoint,
 					json: true,
-					useQuerystring: true,
-			} satisfies IRequestOptions;
+
+			} satisfies IHttpRequestOptions;
 
 
 
@@ -431,10 +429,10 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 				const options = {
 					method: 'GET',
 					qs,
-					uri: endpoint,
+					url: endpoint,
 					json: true,
-					useQuerystring: true,
-			} satisfies IRequestOptions;
+
+			} satisfies IHttpRequestOptions;
 
 
 
@@ -464,10 +462,10 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 				const endpoint = 'https://portal.mobilefieldreport.com/odata/ServiceRequests';
 				const options = {
 					method: 'GET',
-					uri: endpoint,
+					url: endpoint,
 					json: true,
-					useQuerystring: true,
-			} satisfies IRequestOptions;
+
+			} satisfies IHttpRequestOptions;
 
 
 				const searchResults = await this.helpers.requestWithAuthentication.call(
@@ -495,10 +493,10 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 				const endpoint = 'https://portal.mobilefieldreport.com/odata/ItemTypes';
 				const options = {
 					method: 'GET',
-					uri: endpoint,
+					url: endpoint,
 					json: true,
-					useQuerystring: true,
-			} satisfies IRequestOptions;
+
+			} satisfies IHttpRequestOptions;
 
 
 
@@ -527,10 +525,10 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 				const endpoint = 'https://portal.mobilefieldreport.com/odata/ServiceObjects';
 				const options = {
 					method: 'GET',
-					uri: endpoint,
+					url: endpoint,
 					json: true,
-					useQuerystring: true,
-			} satisfies IRequestOptions;
+
+			} satisfies IHttpRequestOptions;
 
 				const searchResults = await this.helpers.requestWithAuthentication.call(
 					this,
@@ -583,11 +581,11 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 			const options = {
 				method: 'GET',
 				qs,
-				uri: endpoint,
+				url: endpoint,
 				body,
 				json: true,
-				useQuerystring: true,
-			} satisfies IRequestOptions;
+
+			} satisfies IHttpRequestOptions;
 
 
 		responseData = await this.helpers.requestWithAuthentication.call(
@@ -629,11 +627,11 @@ if (resource === 'company') {
                 method: 'GET',
                 qs,
                 headers: {},
-                uri: endpoint,
+                url: endpoint,
                 body: {},
                 json: true,
-                useQuerystring: true,
-            } satisfies IRequestOptions;
+
+            } satisfies IHttpRequestOptions;
 
 
 
@@ -697,11 +695,11 @@ if (resource === 'contact') {
                 method: 'GET',
                 qs,
                 headers: {},
-                uri: endpoint,
+                url: endpoint,
                 body: {},
                 json: true,
-                useQuerystring: true,
-            } satisfies IRequestOptions;
+
+            } satisfies IHttpRequestOptions;
 
 
 
@@ -765,11 +763,11 @@ if (resource === 'company') {
 				method: 'POST',
 				qs,
 				headers: {},
-				uri: endpoint,
+				url: endpoint,
 				body,
 				json: true,
-				useQuerystring: true,
-			} satisfies IRequestOptions;
+
+			} satisfies IHttpRequestOptions;
 
 
 
@@ -805,11 +803,11 @@ if (resource === 'appointment') {
 			method: 'POST',
 			qs,
 			headers: {},
-			uri: endpoint,
+			url: endpoint,
 			body,
 			json: true,
-			useQuerystring: true,
-		} satisfies IRequestOptions;
+
+		} satisfies IHttpRequestOptions;
 
 
 
@@ -852,11 +850,11 @@ if (resource === 'itemType') {
 			method: 'POST',
 			qs,
 			headers: {},
-			uri: endpoint,
+			url: endpoint,
 			body,
 			json: true,
-			useQuerystring: true,
-		} satisfies IRequestOptions;
+
+		} satisfies IHttpRequestOptions;
 
 
 	responseData = await this.helpers.requestWithAuthentication.call(
@@ -889,11 +887,11 @@ if (resource === 'serviceObject') {
 			method: 'POST',
 			qs,
 			headers: {},
-			uri: endpoint,
+			url: endpoint,
 			body,
 			json: true,
-			useQuerystring: true,
-		} satisfies IRequestOptions;
+
+		} satisfies IHttpRequestOptions;
 
 
 
@@ -974,11 +972,11 @@ if (resource === 'serviceRequest') {
 			method: 'POST',
 			qs,
 			headers: {},
-			uri: endpoint,
+			url: endpoint,
 			body,
 			json: true,
-			useQuerystring: true,
-		} satisfies IRequestOptions;
+
+		} satisfies IHttpRequestOptions;
 
 
 
@@ -1006,11 +1004,11 @@ if (resource === 'serviceRequest') {
 		const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceRequests(${ServiceRequest}L)/$links/Tags`;
 		const options = {
 			method: 'PUT',
-			uri: endpoint,
+			url: endpoint,
 			body,
 			json: true,
-			useQuerystring: true,
-		} satisfies IRequestOptions;
+
+		} satisfies IHttpRequestOptions;
 
 
 
@@ -1037,11 +1035,11 @@ if (resource === 'serviceRequest') {
 		const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceRequests(${ServiceRequest}L)/$links/Tags`;
 		const options = {
 			method: 'DELETE',
-			uri: endpoint,
+			url: endpoint,
 			body,
 			json: true,
-			useQuerystring: true,
-		} satisfies IRequestOptions;
+
+		} satisfies IHttpRequestOptions;
 
 
 
@@ -1063,10 +1061,10 @@ if (resource === 'serviceRequest') {
 		const endpoint = `https://portal.mobilefieldreport.com/odata/ServiceRequests(${ServiceRequest}L)`;
 		const options = {
 			method: 'DELETE',
-			uri: endpoint,
+			url: endpoint,
 			json: true,
-			useQuerystring: true,
-		} satisfies IRequestOptions;
+
+		} satisfies IHttpRequestOptions;
 
 
 
@@ -1079,13 +1077,11 @@ if (resource === 'serviceRequest') {
 
 // upload document
 if (resource === 'document' && operation === 'uploadDocument') {
-
   let bodyUploadDocument: Buffer;
   let filename = 'file';
   let mimeType = 'application/octet-stream';
-
-	 const ServiceRequestUI = this.getNodeParameter('ServiceRequest', i) as IDataObject;
-	 const serviceRequestId = ServiceRequestUI.value
+  const ServiceRequestUI = this.getNodeParameter('ServiceRequest', i) as IDataObject;
+  const serviceRequestId = ServiceRequestUI.value;
 
   // —— preserve your existing binary/text logic ——
   if (this.getNodeParameter('binaryData', i)) {
@@ -1102,26 +1098,20 @@ if (resource === 'document' && operation === 'uploadDocument') {
   }
   // —— end preserved logic ——
 
+  // Create FormData using global FormData
+  const formData = new (globalThis as any).FormData();
+  // Convert Buffer to Uint8Array to satisfy BlobPart typing in TypeScript
+  const fileUint8 = new Uint8Array(bodyUploadDocument);
+  formData.append('file', new Blob([fileUint8], { type: mimeType }), filename);
+  formData.append('options', JSON.stringify({ filename }));
+
   const endpoint = `https://portal.mobilefieldreport.com/mfr/Document/UploadAndCreate`;
-
-  const options = {
+  const options: IHttpRequestOptions = {
     method: 'POST',
-    uri: endpoint,
-    formData: {
-      // this will be sent as a true file part
-      file: {
-        value: bodyUploadDocument,
-        options: {
-          filename,
-          contentType: mimeType,
-        },
-      },
-      // additional JSON part
-      options: JSON.stringify({ filename }),
-    },
+    url: endpoint,
+    body: formData,
     json: false,
-  } satisfies IRequestOptions;
-
+  };
 
   responseData = await this.helpers.requestWithAuthentication.call(
     this,
@@ -1129,18 +1119,11 @@ if (resource === 'document' && operation === 'uploadDocument') {
     options,
   );
 
- responseData = JSON.parse(responseData);
 
- const documentId = responseData.DocumentDto.Id;
-
-
-
-	const uri = `https://portal.mobilefieldreport.com/mfr/ServiceRequest/${serviceRequestId}/Document/${documentId}`
-
-
-	await mfrApiRequest.call(this, 'PUT', '', {}, {}, uri);
-
-
+  responseData = JSON.parse(responseData as string);
+  const documentId = responseData.DocumentDto.Id;
+  const uri = `https://portal.mobilefieldreport.com/mfr/ServiceRequest/${serviceRequestId}/Document/${documentId}`;
+  await mfrApiRequest.call(this, 'PUT', '', {}, {}, uri);
 }
 
 
@@ -1163,11 +1146,11 @@ if (resource === 'itemType') {
 			method: 'GET',
 			qs,
 			headers: {},
-			uri: endpoint,
+			url: endpoint,
 			body,
 			json: true,
-			useQuerystring: true,
-		} satisfies IRequestOptions;
+
+		} satisfies IHttpRequestOptions;
 
 
 
@@ -1191,7 +1174,7 @@ if (resource === 'itemType') {
 
 		let startingEntity = 0;
 		let allItems: any[] = [];
-		const numberOfEntities = 100;
+		const numberOfEntities = 5;
 
 		while (true) {
 			let qs: any = {
@@ -1206,10 +1189,10 @@ if (resource === 'itemType') {
 			const options = {
 				method: 'GET',
 				qs,
-				uri: endpoint,
+				url: endpoint,
 				json: true,
-				useQuerystring: true,
-			} satisfies IRequestOptions;
+
+			} satisfies IHttpRequestOptions;
 
 
 
@@ -1257,10 +1240,10 @@ if (resource === 'serviceObject') {
 		const options = {
 			method: 'GET',
 			qs,
-			uri: endpoint,
+			url: endpoint,
 			json: true,
-			useQuerystring: true,
-		} satisfies IRequestOptions;
+
+		} satisfies IHttpRequestOptions;
 
 
 
@@ -1284,7 +1267,7 @@ if (resource === 'serviceObject') {
 
 		let startingEntity = 0;
 		let allItems: any[] = [];
-		const numberOfEntities = 100;
+		const numberOfEntities = 5;
 
 		while (true) {
 			let qs: any = {
@@ -1299,10 +1282,10 @@ if (resource === 'serviceObject') {
 			const options = {
 				method: 'GET',
 				qs,
-				uri: endpoint,
+				url: endpoint,
 				json: true,
-				useQuerystring: true,
-			} satisfies IRequestOptions;
+
+			} satisfies IHttpRequestOptions;
 
 
 
@@ -1360,10 +1343,10 @@ if (resource === 'serviceRequest') {
 			const options = {
 				method: 'GET',
 				qs,
-				uri: endpoint,
+				url: endpoint,
 				json: true,
-				useQuerystring: true,
-			} satisfies IRequestOptions;
+
+			} satisfies IHttpRequestOptions;
 
 
 
@@ -1406,7 +1389,7 @@ if (resource === 'user') {
 
 		let startingEntity = 0;
 		let allItems: any[] = [];
-		const numberOfEntities = 100;
+		const numberOfEntities = 5;
 
 		while (true) {
 			let qs: any = {
@@ -1421,10 +1404,10 @@ if (resource === 'user') {
 			const options = {
 				method: 'GET',
 				qs,
-				uri: endpoint,
+				url: endpoint,
 				json: true,
-				useQuerystring: true,
-			} satisfies IRequestOptions;
+
+			} satisfies IHttpRequestOptions;
 
 
 
@@ -1473,10 +1456,10 @@ if (resource === 'serviceRequest') {
 		const options = {
 			method: 'GET',
 			qs,
-			uri: endpoint,
+			url: endpoint,
 			json: true,
-			useQuerystring: true,
-		} satisfies IRequestOptions;
+
+		} satisfies IHttpRequestOptions;
 
 
 
@@ -1509,10 +1492,10 @@ if (resource === 'report' && operation === 'generateReportFromReportDefinition')
 			method: 'POST',
 			body,
 			qs,
-			uri: endpoint,
+			url: endpoint,
 			json: true,
-			useQuerystring: true,
-		} satisfies IRequestOptions;
+
+		} satisfies IHttpRequestOptions;
 
 		const responseDataFirstRequest = await this.helpers.requestWithAuthentication.call(
 			this,
@@ -1520,15 +1503,14 @@ if (resource === 'report' && operation === 'generateReportFromReportDefinition')
 			optionsFirstRequest,
 		);
 
-		const ReportDtoUri = responseDataFirstRequest.ReportDto.URI;
+		const ReportDtourl = responseDataFirstRequest.ReportDto.url;
 		const DocumentName = responseDataFirstRequest.ReportDto.DocumentName;
 
 		const optionsSecondRequest = {
 			method: 'GET',
-			uri: ReportDtoUri,
+			url: ReportDtourl,
 			json: false,
-			encoding: null,
-		} satisfies IRequestOptions;
+		} satisfies IHttpRequestOptions;
 
 		const pdfBuffer = await this.helpers.requestWithAuthentication.call(
 			this,
@@ -1558,13 +1540,11 @@ if (resource === 'report' && operation === 'generateReportFromReportDefinition')
 
 // end
 
-if(resource !== 'report' && operation !== 'generateReportFromReportDefinition'){
 	const executionData = this.helpers.constructExecutionMetaData(
 		this.helpers.returnJsonArray(responseData as IDataObject[]),
 		{ itemData: { item: i } },
 	);
 	returnData.push(...executionData);
-}
 
 }
 		 catch (error) {

@@ -1,4 +1,4 @@
-import { IDataObject, IExecuteFunctions, IHookFunctions, IHttpRequestMethods, ILoadOptionsFunctions, IRequestOptions, JsonObject, NodeApiError } from "n8n-workflow";
+import { IDataObject, IExecuteFunctions, IHookFunctions, IHttpRequestMethods, ILoadOptionsFunctions, IHttpRequestOptions, JsonObject, NodeApiError } from "n8n-workflow";
 
 export async function mfrApiRequest(
 	this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions,
@@ -14,15 +14,13 @@ export async function mfrApiRequest(
 		method,
 		qs: query,
 		headers: {},
-		uri: uri || `https://portal.mobilefieldreport.com/odata${endpoint}`,
+		url: uri || `https://portal.mobilefieldreport.com/odata${endpoint}`,
 		body,
 		json: true,
-		useQuerystring: true,
-	} satisfies IRequestOptions;
+	} satisfies IHttpRequestOptions;
 
 
 	try {
-
 		return await this.helpers.requestWithAuthentication.call(this, 'mfrApi', options);
 
 
