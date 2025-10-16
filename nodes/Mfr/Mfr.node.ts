@@ -140,7 +140,7 @@ export class Mfr implements INodeType {
 			} satisfies IHttpRequestOptions;
 
 			// Fetching the companies data
-			const response = await this.helpers.requestWithAuthentication.call(
+			const response = await this.helpers.httpRequestWithAuthentication.call(
 					this,
 					'mfrApi',
 					options,
@@ -171,7 +171,7 @@ export class Mfr implements INodeType {
 		} satisfies IHttpRequestOptions;
 
 		// Fetching the companies data
-		const response = await this.helpers.requestWithAuthentication.call(
+		const response = await this.helpers.httpRequestWithAuthentication.call(
 				this,
 				'mfrApi',
 				options,
@@ -205,7 +205,7 @@ async getCostCenter(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]
 	} satisfies IHttpRequestOptions;
 
 	// Fetching the companies data
-	const response = await this.helpers.requestWithAuthentication.call(
+	const response = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
@@ -233,7 +233,7 @@ async getQualifications(this: ILoadOptionsFunctions): Promise<INodePropertyOptio
 	} satisfies IHttpRequestOptions;
 
 	// Fetching the companies data
-	const response = await this.helpers.requestWithAuthentication.call(
+	const response = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
@@ -261,7 +261,7 @@ async getTag(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 	} satisfies IHttpRequestOptions;
 
 	// Fetching the companies data
-	const response = await this.helpers.requestWithAuthentication.call(
+	const response = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
@@ -301,7 +301,7 @@ async getServiceObjectLoadOptions(this: ILoadOptionsFunctions): Promise<INodePro
 		} satisfies IHttpRequestOptions;
 
 		// Fetch the page data
-		const response = await this.helpers.requestWithAuthentication.call(
+		const response = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
@@ -353,7 +353,7 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 		} satisfies IHttpRequestOptions;
 
 		// Fetch the page data
-		const response = await this.helpers.requestWithAuthentication.call(
+		const response = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
@@ -402,7 +402,7 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 
 
 
-				const searchResults = await this.helpers.requestWithAuthentication.call(
+				const searchResults = await this.helpers.httpRequestWithAuthentication.call(
 					this,
 					'mfrApi',
 					options,
@@ -436,7 +436,7 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 
 
 
-				const searchResults = await this.helpers.requestWithAuthentication.call(
+				const searchResults = await this.helpers.httpRequestWithAuthentication.call(
 					this,
 					'mfrApi',
 					options,
@@ -468,7 +468,7 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 			} satisfies IHttpRequestOptions;
 
 
-				const searchResults = await this.helpers.requestWithAuthentication.call(
+				const searchResults = await this.helpers.httpRequestWithAuthentication.call(
 					this,
 					'mfrApi',
 					options,
@@ -500,7 +500,7 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 
 
 
-				const searchResults = await this.helpers.requestWithAuthentication.call(
+				const searchResults = await this.helpers.httpRequestWithAuthentication.call(
 					this,
 					'mfrApi',
 					options,
@@ -530,7 +530,7 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 
 			} satisfies IHttpRequestOptions;
 
-				const searchResults = await this.helpers.requestWithAuthentication.call(
+				const searchResults = await this.helpers.httpRequestWithAuthentication.call(
 					this,
 					'mfrApi',
 					options,
@@ -588,7 +588,7 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 			} satisfies IHttpRequestOptions;
 
 
-		responseData = await this.helpers.requestWithAuthentication.call(
+		responseData = await this.helpers.httpRequestWithAuthentication.call(
 				this,
 				'mfrApi',
 				options,
@@ -636,7 +636,7 @@ if (resource === 'company') {
 
 
             // Fetch the page data
-            const responseData = await this.helpers.requestWithAuthentication.call(
+            const responseData = await this.helpers.httpRequestWithAuthentication.call(
                 this,
                 'mfrApi',
                 options,
@@ -704,7 +704,7 @@ if (resource === 'contact') {
 
 
             // Fetch the page data
-            const responseData = await this.helpers.requestWithAuthentication.call(
+            const responseData = await this.helpers.httpRequestWithAuthentication.call(
                 this,
                 'mfrApi',
                 options,
@@ -772,7 +772,7 @@ if (resource === 'company') {
 
 
 
-		responseData = await this.helpers.requestWithAuthentication.call(
+		responseData = await this.helpers.httpRequestWithAuthentication.call(
 				this,
 				'mfrApi',
 				options,
@@ -811,7 +811,7 @@ if (resource === 'appointment') {
 
 
 
-	responseData = await this.helpers.requestWithAuthentication.call(
+	responseData = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
@@ -857,7 +857,7 @@ if (resource === 'itemType') {
 		} satisfies IHttpRequestOptions;
 
 
-	responseData = await this.helpers.requestWithAuthentication.call(
+	responseData = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
@@ -895,7 +895,7 @@ if (resource === 'serviceObject') {
 
 
 
-	responseData = await this.helpers.requestWithAuthentication.call(
+	responseData = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
@@ -981,7 +981,7 @@ if (resource === 'serviceRequest') {
 
 
 
-	responseData = await this.helpers.requestWithAuthentication.call(
+	responseData = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
@@ -1012,7 +1012,7 @@ if (resource === 'serviceRequest') {
 
 
 
-	responseData = await this.helpers.requestWithAuthentication.call(
+	responseData = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
@@ -1043,7 +1043,7 @@ if (resource === 'serviceRequest') {
 
 
 
-	responseData = await this.helpers.requestWithAuthentication.call(
+	responseData = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
@@ -1068,7 +1068,7 @@ if (resource === 'serviceRequest') {
 
 
 
-	responseData = await this.helpers.requestWithAuthentication.call(
+	responseData = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
@@ -1113,7 +1113,7 @@ if (resource === 'document' && operation === 'uploadDocument') {
     json: false,
   };
 
-  responseData = await this.helpers.requestWithAuthentication.call(
+  responseData = await this.helpers.httpRequestWithAuthentication.call(
     this,
     'mfrApi',
     options,
@@ -1154,7 +1154,7 @@ if (resource === 'itemType') {
 
 
 
-	responseData = await this.helpers.requestWithAuthentication.call(
+	responseData = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
@@ -1196,7 +1196,7 @@ if (resource === 'itemType') {
 
 
 
-			const responseData = await this.helpers.requestWithAuthentication.call(
+			const responseData = await this.helpers.httpRequestWithAuthentication.call(
 				this,
 				'mfrApi',
 				options,
@@ -1247,7 +1247,7 @@ if (resource === 'serviceObject') {
 
 
 
-	responseData = await this.helpers.requestWithAuthentication.call(
+	responseData = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
@@ -1289,7 +1289,7 @@ if (resource === 'serviceObject') {
 
 
 
-			const responseData = await this.helpers.requestWithAuthentication.call(
+			const responseData = await this.helpers.httpRequestWithAuthentication.call(
 				this,
 				'mfrApi',
 				options,
@@ -1350,7 +1350,7 @@ if (resource === 'serviceRequest') {
 
 
 
-			const responseData = await this.helpers.requestWithAuthentication.call(
+			const responseData = await this.helpers.httpRequestWithAuthentication.call(
 				this,
 				'mfrApi',
 				options,
@@ -1411,7 +1411,7 @@ if (resource === 'user') {
 
 
 
-			const responseData = await this.helpers.requestWithAuthentication.call(
+			const responseData = await this.helpers.httpRequestWithAuthentication.call(
 				this,
 				'mfrApi',
 				options,
@@ -1463,7 +1463,7 @@ if (resource === 'serviceRequest') {
 
 
 
-	responseData = await this.helpers.requestWithAuthentication.call(
+	responseData = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			options,
@@ -1497,39 +1497,52 @@ if (resource === 'report' && operation === 'generateReportFromReportDefinition')
 
 		} satisfies IHttpRequestOptions;
 
-		const responseDataFirstRequest = await this.helpers.requestWithAuthentication.call(
+		const responseDataFirstRequest = await this.helpers.httpRequestWithAuthentication.call(
 			this,
 			'mfrApi',
 			optionsFirstRequest,
 		);
 
-		const ReportDtourl = responseDataFirstRequest.ReportDto.url;
+		const ReportDtourl = responseDataFirstRequest.ReportDto.URI;
 		const DocumentName = responseDataFirstRequest.ReportDto.DocumentName;
 
 		const optionsSecondRequest = {
-			method: 'GET',
-			url: ReportDtourl,
-			json: false,
-		} satisfies IHttpRequestOptions;
+	method: 'GET',
+	url: ReportDtourl,
+	encoding: 'arraybuffer',
+} satisfies IHttpRequestOptions;
 
-		const pdfBuffer = await this.helpers.requestWithAuthentication.call(
-			this,
-			'mfrApi',
-			optionsSecondRequest,
-		);
+const pdfResponse = await this.helpers.httpRequestWithAuthentication.call(
+	this,
+	'mfrApi',
+	optionsSecondRequest,
+);
 
-		const binaryData = await this.helpers.prepareBinaryData.call(
-			this,
-			pdfBuffer,
-			DocumentName,
-		);
+let pdfBuffer: Buffer;
+
+// Handle different response types
+if (Buffer.isBuffer(pdfResponse)) {
+	pdfBuffer = pdfResponse;
+} else if (pdfResponse instanceof ArrayBuffer) {
+	pdfBuffer = Buffer.from(pdfResponse);
+} else if (typeof pdfResponse === 'string') {
+	pdfBuffer = Buffer.from(pdfResponse, 'latin1');
+} else {
+	pdfBuffer = Buffer.from(pdfResponse);
+}
+
+const binaryData = await this.helpers.prepareBinaryData(
+	pdfBuffer,
+	DocumentName,
+	'application/pdf',
+);
+
 
 		const newItem: INodeExecutionData = {
 			json: items[i].json,
 			binary: {
 				file: binaryData,
-			},
-			pairedItem: { item: i },
+			}
 		};
 
 		returnItems.push(newItem);
