@@ -21,7 +21,7 @@ export async function mfrApiRequest(
 
 
 	try {
-		return await this.helpers.requestWithAuthentication.call(this, 'mfrApi', options);
+		return await this.helpers.httpRequestWithAuthentication.call(this, 'mfrApi', options);
 
 
 	} catch (error) {

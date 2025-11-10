@@ -1098,32 +1098,70 @@ if (resource === 'document' && operation === 'uploadDocument') {
   }
   // —— end preserved logic ——
 
-  // Create FormData using global FormData
-  const formData = new (globalThis as any).FormData();
-  // Convert Buffer to Uint8Array to satisfy BlobPart typing in TypeScript
-  const fileUint8 = new Uint8Array(bodyUploadDocument);
-  formData.append('file', new Blob([fileUint8], { type: mimeType }), filename);
-  formData.append('options', JSON.stringify({ filename }));
+  // Helper type and function for multipart payload
+  type BinaryBuffer = Uint8Array & { readonly length: number };
+  const MULTIPART_NEWLINE = '\r\n';
+
+  function buildMultipartPayload(options: {
+    fieldName: string;
+    filename: string;
+    contentType: string;
+    data: BinaryBuffer;
+  }) {
+    const boundary = `----n8nLaunix${Date.now().toString(16)}${Math.random()
+      .toString(16)
+      .slice(2)}`;
+    const safeFieldName = encodeURIComponent(options.fieldName);
+    const safeFileName = encodeURIComponent(options.filename);
+    const header = Buffer.from(
+      `--${boundary}${MULTIPART_NEWLINE}` +
+        `Content-Disposition: form-data; name="${safeFieldName}"; filename="${safeFileName}"${MULTIPART_NEWLINE}` +
+        `Content-Type: ${options.contentType}${MULTIPART_NEWLINE}${MULTIPART_NEWLINE}`,
+      'utf8',
+    );
+    const footer = Buffer.from(
+      `${MULTIPART_NEWLINE}--${boundary}--${MULTIPART_NEWLINE}`,
+      'utf8',
+    );
+    return {
+      boundary,
+      body: Buffer.concat([header, options.data, footer]),
+    };
+  }
+
+  // Build multipart payload
+  const payload = buildMultipartPayload({
+    fieldName: 'file',
+    filename,
+    contentType: mimeType,
+    data: bodyUploadDocument as unknown as BinaryBuffer,
+  });
 
   const endpoint = `https://portal.mobilefieldreport.com/mfr/Document/UploadAndCreate`;
   const options: IHttpRequestOptions = {
     method: 'POST',
     url: endpoint,
-    body: formData,
+    body: payload.body,
+    headers: {
+      'Content-Type': `multipart/form-data; boundary=${payload.boundary}`,
+    },
     json: false,
   };
 
   responseData = await this.helpers.httpRequestWithAuthentication.call(
-    this,
-    'mfrApi',
-    options,
-  );
+  this,
+  'mfrApi',
+  options,
+);
 
+// Check if responseData is already an object or needs parsing
+if (typeof responseData === 'string') {
+  responseData = JSON.parse(responseData);
+}
 
-  responseData = JSON.parse(responseData as string);
-  const documentId = responseData.DocumentDto.Id;
-  const uri = `https://portal.mobilefieldreport.com/mfr/ServiceRequest/${serviceRequestId}/Document/${documentId}`;
-  await mfrApiRequest.call(this, 'PUT', '', {}, {}, uri);
+const documentId = responseData.DocumentDto.Id;
+const uri = `https://portal.mobilefieldreport.com/mfr/ServiceRequest/${serviceRequestId}/Document/${documentId}`;
+await mfrApiRequest.call(this, 'PUT', '', {}, {}, uri);
 }
 
 
