@@ -5,6 +5,7 @@ import type {
 	INodeTypeDescription,
 	IWebhookResponseData,
 } from 'n8n-workflow';
+import { NodeConnectionTypes } from 'n8n-workflow';
 import { mfrApiRequest } from './GenericFunctions'
 
 export class MfrTrigger implements INodeType {
@@ -20,7 +21,8 @@ export class MfrTrigger implements INodeType {
 			name: 'mfr Trigger',
 		},
 		inputs: [],
-		outputs: ['main'],
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-outputs-wrong
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
 				name: 'mfrApi',
