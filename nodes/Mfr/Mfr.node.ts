@@ -1,4 +1,4 @@
-import {
+import type {
 	 IDataObject,
 	 IExecuteFunctions,
 	 INodeExecutionData,
@@ -8,9 +8,9 @@ import {
 	 INodeListSearchItems,
 	 INodeListSearchResult,
 	 ILoadOptionsFunctions,
-	 INodePropertyOptions,
-	 NodeConnectionTypes
+	 INodePropertyOptions
 } from 'n8n-workflow';
+import { NodeConnectionTypes } from 'n8n-workflow';
 import { companyFields, companyOperations } from './descriptions/CompanyDescription';
 import { appointmentFields, AppointmentOperations } from './descriptions/AppointmentDescription';
 import { itemTypeFields, ItemTypeOperations } from './descriptions/ItemTypeDescription';
