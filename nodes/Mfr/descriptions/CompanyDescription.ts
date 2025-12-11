@@ -81,37 +81,43 @@ export const companyFields: INodeProperties[] = [
 			},
 		],
 	},
-	{
-  displayName: 'Expand',
-  name: '$expand',
-  type: 'multiOptions',
-  options: [
-   {
-      name: 'Contacts',
-      value: 'Contacts',
-    },
-    {
-      name: 'Tags',
-      value: 'Tags',
-    },
-		 {
-      name: 'Service Objects',
-      value: 'ServiceObjects',
-    },
 		{
-      name: 'Main Contact',
-      value: 'MainContact',
-    },
-  ],
-  default: [],
-  hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
-  displayOptions: {
-    show: {
-				resource: ['company'],
-				operation: ['get'],
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: [
+					'company',
+				],
+				operation: [
+					'get',
+				],
 			},
-  },
-},
+		},
+		options: [{
+			displayName: 'Expand',
+			name: '$expand',
+			type: 'multiOptions',
+			options: [{
+				name: 'Contacts',
+				value: 'Contacts',
+			}, {
+				name: 'Tags',
+				value: 'Tags',
+			}, {
+				name: 'Service Objects',
+				value: 'ServiceObjects',
+			}, {
+				name: 'Main Contact',
+				value: 'MainContact',
+			}, ],
+			default: [],
+			hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
+		}],
+	},
 
 
 /* --------------------------------------------------------------------------  */

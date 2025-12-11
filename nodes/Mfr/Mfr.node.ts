@@ -577,8 +577,12 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 			const companyUI = this.getNodeParameter('companyId', i) as IDataObject;
 			let companyId = companyUI.value as string;
 
-			const $expandUI = this.getNodeParameter('$expand', i) as IDataObject[];
-			$expandUI[0] ? qs.$expand = $expandUI.join(",") : "";
+const additionalFieldsUI = this.getNodeParameter('additionalFields', i) as IDataObject ?? {};
+const $expandUI = additionalFieldsUI.$expand as string[] | undefined;
+
+if ($expandUI?.length) {
+    qs.$expand = $expandUI.join(',');
+}
 
 			const endpoint = `https://portal.mobilefieldreport.com/odata/Companies(${companyId}L)`;
 			const options = {
@@ -590,6 +594,7 @@ async getContactsLoadOptions(this: ILoadOptionsFunctions): Promise<INodeProperty
 
 			} satisfies IHttpRequestOptions;
 
+			console.log(options);
 
 		responseData = await this.helpers.httpRequestWithAuthentication.call(
 				this,
