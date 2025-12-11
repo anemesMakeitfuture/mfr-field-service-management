@@ -1,14 +1,15 @@
 import {
-	type IDataObject,
-	type IExecuteFunctions,
-	type INodeExecutionData,
-	type INodeType,
-	type INodeTypeDescription,
-	type IHttpRequestOptions,
-	type INodeListSearchItems,
-	type INodeListSearchResult,
-	type ILoadOptionsFunctions,
-	type INodePropertyOptions,
+	 IDataObject,
+	 IExecuteFunctions,
+	 INodeExecutionData,
+	 INodeType,
+	 INodeTypeDescription,
+	 IHttpRequestOptions,
+	 INodeListSearchItems,
+	 INodeListSearchResult,
+	 ILoadOptionsFunctions,
+	 INodePropertyOptions,
+	 NodeConnectionTypes
 } from 'n8n-workflow';
 import { companyFields, companyOperations } from './descriptions/CompanyDescription';
 import { appointmentFields, AppointmentOperations } from './descriptions/AppointmentDescription';
@@ -39,8 +40,10 @@ export class Mfr implements INodeType {
 				name: 'mfrApi',
 				required: true,
 			}],
-		inputs: ['main'],
-		outputs: ['main'],
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-inputs-wrong-regular-node
+		inputs: [NodeConnectionTypes.Main],
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-outputs-wrong
+		outputs: [NodeConnectionTypes.Main],
 
 		properties: [
 			{
