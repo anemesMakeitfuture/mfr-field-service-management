@@ -34,12 +34,13 @@ export const DocumentFields: INodeProperties[] = [
 		name: 'ServiceRequest',
 		type: 'resourceLocator',
 		default: { mode: 'list', value: '' },
+		required: true,
 		description: 'Can search by ID',
 		displayOptions: {
 			show: {
-			operation: ['uploadDocument'],
-			resource: ['document'],
-		},
+				operation: ['uploadDocument'],
+				resource: ['document'],
+			},
 		},
 		modes: [
 			{
@@ -55,53 +56,22 @@ export const DocumentFields: INodeProperties[] = [
 			{
 				displayName: 'By ID',
 				name: 'id',
-				type: 'string'
+				type: 'string',
 			},
 		],
 	},
-
-{
-	displayName: 'Binary File',
-	name: 'binaryData',
-	type: 'boolean',
-	default: false,
-	displayOptions: {
-		show: {
-			operation: ['uploadDocument'],
-			resource: ['document'],
+	{
+		displayName: 'Input Binary Field',
+		name: 'binaryPropertyName',
+		type: 'string',
+		default: 'data',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['uploadDocument'],
+				resource: ['document'],
+			},
 		},
+		hint: 'The name of the input binary field containing the file to be uploaded',
 	},
-	description: 'Whether the data to upload should be taken from binary field',
-},
-{
-	displayName: 'File Content',
-	name: 'fileContent',
-	type: 'string',
-	default: '',
-	displayOptions: {
-		show: {
-			operation: ['uploadDocument'],
-			resource: ['document'],
-		},
-	},
-	placeholder: '',
-	description: 'The text content of the file to upload',
-},
-{
-	displayName: 'Input Binary Field',
-	name: 'binaryPropertyName',
-	type: 'string',
-	default: 'data',
-	required: true,
-	displayOptions: {
-		show: {
-			operation: ['uploadDocument'],
-			resource: ['document'],
-		},
-	},
-	placeholder: '',
-	hint: 'The name of the input binary field containing the file to be uploaded',
-},
-
-
 ]

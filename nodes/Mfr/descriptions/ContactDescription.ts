@@ -25,76 +25,70 @@ export const contactOperations: INodeProperties[] = [
 
 export const contactFields: INodeProperties[] = [
 
-
 /* --------------------------------------------------------------------------  */
-/*                                  contact:listContacts                      */
-	/* --------------------------------------------------------------------------*/
-	{
-		displayName: 'Limit',
-		name: 'limit',
-		type: 'number',
-		displayOptions: {
-			show: {
-				resource: ['contact'],
-				operation: ['listContacts']
-			},
-		},
-		typeOptions: {
-			minValue: 1,
-		},
-		default: 50,
-		description: 'Max number of results to return',
-	},
+/*                                  contact:listContacts                       */
+/* -------------------------------------------------------------------------- */
 	{
 		displayName: 'Fetch All Results',
 		name: 'fetchAllResults',
 		type: 'boolean',
 		required: true,
-		hint: 'Whether to fetch all refunds. If this parameter is set to true, number of entities is ignored and all refunds will be retrieved.',
+		hint: 'Whether to fetch all contacts. If this parameter is set to true, limit is ignored and all contacts will be retrieved.',
 		displayOptions: {
 			show: {
 				resource: ['contact'],
-				operation: ['listContacts']
+				operation: ['listContacts'],
 			},
 		},
 		default: false,
 	},
 	{
-		displayName: 'Filter',
-		name: '$filter',
-		hint: 'Allows to filter by a condition or a set of conditions given. <a href="https://www.odata.org/documentation/odata-version-3-0/url-conventions/">Filters documentation</a>',
-		type: 'string',
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
 		displayOptions: {
 			show: {
 				resource: ['contact'],
-				operation: ['listContacts']
+				operation: ['listContacts'],
 			},
 		},
-		default: '',
-	},
-	{
-  displayName: 'Expand',
-  name: '$expand',
-  type: 'multiOptions',
-  options: [
-    {
-      name: 'Company',
-      value: 'Company',
-    },
-    {
-      name: 'User',
-      value: 'User',
-    }
-  ],
-  default: [],
-  hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
-  displayOptions: {
-    show: {
-				resource: ['contact'],
-				operation: ['listContacts']
+		options: [
+			{
+				displayName: 'Expand',
+				name: '$expand',
+				type: 'multiOptions',
+				options: [
+					{
+						name: 'Company',
+						value: 'Company',
+					},
+					{
+						name: 'User',
+						value: 'User',
+					},
+				],
+				default: [],
+				hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
 			},
-  },
-},
-
-
+			{
+				displayName: 'Filter',
+				name: '$filter',
+				hint: 'Allows to filter by a condition or a set of conditions given. <a href="https://www.odata.org/documentation/odata-version-3-0/url-conventions/">Filters documentation</a>',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Limit',
+				name: 'limit',
+				type: 'number',
+				typeOptions: {
+					minValue: 1,
+				},
+				default: 50,
+				description: 'Max number of results to return',
+			},
+		],
+	},
 ];

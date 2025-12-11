@@ -26,8 +26,8 @@ export const AppointmentOperations: INodeProperties[] = [
 export const appointmentFields: INodeProperties[] = [
 
 /* -------------------------------------------------------------------------- */
-	/*                                  appointment:createAppointment            */
-	/* -------------------------------------------------------------------------- */
+/*                                  appointment:createAppointment            */
+/* -------------------------------------------------------------------------- */
 	{
 		displayName: 'Contact',
 		name: 'ContactId',
@@ -69,7 +69,6 @@ export const appointmentFields: INodeProperties[] = [
 			},
 		],
 	},
-
 	{
 		displayName: 'Start Date Time',
 		name: 'StartDateTime',
@@ -80,9 +79,9 @@ export const appointmentFields: INodeProperties[] = [
 			},
 		},
 		type: 'dateTime',
-		default: ''
+		required: true,
+		default: '',
 	},
-
 	{
 		displayName: 'End Date Time',
 		name: 'EndDateTime',
@@ -93,13 +92,15 @@ export const appointmentFields: INodeProperties[] = [
 			},
 		},
 		type: 'dateTime',
-		default: ''
+		required: true,
+		default: '',
 	},
-
 	{
-		displayName: 'Type',
-		name: 'Type',
-		type: 'options',
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
 		displayOptions: {
 			show: {
 				resource: ['appointment'],
@@ -108,24 +109,25 @@ export const appointmentFields: INodeProperties[] = [
 		},
 		options: [
 			{
-				name: 'Illness',
-				value: 'Illness'
+				displayName: 'Type',
+				name: 'Type',
+				type: 'options',
+				options: [
+					{
+						name: 'Illness',
+						value: 'Illness',
+					},
+					{
+						name: 'Vacation',
+						value: 'Vacation',
+					},
+					{
+						name: 'Other',
+						value: 'Other',
+					},
+				],
+				default: 'Other',
 			},
-			{
-				name: 'Vacation',
-				value: 'Vacation'
-			},
-			{
-				name: 'Other',
-				value: 'Other'
-			},
-			{
-				name: '',
-				value: ''
-			},
-
 		],
-		default: '',
 	},
-
-]
+];

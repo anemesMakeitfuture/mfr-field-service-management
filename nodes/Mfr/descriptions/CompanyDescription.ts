@@ -81,7 +81,7 @@ export const companyFields: INodeProperties[] = [
 			},
 		],
 	},
-		{
+	{
 		displayName: 'Additional Fields',
 		name: 'additionalFields',
 		type: 'collection',
@@ -89,119 +89,118 @@ export const companyFields: INodeProperties[] = [
 		default: {},
 		displayOptions: {
 			show: {
-				resource: [
-					'company',
-				],
-				operation: [
-					'get',
-				],
+				resource: ['company'],
+				operation: ['get'],
 			},
 		},
-		options: [{
-			displayName: 'Expand',
-			name: '$expand',
-			type: 'multiOptions',
-			options: [{
-				name: 'Contacts',
-				value: 'Contacts',
-			}, {
-				name: 'Tags',
-				value: 'Tags',
-			}, {
-				name: 'Service Objects',
-				value: 'ServiceObjects',
-			}, {
-				name: 'Main Contact',
-				value: 'MainContact',
-			}, ],
-			default: [],
-			hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
-		}],
+		options: [
+			{
+				displayName: 'Expand',
+				name: '$expand',
+				type: 'multiOptions',
+				options: [
+					{
+						name: 'Contacts',
+						value: 'Contacts',
+					},
+					{
+						name: 'Main Contact',
+						value: 'MainContact',
+					},
+					{
+						name: 'Service Objects',
+						value: 'ServiceObjects',
+					},
+					{
+						name: 'Tags',
+						value: 'Tags',
+					},
+				],
+				default: [],
+				hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
+			},
+		],
 	},
 
 
 /* --------------------------------------------------------------------------  */
 /*                                  company:listCompanies                      */
-	/* --------------------------------------------------------------------------*/
-	{
-		displayName: 'Limit',
-		name: 'limit',
-		type: 'number',
-		displayOptions: {
-			show: {
-				resource: ['company'],
-				operation: ['listCompanies']
-			},
-		},
-		typeOptions: {
-			minValue: 1,
-		},
-		default: 50,
-		description: 'Max number of results to return',
-	},
+/* --------------------------------------------------------------------------*/
 	{
 		displayName: 'Fetch All Results',
 		name: 'fetchAllResults',
 		type: 'boolean',
 		required: true,
-		hint: 'Whether to fetch all refunds. If this parameter is set to true, number of entities is ignored and all refunds will be retrieved.',
+		hint: 'Whether to fetch all results. If this parameter is set to true, limit is ignored and all companies will be retrieved.',
 		displayOptions: {
 			show: {
 				resource: ['company'],
-				operation: ['listCompanies']
+				operation: ['listCompanies'],
 			},
 		},
 		default: false,
 	},
 	{
-		displayName: 'Filter',
-		name: '$filter',
-		hint: 'Allows to filter by a condition or a set of conditions given. <a href="https://www.odata.org/documentation/odata-version-3-0/url-conventions/">Filters documentation</a>',
-		type: 'string',
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
 		displayOptions: {
 			show: {
 				resource: ['company'],
-				operation: ['listCompanies']
+				operation: ['listCompanies'],
 			},
 		},
-		default: '',
-	},
-	{
-  displayName: 'Expand',
-  name: '$expand',
-  type: 'multiOptions',
-  options: [
-    {
-      name: 'Contacts',
-      value: 'Contacts',
-    },
-    {
-      name: 'Tags',
-      value: 'Tags',
-    },
-		 {
-      name: 'Service Objects',
-      value: 'ServiceObjects',
-    },
-		{
-      name: 'Main Contact',
-      value: 'MainContact',
-    },
-  ],
-  default: [],
-  hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
-  displayOptions: {
-    show: {
-				resource: ['company'],
-				operation: ['listCompanies']
+		options: [
+			{
+				displayName: 'Expand',
+				name: '$expand',
+				type: 'multiOptions',
+				options: [
+					{
+						name: 'Contacts',
+						value: 'Contacts',
+					},
+					{
+						name: 'Main Contact',
+						value: 'MainContact',
+					},
+					{
+						name: 'Service Objects',
+						value: 'ServiceObjects',
+					},
+					{
+						name: 'Tags',
+						value: 'Tags',
+					},
+				],
+				default: [],
+				hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
 			},
-  },
-},
+			{
+				displayName: 'Filter',
+				name: '$filter',
+				type: 'string',
+				default: '',
+				hint: 'Allows to filter by a condition or a set of conditions given. <a href="https://www.odata.org/documentation/odata-version-3-0/url-conventions/">Filters documentation</a>',
+			},
+			{
+				displayName: 'Limit',
+				name: 'limit',
+				type: 'number',
+				typeOptions: {
+					minValue: 1,
+				},
+				default: 50,
+				description: 'Max number of results to return',
+			},
+		],
+	},
 
 	/* -------------------------------------------------------------------------- */
 	/*                                company:create                              */
 	/* -------------------------------------------------------------------------- */
-
 	{
 		displayName: 'Name',
 		name: 'Name',
@@ -215,7 +214,59 @@ export const companyFields: INodeProperties[] = [
 		},
 		default: '',
 	},
-
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['company'],
+				operation: ['createCompany'],
+			},
+		},
+		options: [
+			{
+				displayName: 'External ID',
+				name: 'ExternalId',
+				description: 'External or ERP ID for the company. If is not given, one is automatically generated.',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Is Physical Person',
+				name: 'IsPhysicalPerson',
+				description: 'Whether the customer is a company (true) or a single person. Default is false. If true, MainContact must be defined and the company will get the full name of this contact.',
+				type: 'boolean',
+				default: false,
+			},
+			{
+				displayName: 'Note',
+				name: 'Note',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Support Fax',
+				name: 'SupportFax',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Support Mail',
+				name: 'SupportMail',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Support Telephone',
+				name: 'SupportTelephone',
+				type: 'string',
+				default: '',
+			},
+		],
+	},
 	// Location
 	{
 		displayName: 'Location',
@@ -237,20 +288,8 @@ export const companyFields: INodeProperties[] = [
 				default: '',
 			},
 			{
-				displayName: 'Postal',
-				name: 'Postal',
-				type: 'string',
-				default: '',
-			},
-			{
 				displayName: 'City',
 				name: 'City',
-				type: 'string',
-				default: '',
-			},
-			{
-				displayName: 'State',
-				name: 'State',
 				type: 'string',
 				default: '',
 			},
@@ -266,89 +305,20 @@ export const companyFields: INodeProperties[] = [
 				type: 'boolean',
 				default: false,
 			},
+			{
+				displayName: 'Postal',
+				name: 'Postal',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'State',
+				name: 'State',
+				type: 'string',
+				default: '',
+			},
 		],
 	},
-
-	{
-		displayName: 'Support Telephone',
-		name: 'SupportTelephone',
-		type: 'string',
-		displayOptions: {
-			show: {
-				resource: ['company'],
-				operation: ['createCompany'],
-			},
-		},
-		default: '',
-	},
-
-	{
-		displayName: 'Support Fax',
-		name: 'SupportFax',
-		type: 'string',
-		displayOptions: {
-			show: {
-				resource: ['company'],
-				operation: ['createCompany'],
-			},
-		},
-		default: '',
-	},
-
-	{
-		displayName: 'Support Mail',
-		name: 'SupportMail',
-		type: 'string',
-		displayOptions: {
-			show: {
-				resource: ['company'],
-				operation: ['createCompany'],
-			},
-		},
-		default: '',
-	},
-
-	{
-		displayName: 'Note',
-		name: 'Note',
-		type: 'string',
-		displayOptions: {
-			show: {
-				resource: ['company'],
-				operation: ['createCompany'],
-			},
-		},
-		default: '',
-	},
-
-	{
-		displayName: 'External ID',
-		name: 'ExternalId',
-		description: 'External or ERP ID for the company. If is not given, one is automatically generated.',
-		type: 'string',
-		displayOptions: {
-			show: {
-				resource: ['company'],
-				operation: ['createCompany'],
-			},
-		},
-		default: '',
-	},
-
-	{
-		displayName: 'Is Physical Person',
-		name: 'IsPhysicalPerson',
-		description: 'Whether the customer is a company (true) or a single person. Default is false. If true, MainContact must be defined and the company will get the full name of this contact.',
-		type: 'boolean',
-		displayOptions: {
-			show: {
-				resource: ['company'],
-				operation: ['createCompany'],
-			},
-		},
-		default: false,
-	},
-
 	// Main Contact
 	{
 		displayName: 'Main Contact',
@@ -365,17 +335,9 @@ export const companyFields: INodeProperties[] = [
 		},
 		options: [
 			{
-				displayName: 'First Name',
-				name: 'FirstName',
+				displayName: 'Company ID',
+				name: 'CompanyId',
 				type: 'string',
-				description: 'Required',
-				default: '',
-			},
-			{
-				displayName: 'Last Name',
-				name: 'LastName',
-				type: 'string',
-				description: 'Required',
 				default: '',
 			},
 			{
@@ -386,8 +348,45 @@ export const companyFields: INodeProperties[] = [
 				default: '',
 			},
 			{
-				displayName: 'Telephone',
-				name: 'Telephone',
+				displayName: 'External ID',
+				name: 'ExternalId',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Fax',
+				name: 'Fax',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'First Name',
+				name: 'FirstName',
+				type: 'string',
+				description: 'Required',
+				default: '',
+			},
+			{
+				displayName: 'Gender',
+				name: 'Gender',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Is User',
+				name: 'IsUser',
+				type: 'boolean',
+				default: false,
+			},
+			{
+				displayName: 'Job Title',
+				name: 'JobTitle',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Last Name',
+				name: 'LastName',
 				type: 'string',
 				description: 'Required',
 				default: '',
@@ -399,48 +398,18 @@ export const companyFields: INodeProperties[] = [
 				default: '',
 			},
 			{
-				displayName: 'Is User',
-				name: 'IsUser',
-				type: 'boolean',
-				default: false
-			},
-			{
-				displayName: 'External ID',
-				name: 'ExternalId',
-				type: 'string',
-				default: '',
-			},
-			{
-				displayName: 'Gender',
-				name: 'Gender',
-				type: 'string',
-				default: '',
-			},
-			{
-				displayName: 'Fax',
-				name: 'Fax',
-				type: 'string',
-				default: '',
-			},
-			{
 				displayName: 'Note',
 				name: 'Note',
 				type: 'string',
 				default: '',
 			},
 			{
-				displayName: 'Company ID',
-				name: 'CompanyId',
+				displayName: 'Telephone',
+				name: 'Telephone',
 				type: 'string',
-				default: '',
-			},
-			{
-				displayName: 'Job Title',
-				name: 'JobTitle',
-				type: 'string',
+				description: 'Required',
 				default: '',
 			},
 		],
 	},
-
 ];

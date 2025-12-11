@@ -39,13 +39,13 @@ export const ServiceObjectOperations: INodeProperties[] = [
 export const serviceObjectFields: INodeProperties[] = [
 
 /* -------------------------------------------------------------------------- */
-	/*                                  serviceObject:createServiceObject       */
-	/* ------------------------------------------------------------------------ */
-
+/*                         serviceObject:createServiceObject                  */
+/* -------------------------------------------------------------------------- */
 	{
 		displayName: 'Name',
 		name: 'Name',
 		type: 'string',
+		required: true,
 		displayOptions: {
 			show: {
 				resource: ['serviceObject'],
@@ -54,60 +54,6 @@ export const serviceObjectFields: INodeProperties[] = [
 		},
 		default: '',
 	},
-
-	// Location
-	{
-		displayName: 'Location',
-		name: 'Location',
-		type: 'collection',
-		placeholder: 'Add Location Field',
-		default: {},
-		displayOptions: {
-			show: {
-				resource: ['serviceObject'],
-				operation: ['createServiceObject'],
-			},
-		},
-		options: [
-			{
-				displayName: 'Address',
-				name: 'AddressString',
-				type: 'string',
-				default: '',
-			},
-			{
-				displayName: 'Postal',
-				name: 'Postal',
-				type: 'string',
-				default: '',
-			},
-			{
-				displayName: 'City',
-				name: 'City',
-				type: 'string',
-				default: '',
-			},
-			{
-				displayName: 'State',
-				name: 'State',
-				type: 'string',
-				default: '',
-			},
-			{
-				displayName: 'Country',
-				name: 'Country',
-				type: 'string',
-				default: '',
-			},
-			{
-				displayName: 'Is Valid Location',
-				name: 'IsValidLocation',
-				type: 'boolean',
-				default: false,
-			},
-		],
-	},
-
 	{
 		displayName: 'Company ID',
 		name: 'CompanyId',
@@ -148,24 +94,84 @@ export const serviceObjectFields: INodeProperties[] = [
 			},
 		],
 	},
-
 	{
-		displayName: 'External ID',
-		name: 'ExternalId',
-		type: 'string',
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
 		displayOptions: {
 			show: {
 				resource: ['serviceObject'],
 				operation: ['createServiceObject'],
 			},
 		},
-		default: '',
+		options: [
+			{
+				displayName: 'External ID',
+				name: 'ExternalId',
+				type: 'string',
+				default: '',
+			},
+		],
+	},
+	// Location
+	{
+		displayName: 'Location',
+		name: 'Location',
+		required: true,
+		type: 'collection',
+		placeholder: 'Add Location Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['serviceObject'],
+				operation: ['createServiceObject'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Address',
+				name: 'AddressString',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'City',
+				name: 'City',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Country',
+				name: 'Country',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Is Valid Location',
+				name: 'IsValidLocation',
+				type: 'boolean',
+				default: false,
+			},
+			{
+				displayName: 'Postal',
+				name: 'Postal',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'State',
+				name: 'State',
+				type: 'string',
+				default: '',
+			},
+		],
 	},
 
-	/* -------------------------------------------------------------------------- */
-	/*                                  serviceObject:getServiceObject           */
-	/* ------------------------------------------------------------------------ */
-
+/* -------------------------------------------------------------------------- */
+/*                         serviceObject:getServiceObject                     */
+/* -------------------------------------------------------------------------- */
 	{
 		displayName: 'Service Object',
 		name: 'id',
@@ -193,83 +199,69 @@ export const serviceObjectFields: INodeProperties[] = [
 				displayName: 'By ID',
 				name: 'id',
 				type: 'string',
-				placeholder: '58539222'
+				placeholder: '58539222',
 			},
 		],
 	},
 	{
-		displayName: 'External ID',
-		name: 'ExternalId',
-		hint: 'Enter either an External ID (to search by External ID) or an ID (to fetch by ID); if an External ID is provided, the lookup uses that.',
-		type: 'string',
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
 		displayOptions: {
 			show: {
 				resource: ['serviceObject'],
 				operation: ['getServiceObject'],
 			},
 		},
-		default: '',
-	},
-	{
-	displayName: 'Expand',
-	name: '$expand',
-	type: 'multiOptions',
-	options: [
-		{
-			name: 'Contacts',
-			value: 'Contacts',
-		},
-		{
-			name: 'Company',
-			value: 'Company',
-		},
-		{
-			name: 'Product',
-			value: 'Product',
-		},
-		{
-			name: 'Tags',
-			value: 'Tags',
-		},
-	],
-	default: [],
-	hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
-	displayOptions: {
-		show: {
-				resource: ['serviceObject'],
-				operation: ['getServiceObject'],
+		options: [
+			{
+				displayName: 'Expand',
+				name: '$expand',
+				type: 'multiOptions',
+				options: [
+					{
+						name: 'Company',
+						value: 'Company',
+					},
+					{
+						name: 'Contacts',
+						value: 'Contacts',
+					},
+					{
+						name: 'Product',
+						value: 'Product',
+					},
+					{
+						name: 'Tags',
+						value: 'Tags',
+					},
+				],
+				default: [],
+				hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
 			},
-	},
-},
-
-	/* -------------------------------------------------------------------------- */
-	/*                                  serviceObject:listServiceObjects          */
-	/* ------------------------------------------------------------------------ */
-
-	{
-		displayName: 'Limit',
-		name: 'limit',
-		type: 'number',
-		displayOptions: {
-			show: {
-				resource: ['serviceObject'],
-				operation: ['listServiceObjects'],
+			{
+				displayName: 'External ID',
+				name: 'ExternalId',
+				hint: 'Enter either an External ID (to search by External ID) or an ID (to fetch by ID); if an External ID is provided, the lookup uses that.',
+				type: 'string',
+				default: '',
 			},
-		},
-		typeOptions: {
-			minValue: 1,
-		},
-		default: 50,
-		description: 'Max number of results to return',
+		],
 	},
+
+/* -------------------------------------------------------------------------- */
+/*                         serviceObject:listServiceObjects                   */
+/* -------------------------------------------------------------------------- */
 	{
 		displayName: 'Fetch All Results',
 		name: 'fetchAllResults',
 		type: 'boolean',
 		required: true,
-		hint: 'Whether to fetch all refunds. If this parameter is set to true, number of entities is ignored and all refunds will be retrieved.',
+		hint: 'Whether to fetch all service objects. If this parameter is set to true, limit is ignored and all service objects will be retrieved.',
 		displayOptions: {
-				show: {
+			show: {
 				resource: ['serviceObject'],
 				operation: ['listServiceObjects'],
 			},
@@ -277,48 +269,60 @@ export const serviceObjectFields: INodeProperties[] = [
 		default: false,
 	},
 	{
-		displayName: 'Filter',
-		name: '$filter',
-		hint: 'Allows to filter by a condition or a set of conditions given. <a href="https://www.odata.org/documentation/odata-version-3-0/url-conventions/">Filters documentation</a>',
-		type: 'string',
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
 		displayOptions: {
-				show: {
+			show: {
 				resource: ['serviceObject'],
 				operation: ['listServiceObjects'],
 			},
 		},
-		default: '',
+		options: [
+			{
+				displayName: 'Expand',
+				name: '$expand',
+				type: 'multiOptions',
+				options: [
+					{
+						name: 'Company',
+						value: 'Company',
+					},
+					{
+						name: 'Contacts',
+						value: 'Contacts',
+					},
+					{
+						name: 'Product',
+						value: 'Product',
+					},
+					{
+						name: 'Tags',
+						value: 'Tags',
+					},
+				],
+				default: [],
+				hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
+			},
+			{
+				displayName: 'Filter',
+				name: '$filter',
+				hint: 'Allows to filter by a condition or a set of conditions given. <a href="https://www.odata.org/documentation/odata-version-3-0/url-conventions/">Filters documentation</a>',
+				type: 'string',
+				default: '',
+			},
+			{
+				displayName: 'Limit',
+				name: 'limit',
+				type: 'number',
+				typeOptions: {
+					minValue: 1,
+				},
+				default: 50,
+				description: 'Max number of results to return',
+			},
+		],
 	},
-	{
-  displayName: 'Expand',
-  name: '$expand',
-  type: 'multiOptions',
-  options: [
-   {
-			name: 'Contacts',
-			value: 'Contacts',
-		},
-		{
-			name: 'Company',
-			value: 'Company',
-		},
-		{
-			name: 'Product',
-			value: 'Product',
-		},
-		{
-			name: 'Tags',
-			value: 'Tags',
-		},
-  ],
-  default: [],
-  hint: 'Expand hidden fields. <a href="https://documenter.getpostman.com/view/3999268/TVYCAzpK#odata-tools">Expand documentation</a>',
-  displayOptions: {
-    	show: {
-				resource: ['serviceObject'],
-				operation: ['listServiceObjects'],
-			},
-  },
-},
-
-]
+];
