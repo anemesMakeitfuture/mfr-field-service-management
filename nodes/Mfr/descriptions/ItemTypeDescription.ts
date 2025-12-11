@@ -1,3 +1,4 @@
+/* eslint-disable n8n-nodes-base/node-param-description-wrong-for-dynamic-options */
 import type { INodeProperties } from 'n8n-workflow';
 
 export const ItemTypeOperations: INodeProperties[] = [
