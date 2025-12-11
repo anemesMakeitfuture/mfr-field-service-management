@@ -547,7 +547,7 @@ export class Mfr implements INodeType {
 						json: true,
 					} satisfies IHttpRequestOptions;
 
-					console.log('OPTIONS:', options);
+
 
 					responseData = await this.helpers.httpRequestWithAuthentication.call(
 						this,
@@ -591,7 +591,7 @@ export class Mfr implements INodeType {
 							json: true,
 						} satisfies IHttpRequestOptions;
 
-						console.log('OPTIONS:', options);
+
 
 						const response = await this.helpers.httpRequestWithAuthentication.call(
 							this,
@@ -645,7 +645,7 @@ export class Mfr implements INodeType {
 						json: true,
 					} satisfies IHttpRequestOptions;
 
-					console.log('OPTIONS:', options);
+
 
 					responseData = await this.helpers.httpRequestWithAuthentication.call(
 						this,
@@ -691,7 +691,7 @@ export class Mfr implements INodeType {
 							json: true,
 						} satisfies IHttpRequestOptions;
 
-						console.log('OPTIONS:', options);
+
 
 						const response = await this.helpers.httpRequestWithAuthentication.call(
 							this,
@@ -741,7 +741,7 @@ export class Mfr implements INodeType {
 						json: true,
 					} satisfies IHttpRequestOptions;
 
-					console.log('OPTIONS:', options);
+
 
 					responseData = await this.helpers.httpRequestWithAuthentication.call(
 						this,
@@ -780,7 +780,7 @@ export class Mfr implements INodeType {
 						json: true,
 					} satisfies IHttpRequestOptions;
 
-					console.log('OPTIONS:', options);
+
 
 					responseData = await this.helpers.httpRequestWithAuthentication.call(
 						this,
@@ -813,7 +813,7 @@ export class Mfr implements INodeType {
 						json: true,
 					} satisfies IHttpRequestOptions;
 
-					console.log('OPTIONS:', options);
+
 
 					responseData = await this.helpers.httpRequestWithAuthentication.call(
 						this,
@@ -850,7 +850,7 @@ export class Mfr implements INodeType {
 							json: true,
 						} satisfies IHttpRequestOptions;
 
-						console.log('OPTIONS:', options);
+
 
 						const response = await this.helpers.httpRequestWithAuthentication.call(
 							this,
@@ -900,7 +900,7 @@ if (resource === 'serviceObject' && operation === 'createServiceObject') {
 		json: true,
 	} satisfies IHttpRequestOptions;
 
-	console.log('OPTIONS:', options);
+
 
 	responseData = await this.helpers.httpRequestWithAuthentication.call(
 		this,
@@ -934,7 +934,7 @@ if (resource === 'serviceObject' && operation === 'createServiceObject') {
 						json: true,
 					} satisfies IHttpRequestOptions;
 
-					console.log('OPTIONS:', options);
+
 
 					responseData = await this.helpers.httpRequestWithAuthentication.call(
 						this,
@@ -971,7 +971,7 @@ if (resource === 'serviceObject' && operation === 'createServiceObject') {
 							json: true,
 						} satisfies IHttpRequestOptions;
 
-						console.log('OPTIONS:', options);
+
 
 						const response = await this.helpers.httpRequestWithAuthentication.call(
 							this,
@@ -1050,7 +1050,7 @@ if (resource === 'serviceObject' && operation === 'createServiceObject') {
 						json: true,
 					} satisfies IHttpRequestOptions;
 
-					console.log('OPTIONS:', options);
+
 
 					responseData = await this.helpers.httpRequestWithAuthentication.call(
 						this,
@@ -1075,7 +1075,7 @@ if (resource === 'serviceObject' && operation === 'createServiceObject') {
 						json: true,
 					} satisfies IHttpRequestOptions;
 
-					console.log('OPTIONS:', options);
+
 
 					responseData = await this.helpers.httpRequestWithAuthentication.call(
 						this,
@@ -1100,7 +1100,7 @@ if (resource === 'serviceObject' && operation === 'createServiceObject') {
 						json: true,
 					} satisfies IHttpRequestOptions;
 
-					console.log('OPTIONS:', options);
+
 
 					responseData = await this.helpers.httpRequestWithAuthentication.call(
 						this,
@@ -1121,7 +1121,7 @@ if (resource === 'serviceObject' && operation === 'createServiceObject') {
 						json: true,
 					} satisfies IHttpRequestOptions;
 
-					console.log('OPTIONS:', options);
+
 
 					responseData = await this.helpers.httpRequestWithAuthentication.call(
 						this,
@@ -1155,7 +1155,7 @@ if (resource === 'serviceObject' && operation === 'createServiceObject') {
 						json: true,
 					} satisfies IHttpRequestOptions;
 
-					console.log('OPTIONS:', options);
+
 
 					responseData = await this.helpers.httpRequestWithAuthentication.call(
 						this,
@@ -1192,7 +1192,7 @@ if (resource === 'serviceObject' && operation === 'createServiceObject') {
 							json: true,
 						} satisfies IHttpRequestOptions;
 
-						console.log('OPTIONS:', options);
+
 
 						const response = await this.helpers.httpRequestWithAuthentication.call(
 							this,
@@ -1324,7 +1324,7 @@ if (resource === 'document' && operation === 'uploadDocument') {
 							json: true,
 						} satisfies IHttpRequestOptions;
 
-						console.log('OPTIONS:', options);
+
 
 						const response = await this.helpers.httpRequestWithAuthentication.call(
 							this,
