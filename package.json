@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-mfr",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "Field service management app for scheduling technicians",
   "keywords": [
     "n8n-community-node-package"
